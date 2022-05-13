@@ -1,12 +1,16 @@
 
 import Navbar from '../components/navbar'
+import Footer from '../components/footer'
 
 const Algo = () => {
   return (
-  <main>
+    <>
+    <Navbar/> 
+    <main>
       <h1>Algo</h1> 
-      <Navbar/> 
-  </main>)
+  </main>
+  <Footer/>
+    </>)
 }
 
 export default Algo
