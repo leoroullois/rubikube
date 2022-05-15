@@ -1,13 +1,15 @@
 import scss from "@scss/navbar.module.scss";
 import Image from "next/image";
 import Link from "next/link";
-import logo from "@public/logo.png";
+import logo from "@public/main-logo.svg";
+
 const Navbar = () => {
+   
    return (
       <nav className={scss.nav}>
          <Link href='/'>
             <a>
-               <Image src={logo} alt='Logo' height={264/5} width={830/5} />
+               <Image src={logo} alt='Logo' height={60} width={170} />
             </a>
          </Link>
          <span className={scss.links}>
