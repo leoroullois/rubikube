@@ -9,6 +9,7 @@ import {
 } from "@react-three/drei";
 import { Canvas, useThree } from "@react-three/fiber";
 import { FC } from "react";
+import Box from "./box";
 import Cube, { Color } from "./rubikscube";
 const MyCanvas: FC = () => {
    return (
@@ -18,7 +19,7 @@ const MyCanvas: FC = () => {
          <ambientLight intensity={0.5} />
          <directionalLight position={[-2, 5, 2]} intensity={1} />
          <Cube />
-         {/* <Text color='black' anchorX='center' anchorY='middle'>
+         <Text color='black' anchorX='center' anchorY='middle'>
             Lorem ipsum dolor sit
          </Text>
          <RoundedBox position={[5, 0, 0]} radius={0.05} smoothness={4}>
@@ -32,10 +33,7 @@ const MyCanvas: FC = () => {
          </Torus>
          <Lathe position={[0, 2.5, 0]}>
             <meshBasicMaterial color={Color.Yellow} />
-         </Lathe> */}
-         {/* <mesh>
-            <planeGeometry attach='geometry' args={[10, 10]} />
-         </mesh> */}
+         </Lathe>
          <directionalLight
             color={Color.Blue}
             position={[8, 2, 0]}

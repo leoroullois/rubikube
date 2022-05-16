@@ -1,4 +1,3 @@
-import { TransformControls } from "@react-three/drei";
 import React from "react";
 import Box from "./box";
 
