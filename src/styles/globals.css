@@ -27,9 +27,6 @@
    }
    .text-gradient {
       -webkit-text-fill-color: transparent;
-      &:selection {
-         background: none;
-      }
    }
    #__next {
       display: flex;

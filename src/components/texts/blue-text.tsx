@@ -4,7 +4,7 @@ interface IProps {
 }
 const BlueText: FC<IProps> = ({ children }) => {
    return (
-      <span className='bg-clip-text text-transparent bg-gradient-to-t from-blue-600 to-blue-700'>
+      <span className='text-gradient bg-clip-text text-transparent bg-gradient-to-t from-blue-600 to-blue-700'>
          {children}
       </span>
    );
