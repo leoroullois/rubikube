@@ -1,6 +1,7 @@
-import Navbar from "@components/navbar";
-import Footer from "@components/footer";
-import { FC } from "react";
+import Navbar from "@components/navbar/navbar";
+import Footer from "@components/footer/footer";
+import Background from "./background/background";
+import Head from "next/head";
 
 interface IProps {
    children: JSX.Element;
@@ -8,9 +9,15 @@ interface IProps {
 const Layout = ({ children }: IProps) => {
    return (
       <>
-         <Navbar />
-         {children}
-         <Footer />
+         <Head>
+            <link rel='icon' href='/logos/cube.svg' />
+         </Head>
+         <div className='relative flex flex-col h-full w-full z-10'>
+            <Navbar />
+            {children}
+            <Footer />
+         </div>
+         <Background />
       </>
    );
 };
