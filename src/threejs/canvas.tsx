@@ -1,7 +1,9 @@
 import {
+   Environment,
    Lathe,
    OrbitControls,
    RoundedBox,
+   Sky,
    Sphere,
    Text,
    Torus,
@@ -12,28 +14,16 @@ import { FC } from "react";
 import Box from "./box";
 import Cube, { Color } from "./rubikscube";
 const MyCanvas: FC = () => {
+   const { White, Yellow, Blue, Green, Red, Orange, Black } = Color;
    return (
       <Canvas>
          <OrbitControls />
 
          <ambientLight intensity={0.5} />
          <directionalLight position={[-2, 5, 2]} intensity={1} />
-         <Cube />
-         <Text color='black' anchorX='center' anchorY='middle'>
-            Lorem ipsum dolor sit
-         </Text>
-         <RoundedBox position={[5, 0, 0]} radius={0.05} smoothness={4}>
-            <meshPhongMaterial color={Color.Red} />
-         </RoundedBox>
-         <Sphere position={[2.5, 0, 0]}>
-            <meshToonMaterial color={Color.Green} />
-         </Sphere>
-         <Torus position={[7.5, 0, 0]}>
-            <meshBasicMaterial color={Color.Blue} />
-         </Torus>
-         <Lathe position={[0, 2.5, 0]}>
-            <meshBasicMaterial color={Color.Yellow} />
-         </Lathe>
+         <Box colors={[Yellow, Orange, Green]} position={[0, 0, 0]} />
+         <Box colors={[Yellow, Orange, Green]} position={[1.5, 0, 0]} />
+
          <directionalLight
             color={Color.Blue}
             position={[8, 2, 0]}

@@ -5,7 +5,7 @@ interface IProps {
 }
 const CreatedByItem: FC<IProps> = ({ name }) => {
    return (
-      <span className='text-red-600 hover:text-red-700 cursor-pointer font-medium'>
+      <span className='text-blue-500 hover:text-blue-600 cursor-pointer font-medium'>
          {name}
       </span>
    );
