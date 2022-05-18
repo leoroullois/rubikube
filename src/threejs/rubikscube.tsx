@@ -12,19 +12,20 @@ export enum Color {
    White = 0xecf0f1,
    Black = 0x2d3436,
 }
-// const Cube = () => {
-//    return (
-//       <>
-//          <Box position={[1, 1, 0]} rotation={[0, 0, 0]} color={Color.Blue} />
-//          <Box position={[0, -1, 0]} rotation={[0, 0, 0]} color={Color.Orange} />
-//       </>
-//    );
-// };
-
-const Cube = () => {
+const RubiksCube = () => {
    const cubePositions = useState<Position[]>(generatePositions());
+   const { White, Yellow, Blue, Green, Red, Orange, Black } = Color;
 
-   return <p>Test</p>;
+   return (
+      <>
+         <Box
+            colors={[Yellow, Orange, Green]}
+            position={[0, 0, 0]}
+            rotation={[1, 1, 0]}
+         />
+         <Box colors={[Yellow, Orange, Green]} position={[1.5, 0, 0]} />;
+      </>
+   );
 };
-export default Cube;
+export default RubiksCube;
 

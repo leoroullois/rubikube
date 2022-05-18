@@ -19,7 +19,7 @@ const ColorModeIcon = () => {
       if (currentTheme === "dark") {
          return (
             <FiSun
-               className='w-8 h-8 text-red-500'
+               className='w-8 h-8 text-gray-100'
                role='button'
                onClick={() => setTheme("light")}
             />
