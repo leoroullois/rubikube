@@ -1,17 +1,7 @@
 import React, { FC, useState } from "react";
 
-import {
-   CubeArray,
-   cubeArrayToRubik,
-   generatePositions,
-} from "@lib/cube";
-import {
-   ColorMapping,
-   IPieceState,
-   Position,
-   Rubik,
-   StateMapping,
-} from "@lib/types";
+import { CubeArray, cubeArrayToRubik, generatePositions } from "@lib/cube";
+import { Position } from "@lib/types";
 
 import Box from "./box";
 

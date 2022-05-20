@@ -453,7 +453,7 @@ export const solvedCube: Rubik = {
    },
 };
 
-export type CubeArray = Color[][];
+export type CubeArray = ColorMapping[][];
 
 export const initialCubeArray: CubeArray = [
    Array(9).fill(White),
