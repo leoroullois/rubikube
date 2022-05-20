@@ -1,4 +1,4 @@
-import { Color, Position, Rubik, StateMapping } from "./types";
+import { Color, ColorMapping, Position, Rubik, StateMapping } from "./types";
 
 export const generatePositions = (): Position[] => {
    let newCubePositions: Position[] = [];
@@ -233,7 +233,7 @@ export const stateMapping: StateMapping = {
 
 // ? export const generateState = (): StateMapping => {};
 
-const { White, Orange, Yellow, Blue, Green, Red } = Color;
+const { White, Orange, Yellow, Blue, Green, Red } = ColorMapping;
 export const solvedCube: Rubik = {
    0: {
       0: Green,
@@ -451,5 +451,33 @@ export const solvedCube: Rubik = {
       4: Orange,
       5: null,
    },
+};
+
+export type CubeArray = Color[][];
+
+export const initialCubeArray: CubeArray = [
+   Array(9).fill(White),
+   Array(9).fill(Orange),
+   Array(9).fill(Green),
+   Array(9).fill(Red),
+   Array(9).fill(Blue),
+   Array(9).fill(Yellow),
+];
+
+export const cubeArrayToRubik = (cubeArray: CubeArray): Rubik => {
+   const rubik: any = solvedCube;
+   for (const [stateMappingKey, cube] of Object.entries(stateMapping)) {
+      if (rubik.hasOwnProperty(stateMappingKey)) {
+         for (const [cubeKey, color] of Object.entries(cube)) {
+            if (cube.hasOwnProperty(cubeKey)) {
+               if (color) {
+                  rubik[stateMappingKey][cubeKey] =
+                     cubeArray[color[0]][color[1]];
+               }
+            }
+         }
+      }
+   }
+   return rubik as Rubik;
 };
 

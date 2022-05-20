@@ -12,10 +12,7 @@ const Play = () => {
          <Head>
             <title>Play with AI</title>
          </Head>
-         <main>
-            <h1>Play</h1>
-            {mounted && <Canvas />}
-         </main>
+         <main>{mounted && <Canvas />}</main>
       </>
    );
 };

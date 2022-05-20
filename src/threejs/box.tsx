@@ -1,43 +1,35 @@
-import React, { FC, MouseEvent, useEffect, useRef } from "react";
+import React, { FC, MouseEvent, useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 
-import {
-   Cloud,
-   Edges,
-   Environment,
-   GradientTexture,
-   MeshWobbleMaterial,
-   RoundedBox,
-   Sky,
-   Sparkles,
-   Stars,
-   Text3D,
-   Trail,
-   TransformControls,
-} from "@react-three/drei";
+import { ColorMapping, IPieceState } from "@lib/types";
+import { RoundedBox, TransformControls } from "@react-three/drei";
 import { ThreeEvent } from "@react-three/fiber";
 
-import { Color } from "./rubikscube";
-import inter from "../assets/fonts/Inter_Regular.json";
-import { IoColorFillSharp } from "react-icons/io5";
-
 type Props = JSX.IntrinsicElements["mesh"] & {
-   colors: Color[];
+   state: IPieceState<ColorMapping>;
    position: number[];
 };
 
-const Box: FC<Props> = ({ colors, position, ...props }) => {
+const Box: FC<Props> = ({ state, position, ...props }) => {
    const mesh = useRef<any>(null!);
 
    const handleClick: any = (event: ThreeEvent<MouseEvent>) => {
       event.stopPropagation();
       const box = mesh.current;
       console.log(box);
-      //   box.position.z = Math.random() * 2 - 1;
-      // mesh.current.geometry.faces[5].color.setHex(0x0000ff);
    };
+   const {
+      0: color0,
+      1: color1,
+      2: color2,
+      3: color3,
+      4: color4,
+      5: color5,
+   } = state;
 
    const [x, y, z] = position;
+
+   const [pieceSize] = useState(0.95);
    return (
       <>
          <RoundedBox
@@ -49,29 +41,64 @@ const Box: FC<Props> = ({ colors, position, ...props }) => {
             {...props}
             onClick={handleClick}
          >
-            <meshPhongMaterial color={Color.Black} />
+            <meshPhongMaterial color={ColorMapping.Black} />
 
-            <RoundedBox args={[0.5, 0.99, 0.99]} position={[0.26, 0, 0]}>
-               <meshPhongMaterial color={colors[0]} />
-            </RoundedBox>
+            {/* Face 0 */}
             <RoundedBox
-               args={[0.999, 0.5, 0.999]}
-               position={[0, -0.26, 0]}
+               args={[pieceSize, pieceSize, 0.5]}
+               position={[0, 0, 0.26]}
                radius={0.05}
                smoothness={4}
             >
-               <meshPhongMaterial color={colors[1]} />
+               <meshPhongMaterial color={color0 ?? ColorMapping.Black} />
             </RoundedBox>
+            {/* Face 1 */}
             <RoundedBox
-               args={[0.999, 0.999, 0.5]}
+               args={[0.5, pieceSize, pieceSize]}
+               position={[0.26, 0, 0]}
+               radius={0.05}
+               smoothness={4}
+            >
+               <meshPhongMaterial color={color1 ?? ColorMapping.Black} />
+            </RoundedBox>
+            {/* Face 2 */}
+            <RoundedBox
+               args={[pieceSize, 0.5, pieceSize]}
+               position={[0, 0.26, 0]}
+               radius={0.05}
+               smoothness={4}
+            >
+               <meshPhongMaterial color={color2 ?? ColorMapping.Black} />
+            </RoundedBox>
+            {/* Face 3 */}
+            <RoundedBox
+               args={[pieceSize, pieceSize, 0.5]}
                position={[0, 0, -0.26]}
                radius={0.05}
                smoothness={4}
             >
-               <meshPhongMaterial color={colors[2]} />
+               <meshPhongMaterial color={color3 ?? ColorMapping.Black} />
+            </RoundedBox>
+            {/* Face 4 */}
+            <RoundedBox
+               args={[0.5, pieceSize, pieceSize]}
+               position={[-0.26, 0, 0]}
+               radius={0.05}
+               smoothness={4}
+            >
+               <meshPhongMaterial color={color4 ?? ColorMapping.Black} />
+            </RoundedBox>
+            {/* Face 5 */}
+            <RoundedBox
+               args={[pieceSize, 0.5, pieceSize]}
+               position={[0, -0.26, 0]}
+               radius={0.05}
+               smoothness={4}
+            >
+               <meshPhongMaterial color={color5 ?? ColorMapping.Black} />
             </RoundedBox>
          </RoundedBox>
-         <TransformControls object={mesh} mode='translate' />
+         {/* <TransformControls object={mesh} mode='translate' /> */}
       </>
    );
 };

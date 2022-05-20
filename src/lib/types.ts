@@ -6,10 +6,19 @@ export enum Color {
    Green = 2,
    Red = 3,
 }
+export enum ColorMapping {
+   Red = 0xc0392b,
+   Green = 0x27ae60,
+   Blue = 0x2980b9,
+   Yellow = 0xf1c40f,
+   Orange = 0xd35400,
+   White = 0xecf0f1,
+   Black = 0x2d3436,
+}
 
 export type Position = [x: number, y: number, z: number];
 
-interface IPieceState<T> {
+export interface IPieceState<T> {
    0: T | null;
    1: T | null;
    2: T | null;
@@ -50,5 +59,5 @@ type RubikState<T> = {
 };
 
 export type StateMapping = RubikState<StateMappingType>;
-export type Rubik = RubikState<Color>;
+export type Rubik = RubikState<ColorMapping>;
 
