@@ -480,4 +480,3 @@ export const cubeArrayToRubik = (cubeArray: CubeArray): Rubik => {
    }
    return rubik as Rubik;
 };
-

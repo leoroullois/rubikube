@@ -1,7 +1,9 @@
-import { CubeArray } from "@lib/cube";
-import { Color, ColorMapping } from "@lib/types";
-import { FC, useState } from "react";
-import { v4 as uuidv4 } from "uuid";
+import { FC, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
+
+import { CubeArray } from '@lib/cube';
+import { ColorMapping } from '@lib/types';
+
 interface IProps {
    cubeArray: CubeArray;
 }

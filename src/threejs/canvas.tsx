@@ -8,14 +8,13 @@ import { initialCubeArray, stateMapping } from "@lib/cube";
 const Canvas: FC = () => {
    return (
       <FiberCanvas>
-         <OrbitControls enableZoom={true} />
-
+         <OrbitControls enableZoom={false} />
          <ambientLight intensity={0.2} />
 
          <directionalLight position={[5, -5, -5]} intensity={0.8} />
          <directionalLight position={[-5, 5, 5]} intensity={0.8} />
 
-         <RubiksCube cubeArray={initialCubeArray}/>
+         <RubiksCube cubeArray={initialCubeArray} />
       </FiberCanvas>
    );
 };
