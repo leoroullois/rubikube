@@ -1,6 +1,6 @@
 import React, { FC, MouseEvent, useRef, useState } from "react";
 
-import { ColorMapping, IPieceState } from "@lib/types";
+import { ColorMapping, IPieceState } from "@lib/cubes/types";
 import { RoundedBox, TransformControls } from "@react-three/drei";
 import { ThreeEvent } from "@react-three/fiber";
 

@@ -1,3 +1,15 @@
+export type Position = [x: number, y: number, z: number];
+export type CubeArray = ColorMapping[][];
+
+export interface IPieceState<T> {
+   0: T | null;
+   1: T | null;
+   2: T | null;
+   3: T | null;
+   4: T | null;
+   5: T | null;
+}
+
 export enum Color {
    White = 0,
    Orange = 1,
@@ -6,6 +18,7 @@ export enum Color {
    Green = 2,
    Red = 3,
 }
+
 export enum ColorMapping {
    Red = 0xc0392b,
    Green = 0x27ae60,
@@ -16,16 +29,6 @@ export enum ColorMapping {
    Black = 0x2d3436,
 }
 
-export type Position = [x: number, y: number, z: number];
-
-export interface IPieceState<T> {
-   0: T | null;
-   1: T | null;
-   2: T | null;
-   3: T | null;
-   4: T | null;
-   5: T | null;
-}
 type StateMappingType = [number, number];
 
 type RubikState<T> = {

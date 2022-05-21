@@ -1,8 +1,7 @@
 import { FC, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
-import { CubeArray } from '@lib/cube';
-import { ColorMapping } from '@lib/types';
+import { ColorMapping, CubeArray } from '@lib/cubes/types';
 
 interface IProps {
    cubeArray: CubeArray;
@@ -45,7 +44,9 @@ const CubePattern: FC<IProps> = ({ cubeArray }) => {
                const div = (
                   <div
                      key={j}
-                     className={`flex h-8 w-8 border border-gray-900 ${mapColor(face[j])}`}
+                     className={`flex h-8 w-8 border border-gray-900 ${mapColor(
+                        face[j]
+                     )}`}
                   ></div>
                );
                squares = [...squares, div];

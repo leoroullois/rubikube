@@ -1,8 +1,7 @@
-import CubePattern from "@components/cube-pattern";
-import { initialCubeArray } from "@lib/cube";
-import Head from "next/head";
-import { useEffect, useState } from "react";
-import Canvas from "../threejs/canvas";
+import Head from 'next/head';
+import { useEffect, useState } from 'react';
+
+import Canvas from '../threejs/canvas';
 
 const Play = () => {
    const [mounted, setMounted] = useState(false);
@@ -14,9 +13,7 @@ const Play = () => {
          <Head>
             <title>Play with AI</title>
          </Head>
-         <main className="flex flex-col">
-            {mounted && <Canvas />}
-         </main>
+         <main className='flex flex-col'>{mounted && <Canvas />}</main>
       </>
    );
 };
