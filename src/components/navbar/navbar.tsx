@@ -1,3 +1,4 @@
+import SignUp from '@components/buttons/sign-up-button';
 import Link from 'next/link';
 
 import MainLogo from '../logos/main-logo';
@@ -16,6 +17,7 @@ const NavBar = () => {
                   </a>
                </Link>
                <MainLinks />
+               <SignUp href='/timer'>Sign Up</SignUp>
                <ColorModeIcon />
             </>
          </Wrapper>
