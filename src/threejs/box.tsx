@@ -1,22 +1,14 @@
-import React, { FC, MouseEvent, useRef, useState } from "react";
+import React, { forwardRef, useState } from "react";
 
 import { ColorMapping, IPieceState } from "@lib/cubes/types";
-import { RoundedBox, TransformControls } from "@react-three/drei";
-import { ThreeEvent } from "@react-three/fiber";
+import { RoundedBox } from "@react-three/drei";
 
 type Props = JSX.IntrinsicElements["mesh"] & {
    state: IPieceState<ColorMapping>;
    position: number[];
 };
 
-const Box: FC<Props> = ({ state, position, ...props }) => {
-   const mesh = useRef<any>(null!);
-
-   const handleClick: any = (event: ThreeEvent<MouseEvent>) => {
-      event.stopPropagation();
-      const box = mesh.current;
-      console.log(box);
-   };
+const Box = ({ state, position, ...props }: Props, ref: any) => {
    const {
       0: color0,
       1: color1,
@@ -36,9 +28,8 @@ const Box: FC<Props> = ({ state, position, ...props }) => {
             position={position}
             radius={0.05}
             smoothness={4}
-            ref={mesh}
+            ref={ref}
             {...props}
-            onClick={handleClick}
          >
             <meshPhongMaterial color={ColorMapping.Black} />
 
@@ -97,10 +88,9 @@ const Box: FC<Props> = ({ state, position, ...props }) => {
                <meshPhongMaterial color={color5 ?? ColorMapping.Black} />
             </RoundedBox>
          </RoundedBox>
-         {/* <TransformControls object={mesh} mode='translate' /> */}
       </>
    );
 };
 
-export default Box;
+export default forwardRef(Box);
 

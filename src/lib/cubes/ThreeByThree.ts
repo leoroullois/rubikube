@@ -474,6 +474,10 @@ export class ThreeByThree extends Cube {
       };
    }
 
+   public get solvedCubeArray(): CubeArray {
+      return this.solvedCubeArray;
+   }
+
    public get stateMapping(): StateMapping {
       return this._stateMapping;
    }

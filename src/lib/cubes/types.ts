@@ -29,7 +29,8 @@ export enum ColorMapping {
    Black = 0x2d3436,
 }
 
-type StateMappingType = [number, number];
+export type StateMappingType = [number, number];
+export type MappingPiece = IPieceState<StateMappingType>;
 
 type RubikState<T> = {
    0: IPieceState<T>;
@@ -63,4 +64,11 @@ type RubikState<T> = {
 
 export type StateMapping = RubikState<StateMappingType>;
 export type Rubik = RubikState<ColorMapping>;
+
+export enum Spin {
+   Left,
+   Right,
+   Up,
+   Down,
+}
 
