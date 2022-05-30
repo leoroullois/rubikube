@@ -1,3 +1,4 @@
-import { RootState } from "./store";
+import { RootState } from "@store/store";
 
-const selectColorMode = (state: RootState) => state.colorMode;
+export const selectCube = (state: RootState) => state.cube;
+

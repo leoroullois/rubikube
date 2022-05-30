@@ -1,10 +1,10 @@
-import SignUp from '@components/buttons/sign-up-button';
-import Link from 'next/link';
+import Link from "next/link";
 
-import MainLogo from '../logos/main-logo';
-import Wrapper from '../wrapper';
-import ColorModeIcon from './color-mode-icon';
-import MainLinks from './main-links';
+import SignUp from "@components/buttons/border-btn";
+import MainLogo from "@components/logos/main-logo";
+import ColorModeIcon from "@components/navbar/color-mode-icon";
+import MainLinks from "@components/navbar/main-links";
+import Wrapper from "@components/wrapper";
 
 const NavBar = () => {
    return (
@@ -17,8 +17,10 @@ const NavBar = () => {
                   </a>
                </Link>
                <MainLinks />
-               <SignUp href='/timer'>Sign Up</SignUp>
-               <ColorModeIcon />
+               <div className='flex items-center gap-x-5'>
+                  <SignUp href='/register'>Sign Up</SignUp>
+                  <ColorModeIcon />
+               </div>
             </>
          </Wrapper>
       </nav>

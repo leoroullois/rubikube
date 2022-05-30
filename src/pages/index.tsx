@@ -3,6 +3,8 @@ import Header from "@components/home/header";
 import Wrapper from "@components/wrapper";
 
 import type { NextPage } from "next";
+import { useDispatch, useSelector } from "react-redux";
+import { selectCube } from "@store/selectors";
 const Home: NextPage = () => {
    return (
       <>
