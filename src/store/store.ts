@@ -4,12 +4,13 @@ import thunk from "redux-thunk";
 import { configureStore } from "@reduxjs/toolkit";
 import colorMode from "@store/slices/color-mode";
 import cube from "@store/slices/cube";
-
+import timer from "@store/slices/timer";
 const makeStore = () =>
    configureStore({
       reducer: {
          colorMode,
          cube,
+         timer,
       },
       middleware: (getDefaultMiddleware) =>
          getDefaultMiddleware().concat(thunk).concat(logger),

@@ -1,4 +1,4 @@
-import { Moves } from "./Moves";
+import { Moves } from "@lib/cubes/Moves";
 const { R, Ri, L, Li, F, Fi, B, Bi, U, Ui, D, Di } = Moves;
 
 class Scramble {

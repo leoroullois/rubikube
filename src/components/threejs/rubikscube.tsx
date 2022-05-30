@@ -5,16 +5,12 @@ import * as THREE from "three";
 import { Moves } from "@lib/cubes/Moves";
 import { ThreeByThree } from "@lib/cubes/ThreeByThree";
 import { Position } from "@lib/cubes/types";
+import { TransformControls } from "@react-three/drei";
 import { useFrame, useThree } from "@react-three/fiber";
 import { selectCube } from "@store/selectors";
-import {
-   addToRotateGroup,
-   disolveRotateGroup,
-   resetCurrRotate,
-   setCurrMove,
-} from "@store/slices/cube";
+import { addToCurrRotate, disolveRotateGroup } from "@store/slices/cube";
+
 import Box from "./box";
-import { TransformControls } from "@react-three/drei";
 
 interface IProps {
    cube: ThreeByThree;
@@ -39,22 +35,22 @@ const RubiksCube: FC<IProps> = ({ cube }) => {
       } else if (currMove) {
          if ([Moves.F, Moves.Bi].includes(currMove)) {
             sideToMove.rotation.z -= step;
-            dispatch(addToRotateGroup(step));
+            dispatch(addToCurrRotate(step));
          } else if ([Moves.B, Moves.Fi].includes(currMove)) {
             sideToMove.rotation.z += step;
-            dispatch(addToRotateGroup(step));
+            dispatch(addToCurrRotate(step));
          } else if ([Moves.R, Moves.Li].includes(currMove)) {
             sideToMove.rotation.x -= step;
-            dispatch(addToRotateGroup(step));
+            dispatch(addToCurrRotate(step));
          } else if ([Moves.L, Moves.Ri].includes(currMove)) {
             sideToMove.rotation.x += step;
-            dispatch(addToRotateGroup(step));
+            dispatch(addToCurrRotate(step));
          } else if ([Moves.Ui, Moves.D].includes(currMove)) {
             sideToMove.rotation.y += step;
-            dispatch(addToRotateGroup(step));
+            dispatch(addToCurrRotate(step));
          } else if ([Moves.U, Moves.Di].includes(currMove)) {
             sideToMove.rotation.y -= step;
-            dispatch(addToRotateGroup(step));
+            dispatch(addToCurrRotate(step));
          }
       }
    };
