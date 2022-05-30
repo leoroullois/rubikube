@@ -6,8 +6,7 @@ import * as THREE from "three";
 interface IState {
    currMove: Moves | null;
    rotateGroup: number[];
-   cube: ThreeByThree;
-   sideToMove: THREE.Object3D;
+   mainGroup: number[];
    currRotate: number;
 }
 
@@ -15,8 +14,7 @@ const init = (): IState => {
    return {
       currMove: null,
       rotateGroup: [],
-      cube: new ThreeByThree(),
-      sideToMove: new THREE.Object3D(),
+      mainGroup: [],
       currRotate: 0,
    };
 };
@@ -25,16 +23,18 @@ const cube = createSlice({
    name: "cube",
    initialState: init(),
    reducers: {
-      setCurrMove: (state, action) => {
+      setCurrMove: (state, action: PayloadAction<Moves | null>) => {
          state.currMove = action.payload;
       },
 
       makeRotateGroup: (state, action: PayloadAction<Moves>) => {
-         const { cube } = state;
+         //  const { cube } = state;
          const face = action.payload;
          state.rotateGroup = [];
-         const rotateGroup: any = [];
-         for (const [key] of Object.entries(cube.stateMapping)) {
+         state.mainGroup = [];
+         const rotateGroup: number[] = [];
+         const mainGroup: number[] = [];
+         for (let key = 0; key < 27; key++) {
             const index = Number(key);
             if (
                index >= 0 &&
@@ -51,7 +51,7 @@ const cube = createSlice({
                rotateGroup.push(index);
                //    sideToMove.add(refs.current[index]);
             } else if (
-               ((index >= 0 && index < 4) ||
+               ((index >= 0 && index < 3) ||
                   (index >= 9 && index < 12) ||
                   (index >= 18 && index < 21)) &&
                (face === Moves.D || face === Moves.Di)
@@ -93,28 +93,34 @@ const cube = createSlice({
                (face === Moves.L || face === Moves.Li)
             ) {
                rotateGroup.push(index);
-               //    sideToMove.add(refs.current[index]);
+            } else {
+               mainGroup.push(index);
             }
          }
          state.rotateGroup = rotateGroup;
-
-         //  scene.add(sideToMove);
+         state.mainGroup = mainGroup;
       },
       disolveRotateGroup: (state): void => {
-         state.rotateGroup = [];
          state.currRotate = 0;
          state.currMove = null;
-         state.sideToMove = new THREE.Object3D();
       },
       addToRotateGroup(state, action: PayloadAction<number>) {
          state.currRotate += action.payload;
          return state;
       },
+      resetCurrRotate(state): void {
+         state.currRotate = 0;
+      },
    },
 });
 
-export const { setCurrMove, makeRotateGroup, disolveRotateGroup, addToRotateGroup } =
-   cube.actions;
+export const {
+   setCurrMove,
+   makeRotateGroup,
+   disolveRotateGroup,
+   addToRotateGroup,
+   resetCurrRotate,
+} = cube.actions;
 
 export default cube.reducer;
 

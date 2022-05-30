@@ -1,6 +1,6 @@
 import { FC, useState } from "react";
 
-import { OrbitControls } from "@react-three/drei";
+import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
 import { Canvas as FiberCanvas } from "@react-three/fiber";
 import RubiksCube from "./rubikscube";
 import { ThreeByThree } from "@lib/cubes/ThreeByThree";
@@ -39,6 +39,7 @@ const Canvas: FC = () => {
                   <directionalLight position={[-5, 5, 5]} intensity={0.8} />
 
                   <RubiksCube cube={cube} />
+                  <PerspectiveCamera makeDefault position={[5,5,5]}/>
                </Provider>
             </FiberCanvas>
          )}

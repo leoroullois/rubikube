@@ -18,3 +18,4 @@ export enum Moves {
    Di = "D'",
    D2 = "D2",
 }
+
