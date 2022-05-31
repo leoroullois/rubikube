@@ -961,28 +961,8 @@ export class ThreeByThree extends Cube {
 
       this.cubeArray = newCube;
    }
-
+   
    public override rotateZ(): void {
-      const newCube = [...this.cubeArray];
-      newCube[0] = this.cubeArray[3];
-      newCube[3] = this.cubeArray[5];
-      newCube[5] = this.cubeArray[1];
-      newCube[1] = this.cubeArray[0];
-
-      newCube[0] = this.rotationFacePrime(newCube[0]);
-      newCube[1] = this.rotationFacePrime(newCube[1]);
-      newCube[2] = this.rotationFace(this.rotationFace(newCube[2]));
-      newCube[3] = this.rotationFacePrime(newCube[3]);
-      newCube[4] = this.rotationFace(this.rotationFace(newCube[4]));
-      newCube[5] = this.rotationFacePrime(newCube[5]);
-
-      newCube[2] = this.rotationFace(newCube[2]);
-      newCube[4] = this.rotationFacePrime(newCube[4]);
-
-      this.cubeArray = newCube;
-   }
-
-   public override rotateZi(): void {
       const newCube = [...this.cubeArray];
       newCube[0] = this.cubeArray[1];
       newCube[1] = this.cubeArray[5];
@@ -998,6 +978,26 @@ export class ThreeByThree extends Cube {
 
       newCube[2] = this.rotationFacePrime(newCube[2]);
       newCube[4] = this.rotationFace(newCube[4]);
+
+      this.cubeArray = newCube;
+   }
+
+   public override rotateZi(): void {
+      const newCube = [...this.cubeArray];
+      newCube[0] = this.cubeArray[3];
+      newCube[3] = this.cubeArray[5];
+      newCube[5] = this.cubeArray[1];
+      newCube[1] = this.cubeArray[0];
+
+      newCube[0] = this.rotationFacePrime(newCube[0]);
+      newCube[1] = this.rotationFacePrime(newCube[1]);
+      newCube[2] = this.rotationFace(this.rotationFace(newCube[2]));
+      newCube[3] = this.rotationFacePrime(newCube[3]);
+      newCube[4] = this.rotationFace(this.rotationFace(newCube[4]));
+      newCube[5] = this.rotationFacePrime(newCube[5]);
+
+      newCube[2] = this.rotationFace(newCube[2]);
+      newCube[4] = this.rotationFacePrime(newCube[4]);
 
       this.cubeArray = newCube;
    }

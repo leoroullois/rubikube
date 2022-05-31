@@ -4,8 +4,6 @@ import { ThreeByThree } from "./ThreeByThree";
 import { CubeArray } from "./types";
 
 class Genetic {
-   private _cube: ThreeByThree;
-
    private static PERMUTATIONS = [
       // permutes two edges: U face, bottom edge and right edge
       "F' L' B' R' U' R U' B L F R U R' U",
@@ -35,9 +33,14 @@ class Genetic {
       "L' U2 L R' F2 R",
       // permutes three edges: F face top, B face top, B face bottom
       "R' U2 R L' B2 L",
-      // H permutation: U Face, swaps the edges horizontally and vertically
-      "M2 U M2 U2 M2 U M2",
+      // TODO: H permutation: U Face, swaps the edges horizontally and vertically
+      // "M2 U M2 U2 M2 U M2",
    ];
+   // population_size = 500;
+   // elitism_num = 50;
+   // max_generations = 300;
+   // max_resets = 10;
+   private _cube: ThreeByThree;
 
    constructor(scramble: string) {
       const myScramble = new Scramble(scramble);
@@ -55,7 +58,7 @@ class Genetic {
       this._cube = v;
    }
 
-   public getScore() {
+   private getScore() {
       const cube = this.cube;
       const { cubeArray } = cube;
       let score = 0;
@@ -71,6 +74,8 @@ class Genetic {
       }
       return (score / maxScore) * 100;
    }
+
+   public solve(): void {}
 }
 
 export default Genetic;
