@@ -18,7 +18,7 @@ const NavBar = () => {
                </Link>
                <MainLinks />
                <div className='flex items-center gap-x-5'>
-                  <SignUp href='/register'>Sign Up</SignUp>
+                  <SignUp href='/login'>Login</SignUp>
                   <ColorModeIcon />
                </div>
             </>
