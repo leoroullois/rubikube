@@ -43,7 +43,7 @@ const CubePattern: FC<IProps> = ({ cubeArray }) => {
                const div = (
                   <div
                      key={j}
-                     className={`flex justify-center items-center h-8 w-8 border border-gray-900 ${mapColor(
+                     className={`flex justify-center items-center h-8 w-8 text-slate-900 border border-gray-900 ${mapColor(
                         face[j]
                      )}`}
                   >{j}</div>

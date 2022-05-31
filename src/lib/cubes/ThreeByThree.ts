@@ -911,6 +911,9 @@ export class ThreeByThree extends Cube {
       newCube[5] = this.cubeArray[4];
       newCube[4] = this.cubeArray[0];
 
+      newCube[4] = this.rotationFace(this.rotationFace(newCube[4]));
+      newCube[5] = this.rotationFace(this.rotationFace(newCube[5]));
+
       newCube[3] = this.rotationFace(newCube[3]);
       newCube[1] = this.rotationFacePrime(newCube[1]);
 
@@ -923,6 +926,9 @@ export class ThreeByThree extends Cube {
       newCube[4] = this.cubeArray[5];
       newCube[5] = this.cubeArray[2];
       newCube[2] = this.cubeArray[0];
+
+      newCube[0] = this.rotationFace(this.rotationFace(newCube[0]));
+      newCube[4] = this.rotationFace(this.rotationFace(newCube[4]));
 
       newCube[3] = this.rotationFacePrime(newCube[3]);
       newCube[1] = this.rotationFace(newCube[1]);
@@ -963,6 +969,13 @@ export class ThreeByThree extends Cube {
       newCube[5] = this.cubeArray[1];
       newCube[1] = this.cubeArray[0];
 
+      newCube[0] = this.rotationFacePrime(newCube[0]);
+      newCube[1] = this.rotationFacePrime(newCube[1]);
+      newCube[2] = this.rotationFace(this.rotationFace(newCube[2]));
+      newCube[3] = this.rotationFacePrime(newCube[3]);
+      newCube[4] = this.rotationFace(this.rotationFace(newCube[4]));
+      newCube[5] = this.rotationFacePrime(newCube[5]);
+
       newCube[2] = this.rotationFace(newCube[2]);
       newCube[4] = this.rotationFacePrime(newCube[4]);
 
@@ -975,6 +988,13 @@ export class ThreeByThree extends Cube {
       newCube[1] = this.cubeArray[5];
       newCube[5] = this.cubeArray[3];
       newCube[3] = this.cubeArray[0];
+
+      newCube[0] = this.rotationFace(newCube[0]);
+      newCube[1] = this.rotationFace(newCube[1]);
+      newCube[2] = this.rotationFace(this.rotationFace(newCube[2]));
+      newCube[3] = this.rotationFace(newCube[3]);
+      newCube[4] = this.rotationFace(this.rotationFace(newCube[4]));
+      newCube[5] = this.rotationFace(newCube[5]);
 
       newCube[2] = this.rotationFacePrime(newCube[2]);
       newCube[4] = this.rotationFace(newCube[4]);
