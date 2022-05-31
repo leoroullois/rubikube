@@ -649,7 +649,7 @@ export class ThreeByThree extends Cube {
          currentCube[5].splice(i * 3, 1, greenFace[i]);
       }
 
-      currentCube[1] = this.rotationFacePrime(currentCube[1]);
+      currentCube[1] = this.rotationFace(currentCube[1]);
 
       this.cubeArray = currentCube;
    }
@@ -667,7 +667,7 @@ export class ThreeByThree extends Cube {
          currentCube[5].splice(i * 3, 1, blueFace[2 - i]);
       }
 
-      currentCube[1] = this.rotationFace(currentCube[1]);
+      currentCube[1] = this.rotationFacePrime(currentCube[1]);
 
       this.cubeArray = currentCube;
    }

@@ -8,7 +8,7 @@ import Scramble from "@lib/cubes/Scramble";
 import { ThreeByThree } from "@lib/cubes/ThreeByThree";
 import { selectTimer } from "@store/selectors";
 import { setCubeArray } from "@store/slices/timer";
-import { Rotations } from "@lib/cubes/Moves";
+import { Moves, Rotations } from "@lib/cubes/Moves";
 import { ColorMapping } from "@lib/cubes/types";
 
 const Timer = () => {
@@ -28,7 +28,15 @@ const Timer = () => {
       const cube = new ThreeByThree(cubeArray);
       cube.move(rotation);
       dispatch(setCubeArray(cube.cubeArray));
-      setScramble(" " + rotation);
+      setScramble((scramble) => scramble + rotation +" ");
+   };
+
+   const handleMove = (move: string) => {
+      const cube = new ThreeByThree();
+      console.log("🚨 [MOVE]", move);
+      cube.move(scramble + move);
+      dispatch(setCubeArray(cube.cubeArray));
+      setScramble((scramble) => scramble + move + " ");
    };
 
    const handleReset = () => {
@@ -85,19 +93,36 @@ const Timer = () => {
                >
                   Reset
                </button>
-               <>
-                  {Object.values(Rotations).map((rotation, i) => {
-                     return (
-                        <button
-                           onClick={() => handleRotate(rotation)}
-                           key={i}
-                           className='flex justify-center p-2 w-32 rounded text-gray-900 bg-indigo-400 hover:bg-indigo-500'
-                        >
-                           Rotate {rotation}
-                        </button>
-                     );
-                  })}
-               </>
+               <div className='flex gap-x-5'>
+                  <section className='flex flex-col gap-y-2'>
+                     {Object.values(Rotations).map((rotation, i) => {
+                        return (
+                           <button
+                              onClick={() => handleRotate(rotation)}
+                              key={i}
+                              className='flex justify-center p-2 w-32 rounded text-gray-900 bg-indigo-400 hover:bg-indigo-500'
+                           >
+                              Rotate {rotation}
+                           </button>
+                        );
+                     })}
+                  </section>
+                  <section className='flex flex-row w-full flex-wrap gap-x-2'>
+                     {Object.values(Moves).map((move, i) => {
+                        return (
+                           <button
+                              onClick={() =>
+                                 handleMove(move.replace(/i/g, "'"))
+                              }
+                              key={i}
+                              className='flex justify-center p-2 w-32 h-10 rounded text-gray-900 bg-indigo-400 hover:bg-indigo-500'
+                           >
+                              Rotate {move}
+                           </button>
+                        );
+                     })}
+                  </section>
+               </div>
             </Wrapper>
          </main>
       </>
