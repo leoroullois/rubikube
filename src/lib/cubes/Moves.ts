@@ -19,3 +19,21 @@ export enum Moves {
    D2 = "D2",
 }
 
+export enum Rotations {
+   x = "x",
+   xi = "x'",
+   x2 = "x2",
+   y = "y",
+   yi = "y'",
+   y2 = "y2",
+   z = "z",
+   zi = "z'",
+   z2 = "z2",
+}
+
+// export enum Orientations {
+//    z = "z",
+//    zi = "z'",
+//    z2 = "z2",
+// }
+

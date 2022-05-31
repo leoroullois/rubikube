@@ -17,8 +17,12 @@ class Scramble {
 
    public generateRandomScramble() {
       let move = "";
+      // const min = 20;
+      // const max = 30;
+      const min = 5;
+      const max = 10;
       const nb = Math.floor(
-         Math.random() * (Math.floor(30) - Math.ceil(20) + 1) + Math.ceil(20)
+         Math.random() * (Math.floor(max) - Math.ceil(min) + 1) + Math.ceil(min)
       );
       for (let i = 0; i < nb; i++) {
          const movesArray = Object.keys(Moves);

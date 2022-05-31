@@ -1,12 +1,15 @@
+import Head from "next/head";
+import { MouseEventHandler, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
 import CubePattern from "@components/cube-pattern";
 import Wrapper from "@components/wrapper";
 import Scramble from "@lib/cubes/Scramble";
 import { ThreeByThree } from "@lib/cubes/ThreeByThree";
-import { selectCube, selectTimer } from "@store/selectors";
+import { selectTimer } from "@store/selectors";
 import { setCubeArray } from "@store/slices/timer";
-import Head from "next/head";
-import { MouseEventHandler, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { Rotations } from "@lib/cubes/Moves";
+import { ColorMapping } from "@lib/cubes/types";
 
 const Timer = () => {
    const dispatch = useDispatch();
@@ -20,6 +23,44 @@ const Timer = () => {
       cube.move(scramble.scramble);
       dispatch(setCubeArray(cube.cubeArray));
    };
+
+   const handleRotate = (rotation: Rotations) => {
+      const cube = new ThreeByThree(cubeArray);
+      cube.move(rotation);
+      dispatch(setCubeArray(cube.cubeArray));
+      setScramble(" " + rotation);
+   };
+
+   const handleReset = () => {
+      const cube = new ThreeByThree();
+      dispatch(setCubeArray(cube.cubeArray));
+      setScramble("");
+   };
+
+   const mapColor = (color: ColorMapping): string => {
+      switch (color) {
+         case ColorMapping.White:
+            return "White";
+         case ColorMapping.Orange:
+            return "Orange";
+         case ColorMapping.Yellow:
+            return "Yellow";
+         case ColorMapping.Blue:
+            return "Blue";
+         case ColorMapping.Green:
+            return "Green";
+         case ColorMapping.Red:
+            return "Red";
+         default:
+            return "";
+      }
+   };
+
+   useEffect(() => {
+      console.table(
+         cubeArray.map((face) => face.map((color) => mapColor(color)))
+      );
+   }, [cubeArray]);
    return (
       <>
          <Head>
@@ -29,13 +70,34 @@ const Timer = () => {
             <Wrapper className='flex flex-col gap-y-5'>
                <h1 className='text-3xl text-center my-5 font-bold'>Timer</h1>
                <CubePattern cubeArray={cubeArray} />
-               <p>Scramble : {scramble.replace(/i/g, "'")}</p>
+               <>
+                  {scramble && <p>Scramble : {scramble.replace(/i/g, "'")}</p>}
+               </>
                <button
                   className='flex justify-center p-2 w-32 rounded text-gray-900 bg-green-400 hover:bg-green-500'
                   onClick={handleScramble}
                >
-                  Scramble cube
+                  Scramble
                </button>
+               <button
+                  onClick={handleReset}
+                  className='flex justify-center p-2 w-32 rounded text-gray-900 bg-red-400 hover:bg-red-500'
+               >
+                  Reset
+               </button>
+               <>
+                  {Object.values(Rotations).map((rotation, i) => {
+                     return (
+                        <button
+                           onClick={() => handleRotate(rotation)}
+                           key={i}
+                           className='flex justify-center p-2 w-32 rounded text-gray-900 bg-indigo-400 hover:bg-indigo-500'
+                        >
+                           Rotate {rotation}
+                        </button>
+                     );
+                  })}
+               </>
             </Wrapper>
          </main>
       </>

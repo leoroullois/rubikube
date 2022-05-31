@@ -6,7 +6,7 @@ import {
    StateMapping,
 } from "@lib/cubes/types";
 
-import { Moves } from "./Moves";
+import { Moves, Rotations } from "./Moves";
 
 abstract class Cube {
    public abstract rotationFace(face: ColorMapping[]): void;
@@ -36,6 +36,15 @@ abstract class Cube {
    public abstract moveDown(): void;
 
    public abstract moveDownPrime(): void;
+
+   public abstract rotateX(): void;
+   public abstract rotateXi(): void;
+
+   public abstract rotateY(): void;
+   public abstract rotateYi(): void;
+
+   public abstract rotateZ(): void;
+   public abstract rotateZi(): void;
 
    public move(scramble: string) {
       const currentScramble = scramble.split(" ");
@@ -106,6 +115,26 @@ abstract class Cube {
                break;
             case Moves.Di:
                this.moveDownPrime();
+               break;
+            case Rotations.x:
+               this.rotateX();
+               break;
+            case Rotations.xi:
+               this.rotateXi();
+               break;
+            case Rotations.y:
+               this.rotateY();
+               break;
+            case Rotations.yi:
+               this.rotateYi();
+               break;
+            case Rotations.z:
+               this.rotateZ();
+               break;
+            case Rotations.zi:
+               this.rotateZi();
+               break;
+            default:
                break;
          }
       }

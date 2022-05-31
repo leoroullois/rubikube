@@ -17,7 +17,7 @@ export class ThreeByThree extends Cube {
    // ? vraies couleurs (0x)
    private _solvedCubeArray: CubeArray;
 
-   public constructor(cubeArray?: Color[][]) {
+   public constructor(cubeArray?: CubeArray) {
       const { White, Orange, Yellow, Blue, Green, Red } = ColorMapping;
       super();
       this._stateMapping = {
@@ -649,7 +649,7 @@ export class ThreeByThree extends Cube {
          currentCube[5].splice(i * 3, 1, greenFace[i]);
       }
 
-      currentCube[1] = this.rotationFace(currentCube[1]);
+      currentCube[1] = this.rotationFacePrime(currentCube[1]);
 
       this.cubeArray = currentCube;
    }
@@ -667,7 +667,7 @@ export class ThreeByThree extends Cube {
          currentCube[5].splice(i * 3, 1, blueFace[2 - i]);
       }
 
-      currentCube[1] = this.rotationFacePrime(currentCube[1]);
+      currentCube[1] = this.rotationFace(currentCube[1]);
 
       this.cubeArray = currentCube;
    }
@@ -902,6 +902,84 @@ export class ThreeByThree extends Cube {
       currentCube[5] = this.rotationFacePrime(currentCube[5]);
 
       this.cubeArray = currentCube;
+   }
+
+   public override rotateX(): void {
+      const newCube = [...this.cubeArray];
+      newCube[0] = this.cubeArray[2];
+      newCube[2] = this.cubeArray[5];
+      newCube[5] = this.cubeArray[4];
+      newCube[4] = this.cubeArray[0];
+
+      newCube[3] = this.rotationFace(newCube[3]);
+      newCube[1] = this.rotationFacePrime(newCube[1]);
+
+      this.cubeArray = newCube;
+   }
+
+   public override rotateXi(): void {
+      const newCube = [...this.cubeArray];
+      newCube[0] = this.cubeArray[4];
+      newCube[4] = this.cubeArray[5];
+      newCube[5] = this.cubeArray[2];
+      newCube[2] = this.cubeArray[0];
+
+      newCube[3] = this.rotationFacePrime(newCube[3]);
+      newCube[1] = this.rotationFace(newCube[1]);
+
+      this.cubeArray = newCube;
+   }
+
+   public override rotateY(): void {
+      const newCube = [...this.cubeArray];
+      newCube[2] = this.cubeArray[3];
+      newCube[3] = this.cubeArray[4];
+      newCube[4] = this.cubeArray[1];
+      newCube[1] = this.cubeArray[2];
+
+      newCube[0] = this.rotationFace(newCube[0]);
+      newCube[5] = this.rotationFacePrime(newCube[5]);
+
+      this.cubeArray = newCube;
+   }
+
+   public override rotateYi(): void {
+      const newCube = [...this.cubeArray];
+      newCube[2] = this.cubeArray[1];
+      newCube[1] = this.cubeArray[4];
+      newCube[4] = this.cubeArray[3];
+      newCube[3] = this.cubeArray[2];
+
+      newCube[0] = this.rotationFacePrime(newCube[0]);
+      newCube[5] = this.rotationFace(newCube[5]);
+
+      this.cubeArray = newCube;
+   }
+
+   public override rotateZ(): void {
+      const newCube = [...this.cubeArray];
+      newCube[0] = this.cubeArray[3];
+      newCube[3] = this.cubeArray[5];
+      newCube[5] = this.cubeArray[1];
+      newCube[1] = this.cubeArray[0];
+
+      newCube[2] = this.rotationFace(newCube[2]);
+      newCube[4] = this.rotationFacePrime(newCube[4]);
+
+      this.cubeArray = newCube;
+   }
+
+   public override rotateZi(): void {
+      const newCube = [...this.cubeArray];
+      newCube[0] = this.cubeArray[1];
+      newCube[1] = this.cubeArray[5];
+      newCube[5] = this.cubeArray[3];
+      newCube[3] = this.cubeArray[0];
+
+      newCube[2] = this.rotationFacePrime(newCube[2]);
+      newCube[4] = this.rotationFace(newCube[4]);
+
+      this.cubeArray = newCube;
    }
 }
 

@@ -18,7 +18,6 @@ const CubePattern: FC<IProps> = ({ cubeArray }) => {
       Black: "#2d3436",
    });
    const mapColor = (color: ColorMapping): string => {
-      console.log("color :", color);
       switch (color) {
          case ColorMapping.White:
             return "bg-gray-200";
@@ -44,10 +43,10 @@ const CubePattern: FC<IProps> = ({ cubeArray }) => {
                const div = (
                   <div
                      key={j}
-                     className={`flex h-8 w-8 border border-gray-900 ${mapColor(
+                     className={`flex justify-center items-center h-8 w-8 border border-gray-900 ${mapColor(
                         face[j]
                      )}`}
-                  ></div>
+                  >{j}</div>
                );
                squares = [...squares, div];
             }
