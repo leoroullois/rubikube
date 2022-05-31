@@ -17,18 +17,20 @@ const Timer = () => {
    const [scramble, setScramble] = useState("");
    const handleScramble: MouseEventHandler = (e) => {
       const cube = new ThreeByThree();
-      const scramble = new Scramble();
-      setScramble(scramble.scramble);
 
-      cube.move(scramble.scramble);
+      const myScramble = new Scramble();
+
+      cube.move(myScramble.scramble);
       dispatch(setCubeArray(cube.cubeArray));
+      
+      setScramble(myScramble.scramble);
    };
 
    const handleRotate = (rotation: Rotations) => {
       const cube = new ThreeByThree(cubeArray);
       cube.move(rotation);
       dispatch(setCubeArray(cube.cubeArray));
-      setScramble((scramble) => scramble + rotation +" ");
+      setScramble((scramble) => scramble + rotation + " ");
    };
 
    const handleMove = (move: string) => {

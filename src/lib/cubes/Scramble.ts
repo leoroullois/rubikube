@@ -17,10 +17,8 @@ class Scramble {
 
    public generateRandomScramble() {
       let move = "";
-      // const min = 20;
-      // const max = 30;
-      const min = 5;
-      const max = 10;
+      const min = 20;
+      const max = 30;
       const nb = Math.floor(
          Math.random() * (Math.floor(max) - Math.ceil(min) + 1) + Math.ceil(min)
       );

@@ -47,8 +47,8 @@ abstract class Cube {
    public abstract rotateZi(): void;
 
    public move(scramble: string) {
-      const currentScramble = scramble.split(" ");
-
+      const currentScramble = scramble.trim().replace(/i/g, "'").split(" ");
+      console.log(currentScramble);
       for (const element of currentScramble) {
          switch (element) {
             case Moves.R:
