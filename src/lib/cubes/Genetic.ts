@@ -1,10 +1,8 @@
-import Cube from "./Cube";
-import Scramble from "./Scramble";
-import { ThreeByThree } from "./ThreeByThree";
+import { ThreeByThree } from "@lib/cubes/ThreeByThree";
 import { CubeArray } from "./types";
 
 class Genetic {
-   private static PERMUTATIONS = [
+   private static PERMUTATIONS: string[] = [
       // permutes two edges: U face, bottom edge and right edge
       "F' L' B' R' U' R U' B L F R U R' U",
       // permutes two edges: U face, bottom edge and left edge
@@ -33,49 +31,260 @@ class Genetic {
       "L' U2 L R' F2 R",
       // permutes three edges: F face top, B face top, B face bottom
       "R' U2 R L' B2 L",
-      // TODO: H permutation: U Face, swaps the edges horizontally and vertically
-      // "M2 U M2 U2 M2 U M2",
+      // H permutation: U Face, swaps the edges horizontally and vertically
+      "M2 U M2 U2 M2 U M2",
    ];
-   // population_size = 500;
-   // elitism_num = 50;
-   // max_generations = 300;
-   // max_resets = 10;
-   private _cube: ThreeByThree;
+   private static FULL_ROTATIONS: string[] = ["x", "x'", "x2", "y", "y'", "y2"];
+   private static ORIENTATIONS: string[] = ["z", "z'", "z2"];
+
+   private static POPULATION_SIZE: number = 1000;
+   private static ELITISM_NUM: number = 100;
+   private static MAX_GENERATIONS = 2;
+   private static MAX_RESETS = 10;
+
+   private _cubes: ThreeByThree[];
+   private _initialGeneration: ThreeByThree[];
+   private _initialCubeArray: CubeArray;
+   private _solved: boolean = false;
+   private _scramble: string;
 
    constructor(scramble: string) {
-      const myScramble = new Scramble(scramble);
+      const myScramble = scramble.trim().replace(/i/g, "'");
       const cube = new ThreeByThree();
-      cube.move(myScramble.scramble);
+      cube.move(myScramble);
 
-      this._cube = cube;
+      const cubes = this.sortByScore(
+         new Array(Genetic.POPULATION_SIZE).fill(null).map(() => {
+            const newCube = new ThreeByThree();
+
+            newCube.move(myScramble);
+            newCube.move(cube.getRandomMove());
+            newCube.move(cube.getRandomMove());
+
+            return newCube;
+         })
+      );
+
+      this._scramble = myScramble;
+
+      this._cubes = cubes;
+      this._initialGeneration = cubes;
+
+      this._initialCubeArray = cube.cubeArray;
+
+      this._solved = false;
    }
 
-   public get cube(): ThreeByThree {
-      return this._cube;
+   public get solved(): boolean {
+      return this._solved;
    }
 
-   public set cube(v: ThreeByThree) {
-      this._cube = v;
+   public set solved(v: boolean) {
+      this._solved = v;
    }
 
-   private getScore() {
-      const cube = this.cube;
-      const { cubeArray } = cube;
-      let score = 0;
+   public get initialGeneration(): ThreeByThree[] {
+      return this._initialGeneration;
+   }
+
+   public get initialCubeArray(): CubeArray {
+      return this._initialCubeArray;
+   }
+
+   public get cubes(): ThreeByThree[] {
+      return this._cubes;
+   }
+
+   public set cubes(v: ThreeByThree[]) {
+      this._cubes = v;
+   }
+
+   private resetCubeGeneration() {
+      this.cubes = this.initialGeneration;
+      this.solved = false;
+   }
+
+   private getScore(cubeArray: CubeArray) {
+      let misplacedStickers = 0;
       const maxScore = 54;
 
       for (let face = 0; face < 6; face++) {
          const center = cubeArray[face][4];
          for (let piece = 0; piece < 9; piece++) {
             if (center === cubeArray[face][piece]) {
-               score += 1;
+               misplacedStickers += 1;
             }
          }
       }
-      return (score / maxScore) * 100;
+      return misplacedStickers;
    }
 
-   public solve(): void {}
+   private sortByScore(cubes: ThreeByThree[]): ThreeByThree[] {
+      return cubes.sort((cubeA, cubeB) => {
+         return this.getScore(cubeA.cubeArray) - this.getScore(cubeB.cubeArray);
+      });
+   }
+
+   private getRandomPermutation(): string {
+      const random = Math.floor(Math.random() * Genetic.PERMUTATIONS.length);
+      return Genetic.PERMUTATIONS[random];
+   }
+   private getRandomOrientation(): string {
+      const random = Math.floor(Math.random() * Genetic.ORIENTATIONS.length);
+      return Genetic.ORIENTATIONS[random];
+   }
+   private getRandomFullRotation(): string {
+      const random = Math.floor(Math.random() * Genetic.FULL_ROTATIONS.length);
+      return Genetic.FULL_ROTATIONS[random];
+   }
+
+   private solveGeneration(): void {
+      let g = 0;
+      while (g < Genetic.MAX_GENERATIONS && !this._solved) {
+         let cubes = this.sortByScore(this._cubes);
+         for (let i = 0; i < Genetic.POPULATION_SIZE; i++) {
+            if (this.getScore(cubes[i].cubeArray) === 0) {
+               console.log("🚀 Cube solved");
+               console.log("[SOLUTION] ", cubes[i].geneticMoves);
+               console.table(
+                  cubes[i].cubeArray.map((face) =>
+                     face.map((color) => cubes[i].mapColor(color))
+                  )
+               );
+               this.solved = true;
+
+               return;
+            }
+            if (i > Genetic.ELITISM_NUM) {
+               const random = Math.floor(Math.random() * Genetic.ELITISM_NUM);
+
+               // ? copy a random top performer cube
+               cubes[i] = cubes[random];
+               const cube = cubes[i];
+
+               const evolutionType = Math.floor(Math.random() * 6);
+
+               let permutation1 = "";
+               let permutation2 = "";
+               let fullRotation = "";
+               let orientation = "";
+
+               switch (evolutionType) {
+                  case 0:
+                     permutation1 = this.getRandomPermutation();
+                     cube.move(permutation1);
+                     cube.geneticMoves = [...cube.geneticMoves, permutation1];
+                     break;
+                  case 1:
+                     permutation1 = this.getRandomPermutation();
+                     permutation2 = this.getRandomPermutation();
+
+                     cube.move(permutation1);
+                     cube.move(permutation2);
+
+                     cube.geneticMoves = [
+                        ...cube.geneticMoves,
+                        permutation1,
+                        permutation2,
+                     ];
+                     break;
+                  case 2:
+                     fullRotation = this.getRandomFullRotation();
+                     permutation1 = this.getRandomPermutation();
+
+                     cube.move(fullRotation);
+                     cube.move(permutation1);
+
+                     cube.geneticMoves = [
+                        ...cube.geneticMoves,
+                        fullRotation,
+                        permutation1,
+                     ];
+                     break;
+                  case 3:
+                     orientation = this.getRandomOrientation();
+                     permutation1 = this.getRandomPermutation();
+
+                     cube.move(orientation);
+                     cube.move(permutation1);
+
+                     cube.geneticMoves = [
+                        ...cube.geneticMoves,
+                        orientation,
+                        permutation1,
+                     ];
+                     break;
+                  case 4:
+                     fullRotation = this.getRandomFullRotation();
+                     orientation = this.getRandomOrientation();
+                     permutation1 = this.getRandomPermutation();
+
+                     cube.move(fullRotation);
+                     cube.move(orientation);
+                     cube.move(permutation1);
+
+                     cube.geneticMoves = [
+                        ...cube.geneticMoves,
+                        fullRotation,
+                        orientation,
+                        permutation1,
+                     ];
+                     break;
+                  case 5:
+                     orientation = this.getRandomOrientation();
+                     fullRotation = this.getRandomFullRotation();
+                     permutation1 = this.getRandomPermutation();
+
+                     cube.move(orientation);
+                     cube.move(fullRotation);
+                     cube.move(permutation1);
+                     cube.geneticMoves = [
+                        ...cube.geneticMoves,
+                        orientation,
+                        fullRotation,
+                        permutation1,
+                     ];
+                     break;
+                  default:
+                     break;
+               }
+
+               cubes[i] = cube;
+            }
+         }
+         cubes = this.sortByScore(cubes);
+
+         const bestScore = this.getScore(cubes[0].cubeArray);
+
+         if (bestScore < 8) {
+            console.log(
+               "CURRENT SCORES : ",
+               cubes.map((cube) => this.getScore(cube.cubeArray))
+            );
+         }
+         g++;
+      }
+   }
+   public solve(): void {
+      console.log("🚀 Starting solving... ", this._scramble);
+      console.log(
+         "INITIAL SCORES : ",
+         this.cubes.map((cube) => this.getScore(cube.cubeArray))
+      );
+      console.table(
+         this.initialCubeArray.map((face) =>
+            face.map((color) => this._cubes[0].mapColor(color))
+         )
+      );
+      let r = 0;
+      while (r < Genetic.MAX_RESETS && !this._solved) {
+         this.resetCubeGeneration();
+         this.solveGeneration();
+         r++;
+         console.log("🚀 Resetting generation... ", r);
+      }
+      console.log("🚀 Solving failed");
+   }
 }
 
 export default Genetic;

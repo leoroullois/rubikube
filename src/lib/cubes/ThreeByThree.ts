@@ -18,8 +18,8 @@ export class ThreeByThree extends Cube {
    private _solvedCubeArray: CubeArray;
 
    public constructor(cubeArray?: CubeArray) {
-      const { White, Orange, Yellow, Blue, Green, Red } = ColorMapping;
       super();
+      const { White, Orange, Yellow, Blue, Green, Red } = ColorMapping;
       this._stateMapping = {
          0: {
             0: [2, 8],
@@ -961,7 +961,7 @@ export class ThreeByThree extends Cube {
 
       this.cubeArray = newCube;
    }
-   
+
    public override rotateZ(): void {
       const newCube = [...this.cubeArray];
       newCube[0] = this.cubeArray[1];
@@ -1000,6 +1000,44 @@ export class ThreeByThree extends Cube {
       newCube[4] = this.rotationFacePrime(newCube[4]);
 
       this.cubeArray = newCube;
+   }
+
+   private elementsToMoveMiddle(currentCube: ColorMapping[][]) {
+      const whiteFace = currentCube[0].filter(
+         (_element, i) => i === 1 || i === 4 || i === 7
+      );
+      const greenFace = currentCube[2].filter(
+         (_element, i) => i === 1 || i === 4 || i === 7
+      );
+      const blueFace = currentCube[4].filter(
+         (_element, i) => i === 1 || i === 4 || i === 7
+      );
+      const yellowFace = currentCube[5].filter(
+         (_element, i) => i === 1 || i === 4 || i === 7
+      );
+
+      return {
+         whiteFace,
+         greenFace,
+         blueFace,
+         yellowFace,
+      };
+   }
+
+   public override moveMiddle() {
+      const currentCube = [...this.cubeArray];
+
+      const { whiteFace, greenFace, blueFace, yellowFace } =
+         this.elementsToMoveMiddle(currentCube);
+
+      for (let i = 0; i < 3; i++) {
+         currentCube[0].splice(3 * i + 1, 1, greenFace[i]);
+         currentCube[2].splice(3 * i + 1, 1, yellowFace[i]);
+         currentCube[4].splice(3 * i + 1, 1, whiteFace[2-i]);
+         currentCube[5].splice(3 * i + 1, 1, blueFace[2-i]);
+      }
+
+      this.cubeArray = currentCube;
    }
 }
 

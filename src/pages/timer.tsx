@@ -10,6 +10,7 @@ import { selectTimer } from "@store/selectors";
 import { setCubeArray } from "@store/slices/timer";
 import { Moves, Rotations } from "@lib/cubes/Moves";
 import { ColorMapping } from "@lib/cubes/types";
+import Genetic from "@lib/cubes/Genetic";
 
 const Timer = () => {
    const dispatch = useDispatch();
@@ -22,7 +23,7 @@ const Timer = () => {
 
       cube.move(myScramble.scramble);
       dispatch(setCubeArray(cube.cubeArray));
-      
+
       setScramble(myScramble.scramble);
    };
 
@@ -47,6 +48,10 @@ const Timer = () => {
       setScramble("");
    };
 
+   const handleSolve = () => {
+      const genetic = new Genetic(scramble);
+      genetic.solve();
+   };
    const mapColor = (color: ColorMapping): string => {
       switch (color) {
          case ColorMapping.White:
@@ -70,6 +75,10 @@ const Timer = () => {
       console.table(
          cubeArray.map((face) => face.map((color) => mapColor(color)))
       );
+
+      const cube = new ThreeByThree();
+      cube.move("M");
+      console.log(cube.cubeArray);
    }, [cubeArray]);
    return (
       <>
@@ -88,6 +97,12 @@ const Timer = () => {
                   onClick={handleScramble}
                >
                   Scramble
+               </button>
+               <button
+                  className='flex justify-center p-2 w-32 rounded text-gray-900 bg-blue-400 hover:bg-blue-500'
+                  onClick={handleSolve}
+               >
+                  Solve
                </button>
                <button
                   onClick={handleReset}

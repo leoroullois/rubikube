@@ -17,6 +17,8 @@ export enum Moves {
    D = "D",
    Di = "D'",
    D2 = "D2",
+   M = "M",
+   M2 = "M2",
 }
 
 export enum Rotations {
