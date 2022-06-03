@@ -4,7 +4,9 @@ const { R, Ri, L, Li, F, Fi, B, Bi, U, Ui, D, Di } = Moves;
 class Scramble {
    private _scramble: string;
    constructor(pScramble?: string) {
-      this._scramble = pScramble ?? this.generateRandomScramble();
+      this._scramble =
+         pScramble?.trim().replace(/i/g, "'") ??
+         this.generateRandomScramble().trim().replace(/i/g, "'");
    }
 
    public get scramble(): string {
@@ -17,17 +19,24 @@ class Scramble {
 
    public generateRandomScramble() {
       let move = "";
-      // const min = 20;
-      // const max = 30;
-      const min = 5;
-      const max = 7;
+      const min = 20;
+      const max = 30;
       const nb = Math.floor(
          Math.random() * (Math.floor(max) - Math.ceil(min) + 1) + Math.ceil(min)
       );
+      let lastLetter = "";
+      const movesArray = Object.keys(Moves);
       for (let i = 0; i < nb; i++) {
-         const movesArray = Object.keys(Moves);
-         const a = Math.floor(Math.random() * movesArray.length);
+         let a = Math.floor(Math.random() * movesArray.length);
+         while (
+            movesArray[a][0] === lastLetter ||
+            movesArray[a] === Moves.M ||
+            movesArray[a] === Moves.M2
+         ) {
+            a = Math.floor(Math.random() * movesArray.length);
+         }
          move = move.concat(movesArray[a], " ");
+         lastLetter = movesArray[a][0];
       }
       return move;
    }

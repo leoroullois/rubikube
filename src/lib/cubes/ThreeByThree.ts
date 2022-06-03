@@ -10,12 +10,14 @@ import {
 
 import { solvedCubeArray, solvedHexRubik, stateMapping } from "./constants";
 import Cube from "./Cube";
+import Scramble from "./Scramble";
 
 export class ThreeByThree extends Cube {
    private _stateMapping: StateMapping;
    private _cubeArray: CubeArray;
-   private _solvedCube: CubeArray;
+   private _solvedCubeArray: CubeArray;
    private _solvedHexRubik: HexRubik;
+   private _scramble: string;
    public constructor(cubeArray?: CubeArray) {
       super();
       // ? Représentation des 26 pièces du cube
@@ -23,10 +25,36 @@ export class ThreeByThree extends Cube {
       // ? Si cubeArray n'est pas fourni, utiliser le cubeArray résolu
       this._cubeArray = cubeArray ?? solvedCubeArray;
       // ? Tjrs égale au cubeArray résolu
-      this._solvedCube = solvedCubeArray;
+      this._solvedCubeArray = solvedCubeArray;
       this._solvedHexRubik = solvedHexRubik;
+      this._scramble = "";
    }
 
+   public get scramble(): string {
+      return this._scramble;
+   }
+
+   public set scramble(v: string) {
+      this._scramble = v;
+   }
+
+   public resetCubeArray(): void {
+      this._cubeArray = [
+         Array(9).fill(Color.White),
+         Array(9).fill(Color.Orange),
+         Array(9).fill(Color.Green),
+         Array(9).fill(Color.Red),
+         Array(9).fill(Color.Blue),
+         Array(9).fill(Color.Yellow),
+      ];
+      this.scramble = "";
+   }
+   public randomlyScrambleCube(): void {
+      const scramble = new Scramble().scramble;
+      this.resetCubeArray();
+      this.move(scramble);
+      this.scramble = scramble;
+   }
    public getRubik = (): Rubik => {
       const rubik: any = this.solvedHexRubik;
       for (const [stateMappingKey, cube] of Object.entries(this.stateMapping)) {
@@ -93,7 +121,11 @@ export class ThreeByThree extends Cube {
    }
 
    public get solvedCubeArray(): CubeArray {
-      return this.solvedCubeArray;
+      return this._solvedCubeArray;
+   }
+
+   public set solvedCubeArray(v: CubeArray) {
+      this._solvedCubeArray = v;
    }
 
    public get stateMapping(): StateMapping {
@@ -102,13 +134,6 @@ export class ThreeByThree extends Cube {
 
    public set stateMapping(v: StateMapping) {
       this._stateMapping = v;
-   }
-   public get solvedCube(): CubeArray {
-      return this._solvedCube;
-   }
-
-   public set solvedCube(v: CubeArray) {
-      this.solvedCube = v;
    }
 
    public get cubeArray(): CubeArray {
