@@ -1,4 +1,4 @@
-import React, { FC, useRef, useState } from "react";
+import React, { FC, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import * as THREE from "three";
 
@@ -23,8 +23,8 @@ const RubiksCube: FC<IProps> = ({ cube }) => {
    const ref = useRef<any>();
    const scene = useThree((state) => state.scene);
 
-   const [state] = useState<any>(cube.cubeArrayToRubik(cube.cubeArray));
-   const refs = useRef<any>(new Array());
+   const [state] = useState<any>(cube.getHexRubik());
+   const refs = useRef<THREE.Mesh[]>(new Array(26).fill(null));
    const [sideToMove, setSideToMove] = useState(new THREE.Group());
    const [mainPieces, setMainPieces] = useState(new THREE.Group());
 
@@ -73,6 +73,15 @@ const RubiksCube: FC<IProps> = ({ cube }) => {
       animate();
    });
 
+   const updateRefs = (pRefs: React.MutableRefObject<any>) => {
+      const vRefs = [...refs.current];
+      vRefs[0].position.x = 5;
+      // console.log(refs.current[0]);
+      // console.log(vRefs[0]);
+   };
+   useEffect(() => {
+      updateRefs(refs);
+   });
    return (
       <group scale={0.75} ref={ref}>
          {cubePositions.map((position, i) => {
@@ -81,8 +90,8 @@ const RubiksCube: FC<IProps> = ({ cube }) => {
                   key={position.join("-")}
                   state={state[i]}
                   position={position}
-                  ref={(element) => {
-                     refs.current[i] = element;
+                  ref={(element: THREE.Mesh) => {
+                     refs.current[i] = element as THREE.Mesh;
                   }}
                />
             );

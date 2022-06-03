@@ -1,7 +1,7 @@
-import { FC, useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
+import { FC, useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 
-import { ColorMapping, CubeArray } from '@lib/cubes/types';
+import { Color, CubeArray } from "@lib/cubes/types";
 
 interface IProps {
    cubeArray: CubeArray;
@@ -17,19 +17,19 @@ const CubePattern: FC<IProps> = ({ cubeArray }) => {
       White: "#xecf0f1",
       Black: "#2d3436",
    });
-   const mapColor = (color: ColorMapping): string => {
+   const mapColor = (color: Color): string => {
       switch (color) {
-         case ColorMapping.White:
+         case Color.White:
             return "bg-gray-200";
-         case ColorMapping.Orange:
+         case Color.Orange:
             return "bg-orange-500";
-         case ColorMapping.Yellow:
+         case Color.Yellow:
             return "bg-yellow-500";
-         case ColorMapping.Blue:
+         case Color.Blue:
             return "bg-blue-500";
-         case ColorMapping.Green:
+         case Color.Green:
             return "bg-green-400";
-         case ColorMapping.Red:
+         case Color.Red:
             return "bg-red-500";
          default:
             return "bg-gray-200";
@@ -46,7 +46,9 @@ const CubePattern: FC<IProps> = ({ cubeArray }) => {
                      className={`flex justify-center items-center h-8 w-8 text-slate-900 border border-gray-900 ${mapColor(
                         face[j]
                      )}`}
-                  >{j}</div>
+                  >
+                     {j}
+                  </div>
                );
                squares = [...squares, div];
             }

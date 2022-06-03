@@ -1,4 +1,5 @@
 import { ThreeByThree } from "@lib/cubes/ThreeByThree";
+import Cube from "./Cube";
 import { CubeArray } from "./types";
 
 class Genetic {
@@ -37,10 +38,10 @@ class Genetic {
    private static FULL_ROTATIONS: string[] = ["x", "x'", "x2", "y", "y'", "y2"];
    private static ORIENTATIONS: string[] = ["z", "z'", "z2"];
 
-   private static POPULATION_SIZE: number = 1000;
-   private static ELITISM_NUM: number = 100;
-   private static MAX_GENERATIONS = 2;
-   private static MAX_RESETS = 10;
+   private static POPULATION_SIZE: number = 20;
+   private static ELITISM_NUM: number = 3;
+   private static MAX_GENERATIONS = 1;
+   private static MAX_RESETS = 1;
 
    private _cubes: ThreeByThree[];
    private _initialGeneration: ThreeByThree[];
@@ -142,15 +143,16 @@ class Genetic {
       let g = 0;
       while (g < Genetic.MAX_GENERATIONS && !this._solved) {
          let cubes = this.sortByScore(this._cubes);
+         console.log(
+            "AVANT : ",
+            cubes.map((cube) => Cube.getColorArray(cube.cubeArray))
+         );
+
          for (let i = 0; i < Genetic.POPULATION_SIZE; i++) {
             if (this.getScore(cubes[i].cubeArray) === 0) {
                console.log("🚀 Cube solved");
                console.log("[SOLUTION] ", cubes[i].geneticMoves);
-               console.table(
-                  cubes[i].cubeArray.map((face) =>
-                     face.map((color) => cubes[i].mapColor(color))
-                  )
-               );
+               console.table(Cube.getColorArray(cubes[i].cubeArray));
                this.solved = true;
 
                return;
@@ -252,6 +254,11 @@ class Genetic {
                cubes[i] = cube;
             }
          }
+         console.log(
+            "APRES : ",
+            cubes.map((c) => Cube.getColorArray(c.cubeArray))
+         );
+
          cubes = this.sortByScore(cubes);
 
          const bestScore = this.getScore(cubes[0].cubeArray);
@@ -271,11 +278,7 @@ class Genetic {
          "INITIAL SCORES : ",
          this.cubes.map((cube) => this.getScore(cube.cubeArray))
       );
-      console.table(
-         this.initialCubeArray.map((face) =>
-            face.map((color) => this._cubes[0].mapColor(color))
-         )
-      );
+      console.table(Cube.getColorArray(this.initialCubeArray));
       let r = 0;
       while (r < Genetic.MAX_RESETS && !this._solved) {
          this.resetCubeGeneration();

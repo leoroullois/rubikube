@@ -2,7 +2,7 @@ import Scramble from "@lib/cubes/Scramble";
 
 import {
    Color,
-   ColorMapping,
+   // HexMapping,
    CubeArray,
    Rubik,
    StateMapping,
@@ -24,8 +24,8 @@ abstract class Cube {
       return this._geneticMoves;
    }
 
-   public abstract rotationFace(face: ColorMapping[]): void;
-   public abstract rotationFacePrime(face: ColorMapping[]): void;
+   public abstract rotationFace(face: Color[]): void;
+   public abstract rotationFacePrime(face: Color[]): void;
 
    public abstract moveRight(): void;
    public abstract moveRightPrime(): void;
@@ -182,24 +182,30 @@ abstract class Cube {
       return moves[randomInt];
    }
 
-   public mapColor = (color: ColorMapping): string => {
+   public static mapColor = (color: Color): string => {
       switch (color) {
-         case ColorMapping.White:
+         case Color.White:
             return "White";
-         case ColorMapping.Orange:
+         case Color.Orange:
             return "Orange";
-         case ColorMapping.Yellow:
+         case Color.Yellow:
             return "Yellow";
-         case ColorMapping.Blue:
+         case Color.Blue:
             return "Blue";
-         case ColorMapping.Green:
+         case Color.Green:
             return "Green";
-         case ColorMapping.Red:
+         case Color.Red:
             return "Red";
          default:
             return "";
       }
    };
+
+   public static getColorArray(cubeArray: CubeArray): string[][] {
+      return cubeArray.map((face) => {
+         return face.map((color) => this.mapColor(color));
+      });
+   }
 }
 
 export default Cube;

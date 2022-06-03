@@ -1,14 +1,14 @@
 import { CubeArray } from "./../../lib/cubes/types";
 import { Moves } from "@lib/cubes/Moves";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ColorMapping } from "@lib/cubes/types";
+import { Color } from "@lib/cubes/types";
 interface IState {
    scramble: string;
    cubeArray: CubeArray;
 }
 
 const init = (): IState => {
-   const { White, Orange, Yellow, Blue, Green, Red } = ColorMapping;
+   const { White, Orange, Yellow, Blue, Green, Red } = Color;
    return {
       scramble: "",
       cubeArray: [

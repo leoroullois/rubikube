@@ -1,477 +1,95 @@
 import {
    Color,
-   ColorMapping,
    CubeArray,
+   HexColor,
+   HexRubik,
    Position,
    Rubik,
    StateMapping,
 } from "@lib/cubes/types";
+
+import { solvedCubeArray, solvedHexRubik, stateMapping } from "./constants";
 import Cube from "./Cube";
 
 export class ThreeByThree extends Cube {
    private _stateMapping: StateMapping;
-   // ? couleurs normales (0, 1 etc)
    private _cubeArray: CubeArray;
-   private _solvedCube: Rubik;
-
-   // ? vraies couleurs (0x)
-   private _solvedCubeArray: CubeArray;
-
+   private _solvedCube: CubeArray;
+   private _solvedHexRubik: HexRubik;
    public constructor(cubeArray?: CubeArray) {
       super();
-      const { White, Orange, Yellow, Blue, Green, Red } = ColorMapping;
-      this._stateMapping = {
-         0: {
-            0: [2, 8],
-            1: [3, 6],
-            2: null,
-            3: null,
-            4: null,
-            5: [5, 2],
-         },
-         1: {
-            0: [2, 7],
-            1: null,
-            2: null,
-            3: null,
-            4: null,
-            5: [5, 1],
-         },
-         2: {
-            0: [2, 6],
-            1: null,
-            2: null,
-            3: null,
-            4: [1, 8],
-            5: [5, 0],
-         },
-         3: {
-            0: [2, 5],
-            1: [3, 3],
-            2: null,
-            3: null,
-            4: null,
-            5: null,
-         },
-         4: {
-            0: [2, 4],
-            1: null,
-            2: null,
-            3: null,
-            4: null,
-            5: null,
-         },
-         5: {
-            0: [2, 3],
-            1: null,
-            2: null,
-            3: null,
-            4: [1, 5],
-            5: null,
-         },
-         6: {
-            0: [2, 2],
-            1: [3, 0],
-            2: [0, 8],
-            3: null,
-            4: null,
-            5: null,
-         },
-         7: {
-            0: [2, 1],
-            1: null,
-            2: [0, 7],
-            3: null,
-            4: null,
-            5: null,
-         },
-         8: {
-            0: [2, 1],
-            1: null,
-            2: [0, 6],
-            3: null,
-            4: [1, 2],
-            5: null,
-         },
-         9: {
-            0: null,
-            1: [3, 7],
-            2: null,
-            3: null,
-            4: null,
-            5: [5, 5],
-         },
-         10: {
-            0: null,
-            1: null,
-            2: null,
-            3: null,
-            4: null,
-            5: [5, 4],
-         },
-         11: {
-            0: null,
-            1: null,
-            2: null,
-            3: null,
-            4: [1, 7],
-            5: [5, 3],
-         },
-         12: {
-            0: null,
-            1: [3, 4],
-            2: null,
-            3: null,
-            4: null,
-            5: null,
-         },
-         13: {
-            0: null,
-            1: null,
-            2: null,
-            3: null,
-            4: null,
-            5: null,
-         },
-         14: {
-            0: null,
-            1: null,
-            2: null,
-            3: null,
-            4: [1, 4],
-            5: null,
-         },
-         15: {
-            0: null,
-            1: [3, 1],
-            2: [0, 5],
-            3: null,
-            4: null,
-            5: null,
-         },
-         16: {
-            0: null,
-            1: null,
-            2: [0, 4],
-            3: null,
-            4: null,
-            5: null,
-         },
-         17: {
-            0: null,
-            1: null,
-            2: [0, 3],
-            3: null,
-            4: [1, 1],
-            5: null,
-         },
-         18: {
-            0: null,
-            1: [3, 8],
-            2: null,
-            3: [4, 6],
-            4: null,
-            5: [5, 8],
-         },
-         19: {
-            0: null,
-            1: null,
-            2: null,
-            3: [4, 7],
-            4: null,
-            5: [5, 7],
-         },
-         20: {
-            0: null,
-            1: null,
-            2: null,
-            3: [4, 8],
-            4: [1, 6],
-            5: [5, 6],
-         },
-         21: {
-            0: null,
-            1: [3, 5],
-            2: null,
-            3: [4, 3],
-            4: null,
-            5: null,
-         },
-         22: {
-            0: null,
-            1: null,
-            2: null,
-            3: [4, 4],
-            4: null,
-            5: null,
-         },
-         23: {
-            0: null,
-            1: null,
-            2: null,
-            3: [4, 5],
-            4: [1, 3],
-            5: null,
-         },
-         24: {
-            0: null,
-            1: [3, 2],
-            2: [0, 2],
-            3: [4, 0],
-            4: null,
-            5: null,
-         },
-         25: {
-            0: null,
-            1: null,
-            2: [0, 1],
-            3: [4, 1],
-            4: null,
-            5: null,
-         },
-         26: {
-            0: null,
-            1: null,
-            2: [0, 0],
-            3: [4, 2],
-            4: [1, 0],
-            5: null,
-         },
-      };
-      this._solvedCubeArray = [
-         Array(9).fill(White),
-         Array(9).fill(Orange),
-         Array(9).fill(Green),
-         Array(9).fill(Red),
-         Array(9).fill(Blue),
-         Array(9).fill(Yellow),
-      ];
-      this._cubeArray = cubeArray ?? [
-         Array(9).fill(White),
-         Array(9).fill(Orange),
-         Array(9).fill(Green),
-         Array(9).fill(Red),
-         Array(9).fill(Blue),
-         Array(9).fill(Yellow),
-      ];
-      this._solvedCube = {
-         0: {
-            0: Green,
-            1: Red,
-            2: null,
-            3: null,
-            4: null,
-            5: Yellow,
-         },
-         1: {
-            0: Green,
-            1: null,
-            2: null,
-            3: null,
-            4: null,
-            5: Yellow,
-         },
-         2: {
-            0: Green,
-            1: null,
-            2: null,
-            3: null,
-            4: Orange,
-            5: Yellow,
-         },
-         3: {
-            0: Green,
-            1: Red,
-            2: null,
-            3: null,
-            4: null,
-            5: null,
-         },
-         4: {
-            0: Green,
-            1: null,
-            2: null,
-            3: null,
-            4: null,
-            5: null,
-         },
-         5: {
-            0: Green,
-            1: null,
-            2: null,
-            3: null,
-            4: Orange,
-            5: null,
-         },
-         6: {
-            0: Green,
-            1: Red,
-            2: White,
-            3: null,
-            4: null,
-            5: null,
-         },
-         7: {
-            0: Green,
-            1: null,
-            2: White,
-            3: null,
-            4: null,
-            5: null,
-         },
-         8: {
-            0: Green,
-            1: null,
-            2: White,
-            3: null,
-            4: Orange,
-            5: null,
-         },
-         9: {
-            0: null,
-            1: Red,
-            2: null,
-            3: null,
-            4: null,
-            5: Yellow,
-         },
-         10: {
-            0: null,
-            1: null,
-            2: null,
-            3: null,
-            4: null,
-            5: Yellow,
-         },
-         11: {
-            0: null,
-            1: null,
-            2: null,
-            3: null,
-            4: Orange,
-            5: Yellow,
-         },
-         12: {
-            0: null,
-            1: Red,
-            2: null,
-            3: null,
-            4: null,
-            5: null,
-         },
-         13: {
-            0: null,
-            1: null,
-            2: null,
-            3: null,
-            4: null,
-            5: null,
-         },
-         14: {
-            0: null,
-            1: null,
-            2: null,
-            3: null,
-            4: Orange,
-            5: null,
-         },
-         15: {
-            0: null,
-            1: Red,
-            2: White,
-            3: null,
-            4: null,
-            5: null,
-         },
-         16: {
-            0: null,
-            1: null,
-            2: White,
-            3: null,
-            4: null,
-            5: null,
-         },
-         17: {
-            0: null,
-            1: null,
-            2: White,
-            3: null,
-            4: Orange,
-            5: null,
-         },
-         18: {
-            0: null,
-            1: Red,
-            2: null,
-            3: Blue,
-            4: null,
-            5: Yellow,
-         },
-         19: {
-            0: null,
-            1: null,
-            2: null,
-            3: Blue,
-            4: null,
-            5: Yellow,
-         },
-         20: {
-            0: null,
-            1: null,
-            2: null,
-            3: Blue,
-            4: Orange,
-            5: Yellow,
-         },
-         21: {
-            0: null,
-            1: Red,
-            2: null,
-            3: Blue,
-            4: null,
-            5: null,
-         },
-         22: {
-            0: null,
-            1: null,
-            2: null,
-            3: Blue,
-            4: null,
-            5: null,
-         },
-         23: {
-            0: null,
-            1: null,
-            2: null,
-            3: Blue,
-            4: Orange,
-            5: null,
-         },
-         24: {
-            0: null,
-            1: Red,
-            2: White,
-            3: Blue,
-            4: null,
-            5: null,
-         },
-         25: {
-            0: null,
-            1: null,
-            2: White,
-            3: Blue,
-            4: null,
-            5: null,
-         },
-         26: {
-            0: null,
-            1: null,
-            2: White,
-            3: Blue,
-            4: Orange,
-            5: null,
-         },
-      };
+      // ? Représentation des 26 pièces du cube
+      this._stateMapping = stateMapping;
+      // ? Si cubeArray n'est pas fourni, utiliser le cubeArray résolu
+      this._cubeArray = cubeArray ?? solvedCubeArray;
+      // ? Tjrs égale au cubeArray résolu
+      this._solvedCube = solvedCubeArray;
+      this._solvedHexRubik = solvedHexRubik;
+   }
+
+   public getRubik = (): Rubik => {
+      const rubik: any = this.solvedHexRubik;
+      for (const [stateMappingKey, cube] of Object.entries(this.stateMapping)) {
+         if (rubik.hasOwnProperty(stateMappingKey)) {
+            for (const [cubeKey, color] of Object.entries(cube)) {
+               if (cube.hasOwnProperty(cubeKey)) {
+                  if (color) {
+                     rubik[stateMappingKey][cubeKey] =
+                        this.cubeArray[color[0]][color[1]];
+                  }
+               }
+            }
+         }
+      }
+      return rubik as Rubik;
+   };
+
+   public getHexRubik = (): HexRubik => {
+      const rubik: any = this.solvedHexRubik;
+      for (const [stateMappingKey, cube] of Object.entries(this.stateMapping)) {
+         if (rubik.hasOwnProperty(stateMappingKey)) {
+            for (const [cubeKey, color] of Object.entries(cube)) {
+               if (cube.hasOwnProperty(cubeKey)) {
+                  if (color) {
+                     rubik[stateMappingKey][cubeKey] =
+                        this.getHexCubeArray()[color[0]][color[1]];
+                  }
+               }
+            }
+         }
+      }
+      return rubik as HexRubik;
+   };
+
+   private colorToHex(color: Color): HexColor {
+      switch (color) {
+         case Color.Blue:
+            return HexColor.Blue;
+         case Color.Red:
+            return HexColor.Red;
+         case Color.Green:
+            return HexColor.Green;
+         case Color.Yellow:
+            return HexColor.Yellow;
+         case Color.Orange:
+            return HexColor.Orange;
+         case Color.White:
+            return HexColor.White;
+         default:
+            return HexColor.Black;
+      }
+   }
+
+   public getHexCubeArray = (): HexColor[][] => {
+      return this.cubeArray.map((face) => {
+         return face.map((color) => {
+            return this.colorToHex(color);
+         });
+      });
+   };
+
+   public get solvedHexRubik(): HexRubik {
+      return this._solvedHexRubik;
    }
 
    public get solvedCubeArray(): CubeArray {
@@ -485,11 +103,11 @@ export class ThreeByThree extends Cube {
    public set stateMapping(v: StateMapping) {
       this._stateMapping = v;
    }
-   public get solvedCube(): Rubik {
+   public get solvedCube(): CubeArray {
       return this._solvedCube;
    }
 
-   public set solvedCube(v: Rubik) {
+   public set solvedCube(v: CubeArray) {
       this.solvedCube = v;
    }
 
@@ -501,22 +119,6 @@ export class ThreeByThree extends Cube {
       this._cubeArray = value;
    }
 
-   public cubeArrayToRubik = (cubeArray: CubeArray): Rubik => {
-      const rubik: any = this.solvedCube;
-      for (const [stateMappingKey, cube] of Object.entries(this.stateMapping)) {
-         if (rubik.hasOwnProperty(stateMappingKey)) {
-            for (const [cubeKey, color] of Object.entries(cube)) {
-               if (cube.hasOwnProperty(cubeKey)) {
-                  if (color) {
-                     rubik[stateMappingKey][cubeKey] =
-                        cubeArray[color[0]][color[1]];
-                  }
-               }
-            }
-         }
-      }
-      return rubik as Rubik;
-   };
    public getCubePositions = (): Position[] => {
       let newCubePositions: Position[] = [];
       for (let z = 1; z >= -1; z--) {
@@ -528,7 +130,7 @@ export class ThreeByThree extends Cube {
       }
       return newCubePositions;
    };
-   public override rotationFace(face: ColorMapping[]) {
+   public override rotationFace(face: Color[]) {
       return [
          face[6],
          face[3],
@@ -542,7 +144,7 @@ export class ThreeByThree extends Cube {
       ];
    }
 
-   public override rotationFacePrime(face: ColorMapping[]) {
+   public override rotationFacePrime(face: Color[]) {
       return [
          face[2],
          face[5],
@@ -556,7 +158,7 @@ export class ThreeByThree extends Cube {
       ];
    }
 
-   private elementsToMoveRight(currentCube: ColorMapping[][]) {
+   private elementsToMoveRight(currentCube: Color[][]) {
       const whiteFace = currentCube[0].filter(
          (_element, i) => i === 2 || i === 5 || i === 8
       );
@@ -614,7 +216,7 @@ export class ThreeByThree extends Cube {
       this.cubeArray = currentCube;
    }
 
-   private elementsToMoveLeft(currentCube: ColorMapping[][]) {
+   private elementsToMoveLeft(currentCube: Color[][]) {
       const whiteFace = currentCube[0].filter(
          (_element, i) => i === 0 || i === 3 || i === 6
       );
@@ -672,7 +274,7 @@ export class ThreeByThree extends Cube {
       this.cubeArray = currentCube;
    }
 
-   public elementsToMoveFront(currentCube: ColorMapping[][]) {
+   public elementsToMoveFront(currentCube: Color[][]) {
       const whiteFace = currentCube[0].filter(
          (_element, i) => i === 6 || i === 7 || i === 8
       );
@@ -730,7 +332,7 @@ export class ThreeByThree extends Cube {
       this.cubeArray = currentCube;
    }
 
-   private elementsToMoveBack(currentCube: ColorMapping[][]) {
+   private elementsToMoveBack(currentCube: Color[][]) {
       const whiteFace = currentCube[0].filter(
          (_element, i) => i === 0 || i === 1 || i === 2
       );
@@ -788,7 +390,7 @@ export class ThreeByThree extends Cube {
       this.cubeArray = currentCube;
    }
 
-   private elementsToMoveUp(currentCube: ColorMapping[][]) {
+   private elementsToMoveUp(currentCube: Color[][]) {
       const orangeFace = currentCube[1].filter(
          (_element, i) => i === 0 || i === 1 || i === 2
       );
@@ -846,7 +448,7 @@ export class ThreeByThree extends Cube {
       this.cubeArray = currentCube;
    }
 
-   private elementsToMoveDown(currentCube: ColorMapping[][]) {
+   private elementsToMoveDown(currentCube: Color[][]) {
       const orangeFace = currentCube[1].filter(
          (_element, i) => i === 6 || i === 7 || i === 8
       );
@@ -1002,7 +604,7 @@ export class ThreeByThree extends Cube {
       this.cubeArray = newCube;
    }
 
-   private elementsToMoveMiddle(currentCube: ColorMapping[][]) {
+   private elementsToMoveMiddle(currentCube: Color[][]) {
       const whiteFace = currentCube[0].filter(
          (_element, i) => i === 1 || i === 4 || i === 7
       );
@@ -1033,8 +635,8 @@ export class ThreeByThree extends Cube {
       for (let i = 0; i < 3; i++) {
          currentCube[0].splice(3 * i + 1, 1, greenFace[i]);
          currentCube[2].splice(3 * i + 1, 1, yellowFace[i]);
-         currentCube[4].splice(3 * i + 1, 1, whiteFace[2-i]);
-         currentCube[5].splice(3 * i + 1, 1, blueFace[2-i]);
+         currentCube[4].splice(3 * i + 1, 1, whiteFace[2 - i]);
+         currentCube[5].splice(3 * i + 1, 1, blueFace[2 - i]);
       }
 
       this.cubeArray = currentCube;

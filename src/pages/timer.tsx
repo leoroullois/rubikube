@@ -9,8 +9,9 @@ import { ThreeByThree } from "@lib/cubes/ThreeByThree";
 import { selectTimer } from "@store/selectors";
 import { setCubeArray } from "@store/slices/timer";
 import { Moves, Rotations } from "@lib/cubes/Moves";
-import { ColorMapping } from "@lib/cubes/types";
+import { HexColor } from "@lib/cubes/types";
 import Genetic from "@lib/cubes/Genetic";
+import Cube from "@lib/cubes/Cube";
 
 const Timer = () => {
    const dispatch = useDispatch();
@@ -52,19 +53,19 @@ const Timer = () => {
       const genetic = new Genetic(scramble);
       genetic.solve();
    };
-   const mapColor = (color: ColorMapping): string => {
+   const mapColor = (color: HexColor): string => {
       switch (color) {
-         case ColorMapping.White:
+         case HexColor.White:
             return "White";
-         case ColorMapping.Orange:
+         case HexColor.Orange:
             return "Orange";
-         case ColorMapping.Yellow:
+         case HexColor.Yellow:
             return "Yellow";
-         case ColorMapping.Blue:
+         case HexColor.Blue:
             return "Blue";
-         case ColorMapping.Green:
+         case HexColor.Green:
             return "Green";
-         case ColorMapping.Red:
+         case HexColor.Red:
             return "Red";
          default:
             return "";
@@ -72,14 +73,14 @@ const Timer = () => {
    };
 
    useEffect(() => {
-      console.table(
-         cubeArray.map((face) => face.map((color) => mapColor(color)))
-      );
+      console.table(Cube.getColorArray(cubeArray));
 
       const cube = new ThreeByThree();
       cube.move("M");
       console.log(cube.cubeArray);
+      console.log(cube.getRubik());
    }, [cubeArray]);
+
    return (
       <>
          <Head>

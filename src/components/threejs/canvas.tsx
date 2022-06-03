@@ -1,7 +1,7 @@
 import { FC, useState } from "react";
 
 import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
-import { Canvas as FiberCanvas } from "@react-three/fiber";
+import { Canvas as FiberCanvas, useThree } from "@react-three/fiber";
 import RubiksCube from "./rubikscube";
 import { ThreeByThree } from "@lib/cubes/ThreeByThree";
 import * as THREE from "three";
@@ -19,6 +19,7 @@ const Canvas: FC = () => {
    const currMove = useSelector(selectCube).currMove;
 
    const [cube] = useState(new ThreeByThree());
+
    return (
       <ReactReduxContext.Consumer>
          {({ store }) => (
@@ -39,7 +40,7 @@ const Canvas: FC = () => {
                   <directionalLight position={[-5, 5, 5]} intensity={0.8} />
 
                   <RubiksCube cube={cube} />
-                  <PerspectiveCamera makeDefault position={[5,5,5]}/>
+                  <PerspectiveCamera makeDefault position={[5, 5, 5]} />
                </Provider>
             </FiberCanvas>
          )}

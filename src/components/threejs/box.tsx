@@ -1,10 +1,10 @@
-import React, { forwardRef, useState } from "react";
+import React, { forwardRef, useState } from 'react';
 
-import { ColorMapping, IPieceState } from "@lib/cubes/types";
-import { RoundedBox } from "@react-three/drei";
+import { HexColor, IPieceState } from '@lib/cubes/types';
+import { RoundedBox } from '@react-three/drei';
 
 type Props = JSX.IntrinsicElements["mesh"] & {
-   state: IPieceState<ColorMapping>;
+   state: IPieceState<HexColor>;
    position: number[];
 };
 
@@ -18,8 +18,6 @@ const Box = ({ state, position, ...props }: Props, ref: any) => {
       5: color5,
    } = state;
 
-   const [x, y, z] = position;
-
    const [pieceSize] = useState(0.95);
    return (
       <>
@@ -31,7 +29,7 @@ const Box = ({ state, position, ...props }: Props, ref: any) => {
             ref={ref}
             {...props}
          >
-            <meshPhongMaterial color={ColorMapping.Black} />
+            <meshPhongMaterial color={HexColor.Black} />
 
             {/* Face 0 */}
             <RoundedBox
@@ -40,7 +38,7 @@ const Box = ({ state, position, ...props }: Props, ref: any) => {
                radius={0.05}
                smoothness={4}
             >
-               <meshPhongMaterial color={color0 ?? ColorMapping.Black} />
+               <meshPhongMaterial color={color0 ?? HexColor.Black} />
             </RoundedBox>
             {/* Face 1 */}
             <RoundedBox
@@ -49,7 +47,7 @@ const Box = ({ state, position, ...props }: Props, ref: any) => {
                radius={0.05}
                smoothness={4}
             >
-               <meshPhongMaterial color={color1 ?? ColorMapping.Black} />
+               <meshPhongMaterial color={color1 ?? HexColor.Black} />
             </RoundedBox>
             {/* Face 2 */}
             <RoundedBox
@@ -58,7 +56,7 @@ const Box = ({ state, position, ...props }: Props, ref: any) => {
                radius={0.05}
                smoothness={4}
             >
-               <meshPhongMaterial color={color2 ?? ColorMapping.Black} />
+               <meshPhongMaterial color={color2 ?? HexColor.Black} />
             </RoundedBox>
             {/* Face 3 */}
             <RoundedBox
@@ -67,7 +65,7 @@ const Box = ({ state, position, ...props }: Props, ref: any) => {
                radius={0.05}
                smoothness={4}
             >
-               <meshPhongMaterial color={color3 ?? ColorMapping.Black} />
+               <meshPhongMaterial color={color3 ?? HexColor.Black} />
             </RoundedBox>
             {/* Face 4 */}
             <RoundedBox
@@ -76,7 +74,7 @@ const Box = ({ state, position, ...props }: Props, ref: any) => {
                radius={0.05}
                smoothness={4}
             >
-               <meshPhongMaterial color={color4 ?? ColorMapping.Black} />
+               <meshPhongMaterial color={color4 ?? HexColor.Black} />
             </RoundedBox>
             {/* Face 5 */}
             <RoundedBox
@@ -85,7 +83,7 @@ const Box = ({ state, position, ...props }: Props, ref: any) => {
                radius={0.05}
                smoothness={4}
             >
-               <meshPhongMaterial color={color5 ?? ColorMapping.Black} />
+               <meshPhongMaterial color={color5 ?? HexColor.Black} />
             </RoundedBox>
          </RoundedBox>
       </>

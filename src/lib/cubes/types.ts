@@ -1,5 +1,5 @@
 export type Position = [x: number, y: number, z: number];
-export type CubeArray = ColorMapping[][];
+export type CubeArray = Color[][];
 
 export interface IPieceState<T> {
    0: T | null;
@@ -19,7 +19,7 @@ export enum Color {
    Red = 3,
 }
 
-export enum ColorMapping {
+export enum HexColor {
    Red = 0xc0392b,
    Green = 0x27ae60,
    Blue = 0x2980b9,
@@ -63,7 +63,8 @@ type RubikState<T> = {
 };
 
 export type StateMapping = RubikState<StateMappingType>;
-export type Rubik = RubikState<ColorMapping>;
+export type Rubik = RubikState<Color>;
+export type HexRubik = RubikState<HexColor>;
 
 export enum Spin {
    Left,
