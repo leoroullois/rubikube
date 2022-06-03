@@ -48,7 +48,7 @@ export class Solver {
       return -1;
    }
 
-   private solveWhiteEdges(color1: Color, color2: Color): void {
+   private solveWhiteEdge(color1: Color, color2: Color): void {
       const number = this.getEdgeIndex(color1, color2);
       switch (number) {
          case 1:
@@ -163,20 +163,20 @@ export class Solver {
       }
    }
 
-   private solveWhiteCross(): void {
-      this.solveWhiteEdges(Color.White, Color.Green);
+   public solveWhiteCross(): void {
+      this.solveWhiteEdge(Color.White, Color.Green);
       this.cube.move("y");
       this.solution += "y ";
 
-      this.solveWhiteEdges(Color.White, Color.Red);
+      this.solveWhiteEdge(Color.White, Color.Red);
       this.cube.move("y");
       this.solution += "y ";
 
-      this.solveWhiteEdges(Color.White, Color.Blue);
+      this.solveWhiteEdge(Color.White, Color.Blue);
       this.cube.move("y");
       this.solution += "y ";
 
-      this.solveWhiteEdges(Color.White, Color.Orange);
+      this.solveWhiteEdge(Color.White, Color.Orange);
       this.cube.move("y");
       this.solution += "y ";
    }
