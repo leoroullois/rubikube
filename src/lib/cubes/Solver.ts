@@ -194,8 +194,45 @@ export class Solver {
    }
 
    public solveF2L(color1: Color, color2: Color, color3:Color): void {
-      const numberCorner = this.getCornerIndex(color1, color2, color3);
+      let numberCorner = this.getCornerIndex(color1, color2, color3);
       const numberEdge = this.getEdgeIndex(color2, color3)
+      console.log("numberCorner", numberCorner)
+      console.log("numberEdge", numberEdge)
+      switch (numberCorner) {
+         case 8:
+            this.cube.move("U'");
+            this.solution += "U' ";
+            numberCorner = 6;
+            break;
+         case 26:
+            this.cube.move("U2");
+            this.solution += "U2 ";
+            numberCorner = 6;
+            break;
+         case 24:
+            this.cube.move("U");
+            this.solution += "U ";
+            numberCorner = 6;
+            break;
+         case 2:
+            this.cube.move("L' U L U'");
+            this.solution += "L' U L U' ";
+            numberCorner = 6;
+            break;
+         case 20:
+            this.cube.move("L U L' U");
+            this.solution += "L U L' U ";
+            numberCorner = 6;
+            break;
+         case 18:
+            this.cube.move("B U B'");
+            this.solution += "B U B' ";
+            numberCorner = 6;
+            break;
+      
+         default:
+            break;
+      }
       switch ([numberCorner, numberEdge]) {
          case [6, 15]:
             if(this.getPiece(numberCorner)[0] == Color.White){
@@ -427,12 +464,13 @@ export class Solver {
             break;
       
          default:
-            console.error("Une erreur s'est produite");
+            console.error("Une erreur s'est produite dans le F2L");
             break;
       }
    }
 
    public solveAllF2L(): void {
+      console.log("Début de F2L")
       this.solveF2L(Color.White, Color.Red, Color.Blue);
       this.cube.move("y");
       this.solution += "y ";
@@ -449,11 +487,14 @@ export class Solver {
       this.cube.move("y");
       this.solution += "y ";
 
+      console.log("Fin de F2L")
+
    }
 
    public solve(): void {
       this.solveWhiteCross();
       this.cube.move("x2");
+      this.solution += "x2 "
       this.solveAllF2L();
    }
 }
