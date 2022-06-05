@@ -35,6 +35,7 @@ class Test {
       console.log("Testing scrambles");
       for (let i = 0; i < 1e6; i++) {
          let randomScramble = this.scramble.generateRandomScramble();
+
          if (
             this._cube.move(randomScramble) !==
             this._cube.move(this.scramble.inverseScramble(randomScramble))
@@ -49,9 +50,11 @@ class Test {
 
    public testWhiteCross(): boolean {
       console.log("Testing white cross");
-      const nbTests = 1e5;
+      const nbTests = 1e1;
       for (let i = 0; i < nbTests; i++) {
          const solver = new Solver();
+         solver.cube.resetCubeArray();
+         solver.cube.move(this.scramble.generateRandomScramble());
          solver.solveWhiteCross();
          const cubeArray = solver.cube.cubeArray;
          if (
@@ -74,7 +77,7 @@ class Test {
 
    public testF2L(): boolean {
       console.log("Testing F2L");
-      const nbTests = 1e5;
+      const nbTests = 1e1;
       for (let i = 0; i < nbTests; i++) {
          const solver = new Solver();
          solver.solveWhiteCross();
@@ -114,7 +117,7 @@ class Test {
             cubeArray[4][2] !== Color.Blue ||
             cubeArray[4][3] !== Color.Blue ||
             cubeArray[4][4] !== Color.Blue ||
-            cubeArray[4][5] !== Color.Blue 
+            cubeArray[4][5] !== Color.Blue
          ) {
             console.error("Test not passed.");
             return false;

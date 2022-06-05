@@ -174,7 +174,7 @@ export class Solver {
             break;
 
          default:
-            console.error("Une erreur s'est produite");
+            console.error("Une erreur s'est produite, edgeIndex :", number);
             break;
       }
    }
@@ -273,22 +273,27 @@ export class Solver {
             case 5:
                this.cube.move("F U F'");
                this.solution += "F U F' ";
+               console.log("🚨", numberCorner, numberEdge);
                break;
             case 17:
                this.cube.move("U'");
                this.solution += "U' ";
+               console.log("🚨", numberCorner, numberEdge);
                break;
             case 21:
                this.cube.move("R' U R");
                this.solution += "R' U R ";
+               console.log("🚨", numberCorner, numberEdge);
                break;
             case 23:
                this.cube.move("L U' L'");
                this.solution += "L U' L' ";
+               console.log("🚨", numberCorner, numberEdge);
                break;
             case 25:
                this.cube.move("U");
                this.solution += "U ";
+               console.log("🚨", numberCorner, numberEdge);
                break;
 
             default:
@@ -299,19 +304,24 @@ export class Solver {
             case 5:
                this.cube.move("L' U' L U");
                this.solution += "L' U' L U ";
+               console.log("🚨", numberCorner, numberEdge);
                break;
             case 21:
                this.cube.move("R' U R");
                this.solution += "R' U R ";
+               console.log("🚨", numberCorner, numberEdge);
                break;
             case 23:
                this.cube.move("B' U B U'");
                this.solution += "B' U B U' ";
+               console.log("🚨", numberCorner, numberEdge);
                break;
 
             default:
                break;
          }
+      } else {
+         console.error("Le coin n'est pas bien placé", numberCorner);
       }
 
       numberCorner = this.getCornerIndex(color1, color2, color3);
@@ -329,6 +339,14 @@ export class Solver {
                } else if (this.getPiece(numberEdge)[1] == color3) {
                   this.cube.move("U' R U2 R' U F' U' F"); //cas13 fait à la main
                   this.solution += "U' R U2 R' U F' U' F ";
+               } else {
+                  console.error(
+                     "No solution found",
+                     numberCorner,
+                     numberEdge,
+                     this.mapNumberToColor(color1),
+                     this.mapNumberToColor(color2)
+                  );
                }
             } else if (this.getPiece(numberCorner)[1] == Color.White) {
                if (this.getPiece(numberEdge)[1] == color2) {
@@ -337,6 +355,14 @@ export class Solver {
                } else if (this.getPiece(numberEdge)[1] == color3) {
                   this.cube.move("R U' R' U2 F' U' F"); //cas8
                   this.solution += "R U' R' U2 F' U' F ";
+               } else {
+                  console.error(
+                     "No solution found",
+                     numberCorner,
+                     numberEdge,
+                     this.mapNumberToColor(color1),
+                     this.mapNumberToColor(color2)
+                  );
                }
             } else if (this.getPiece(numberCorner)[2] == Color.White) {
                if (this.getPiece(numberEdge)[1] == color2) {
@@ -345,7 +371,23 @@ export class Solver {
                } else if (this.getPiece(numberEdge)[1] == color3) {
                   this.cube.move("y' U2 R2 U2 R U R' U R2 y"); //cas24
                   this.solution += "y' U2 R2 U2 R U R' U R2 y ";
+               } else {
+                  console.error(
+                     "No solution found",
+                     numberCorner,
+                     numberEdge,
+                     this.mapNumberToColor(color1),
+                     this.mapNumberToColor(color2)
+                  );
                }
+            } else {
+               console.error(
+                  "No solution found",
+                  numberCorner,
+                  numberEdge,
+                  this.mapNumberToColor(color1),
+                  this.mapNumberToColor(color2)
+               );
             }
             break;
          // case [6, 7]:
@@ -357,6 +399,14 @@ export class Solver {
                } else if (this.getPiece(numberEdge)[0] == color3) {
                   this.cube.move("U F' U F U' F' U' F"); //cas15 fait à la main
                   this.solution += "U F' U F U' F' U' F ";
+               } else {
+                  console.error(
+                     "No solution found",
+                     numberCorner,
+                     numberEdge,
+                     this.mapNumberToColor(color1),
+                     this.mapNumberToColor(color2)
+                  );
                }
             } else if (this.getPiece(numberCorner)[1] == Color.White) {
                if (this.getPiece(numberEdge)[0] == color2) {
@@ -365,6 +415,14 @@ export class Solver {
                } else if (this.getPiece(numberEdge)[0] == color3) {
                   this.cube.move("F R' F' R"); //cas2
                   this.solution += "F R' F' R ";
+               } else {
+                  console.error(
+                     "No solution found",
+                     numberCorner,
+                     numberEdge,
+                     this.mapNumberToColor(color1),
+                     this.mapNumberToColor(color2)
+                  );
                }
             } else if (this.getPiece(numberCorner)[2] == Color.White) {
                if (this.getPiece(numberEdge)[0] == color2) {
@@ -373,7 +431,23 @@ export class Solver {
                } else if (this.getPiece(numberEdge)[0] == color3) {
                   this.cube.move("y L' U2 L U L' U' L y'"); //cas18
                   this.solution += "y L' U2 L U L' U' L y' ";
+               } else {
+                  console.error(
+                     "No solution found",
+                     numberCorner,
+                     numberEdge,
+                     this.mapNumberToColor(color1),
+                     this.mapNumberToColor(color2)
+                  );
                }
+            } else {
+               console.error(
+                  "No solution found",
+                  numberCorner,
+                  numberEdge,
+                  this.mapNumberToColor(color1),
+                  this.mapNumberToColor(color2)
+               );
             }
             break;
          // case [6, 17]:
@@ -385,6 +459,14 @@ export class Solver {
                } else if (this.getPiece(numberEdge)[4] == color3) {
                   this.cube.move("y' R' U' R y"); //cas9
                   this.solution += "y' R' U' R y ";
+               } else {
+                  console.error(
+                     "No solution found",
+                     numberCorner,
+                     numberEdge,
+                     this.mapNumberToColor(color1),
+                     this.mapNumberToColor(color2)
+                  );
                }
             } else if (this.getPiece(numberCorner)[1] == Color.White) {
                if (this.getPiece(numberEdge)[4] == color2) {
@@ -393,6 +475,14 @@ export class Solver {
                } else if (this.getPiece(numberEdge)[4] == color3) {
                   this.cube.move("y' U R' U' R U2 R' U R y"); //cas4
                   this.solution += "y' U R' U' R U2 R' U R y ";
+               } else {
+                  console.error(
+                     "No solution found",
+                     numberCorner,
+                     numberEdge,
+                     this.mapNumberToColor(color1),
+                     this.mapNumberToColor(color2)
+                  );
                }
             } else if (this.getPiece(numberCorner)[2] == Color.White) {
                if (this.getPiece(numberEdge)[4] == color2) {
@@ -401,7 +491,23 @@ export class Solver {
                } else if (this.getPiece(numberEdge)[4] == color3) {
                   this.cube.move("y' U' R' U2 R U' R' U R y"); //cas20
                   this.solution += "y' U' R' U2 R U' R' U R y ";
+               } else {
+                  console.error(
+                     "No solution found",
+                     numberCorner,
+                     numberEdge,
+                     this.mapNumberToColor(color1),
+                     this.mapNumberToColor(color2)
+                  );
                }
+            } else {
+               console.error(
+                  "No solution found",
+                  numberCorner,
+                  numberEdge,
+                  this.mapNumberToColor(color1),
+                  this.mapNumberToColor(color2)
+               );
             }
             break;
          // case [6, 25]:
@@ -413,6 +519,14 @@ export class Solver {
                } else if (this.getPiece(numberEdge)[3] == color3) {
                   this.cube.move("U' R U' R' U y' R' U' R y"); //cas11
                   this.solution += "U' R U' R' U y' R' U' R y ";
+               } else {
+                  console.error(
+                     "No solution found",
+                     numberCorner,
+                     numberEdge,
+                     this.mapNumberToColor(color1),
+                     this.mapNumberToColor(color2)
+                  );
                }
             } else if (this.getPiece(numberCorner)[1] == Color.White) {
                if (this.getPiece(numberEdge)[3] == color2) {
@@ -421,6 +535,14 @@ export class Solver {
                } else if (this.getPiece(numberEdge)[3] == color3) {
                   this.cube.move("R' F R F'"); //cas6
                   this.solution += "R' F R F' ";
+               } else {
+                  console.error(
+                     "No solution found",
+                     numberCorner,
+                     numberEdge,
+                     this.mapNumberToColor(color1),
+                     this.mapNumberToColor(color2)
+                  );
                }
             } else if (this.getPiece(numberCorner)[2] == Color.White) {
                if (this.getPiece(numberEdge)[3] == color2) {
@@ -429,7 +551,23 @@ export class Solver {
                } else if (this.getPiece(numberEdge)[3] == color3) {
                   this.cube.move("y' R' U R U2 R' U' R y"); //cas22
                   this.solution += "y' R' U R U2 R' U' R y ";
+               } else {
+                  console.error(
+                     "No solution found",
+                     numberCorner,
+                     numberEdge,
+                     this.mapNumberToColor(color1),
+                     this.mapNumberToColor(color2)
+                  );
                }
+            } else {
+               console.error(
+                  "No solution found",
+                  numberCorner,
+                  numberEdge,
+                  this.mapNumberToColor(color1),
+                  this.mapNumberToColor(color2)
+               );
             }
             break;
          // case [6, 3]:
@@ -441,6 +579,14 @@ export class Solver {
                } else if (this.getPiece(numberEdge)[1] == color3) {
                   this.cube.move("U' R U R' U F' U' F"); //cas33
                   this.solution += "U' R U R' U F' U' F ";
+               } else {
+                  console.error(
+                     "No solution found",
+                     numberCorner,
+                     numberEdge,
+                     this.mapNumberToColor(color1),
+                     this.mapNumberToColor(color2)
+                  );
                }
             } else if (this.getPiece(numberCorner)[1] == Color.White) {
                if (this.getPiece(numberEdge)[1] == color2) {
@@ -449,6 +595,14 @@ export class Solver {
                } else if (this.getPiece(numberEdge)[1] == color3) {
                   this.cube.move("y U2 L' U L U y L U L' y2"); //cas34
                   this.solution += "y U2 L' U L U y L U L' y2 ";
+               } else {
+                  console.error(
+                     "No solution found",
+                     numberCorner,
+                     numberEdge,
+                     this.mapNumberToColor(color1),
+                     this.mapNumberToColor(color2)
+                  );
                }
             } else if (this.getPiece(numberCorner)[2] == Color.White) {
                if (this.getPiece(numberEdge)[1] == color2) {
@@ -457,7 +611,23 @@ export class Solver {
                } else if (this.getPiece(numberEdge)[1] == color3) {
                   this.cube.move("R U' R' U F' U F"); //cas35
                   this.solution += "R U' R' U F' U F ";
+               } else {
+                  console.error(
+                     "No solution found",
+                     numberCorner,
+                     numberEdge,
+                     this.mapNumberToColor(color1),
+                     this.mapNumberToColor(color2)
+                  );
                }
+            } else {
+               console.error(
+                  "No solution found",
+                  numberCorner,
+                  numberEdge,
+                  this.mapNumberToColor(color1),
+                  this.mapNumberToColor(color2)
+               );
             }
             break;
          // case [0, 3]:
@@ -469,6 +639,14 @@ export class Solver {
                } else if (this.getPiece(numberEdge)[1] == color3) {
                   this.cube.move("R U' R' U' R U' R' U F' U' F"); //cas39
                   this.solution += "R U' R' U' R U' R' U F' U' F ";
+               } else {
+                  console.error(
+                     "No solution found",
+                     numberCorner,
+                     numberEdge,
+                     this.mapNumberToColor(color1),
+                     this.mapNumberToColor(color2)
+                  );
                }
             } else if (this.getPiece(numberCorner)[1] == Color.White) {
                if (this.getPiece(numberEdge)[1] == color2) {
@@ -477,12 +655,36 @@ export class Solver {
                } else if (this.getPiece(numberEdge)[1] == color3) {
                   this.cube.move("R U R' U' R U' R' U2 y' R' U' R y"); //cas40
                   this.solution += "R U R' U' R U' R' U2 y' R' U' R y ";
+               } else {
+                  console.error(
+                     "No solution found",
+                     numberCorner,
+                     numberEdge,
+                     this.mapNumberToColor(color1),
+                     this.mapNumberToColor(color2)
+                  );
                }
             } else if (this.getPiece(numberCorner)[5] == Color.White) {
                if (this.getPiece(numberEdge)[0] == color2) {
                   this.cube.move("R U' R' U y' R' U2 R U2 R' U R y"); //cas41
                   this.solution += "R U' R' U y' R' U2 R U2 R' U R y ";
+               } else {
+                  console.error(
+                     "No solution found",
+                     numberCorner,
+                     numberEdge,
+                     this.mapNumberToColor(color1),
+                     this.mapNumberToColor(color2)
+                  );
                }
+            } else {
+               console.error(
+                  "No solution found",
+                  numberCorner,
+                  numberEdge,
+                  this.mapNumberToColor(color1),
+                  this.mapNumberToColor(color2)
+               );
             }
             break;
          // case [0, 7]:
@@ -491,17 +693,49 @@ export class Solver {
                if (this.getPiece(numberEdge)[2] == color2) {
                   this.cube.move("y' R' U' R U R' U' R y"); //cas27
                   this.solution += "y' R' U' R U R' U' R y ";
+               } else {
+                  console.error(
+                     "No solution found",
+                     numberCorner,
+                     numberEdge,
+                     this.mapNumberToColor(color1),
+                     this.mapNumberToColor(color2)
+                  );
                }
             } else if (this.getPiece(numberCorner)[1] == Color.White) {
                if (this.getPiece(numberEdge)[2] == color2) {
                   this.cube.move("y' R' U R U' R' U R y"); //cas30
                   this.solution += "y' R' U R U' R' U R y ";
+               } else {
+                  console.error(
+                     "No solution found",
+                     numberCorner,
+                     numberEdge,
+                     this.mapNumberToColor(color1),
+                     this.mapNumberToColor(color2)
+                  );
                }
             } else if (this.getPiece(numberCorner)[5] == Color.White) {
                if (this.getPiece(numberEdge)[2] == color2) {
                   this.cube.move("U R U' R' U' y L' U L y'"); //cas25
                   this.solution += "U R U' R' U' y L' U L y' ";
+               } else {
+                  console.error(
+                     "No solution found",
+                     numberCorner,
+                     numberEdge,
+                     this.mapNumberToColor(color1),
+                     this.mapNumberToColor(color2)
+                  );
                }
+            } else {
+               console.error(
+                  "No solution found",
+                  numberCorner,
+                  numberEdge,
+                  this.mapNumberToColor(color1),
+                  this.mapNumberToColor(color2)
+               );
             }
             break;
          // case [0, 15]:
@@ -510,17 +744,49 @@ export class Solver {
                if (this.getPiece(numberEdge)[1] == color2) {
                   this.cube.move("R U' R' U R U' R'"); //cas29
                   this.solution += "R U' R' U R U' R' ";
+               } else {
+                  console.error(
+                     "No solution found",
+                     numberCorner,
+                     numberEdge,
+                     this.mapNumberToColor(color1),
+                     this.mapNumberToColor(color2)
+                  );
                }
             } else if (this.getPiece(numberCorner)[1] == Color.White) {
                if (this.getPiece(numberEdge)[1] == color2) {
                   this.cube.move("R U R' U' R U R'"); //cas28
                   this.solution += "R U R' U' R U R' ";
+               } else {
+                  console.error(
+                     "No solution found",
+                     numberCorner,
+                     numberEdge,
+                     this.mapNumberToColor(color1),
+                     this.mapNumberToColor(color2)
+                  );
                }
             } else if (this.getPiece(numberCorner)[5] == Color.White) {
                if (this.getPiece(numberEdge)[1] == color2) {
                   this.cube.move("y U' L' U L y' U R U' R'"); //cas26
                   this.solution += "y U' L' U L y' U R U' R' ";
+               } else {
+                  console.error(
+                     "No solution found",
+                     numberCorner,
+                     numberEdge,
+                     this.mapNumberToColor(color1),
+                     this.mapNumberToColor(color2)
+                  );
                }
+            } else {
+               console.error(
+                  "No solution found",
+                  numberCorner,
+                  numberEdge,
+                  this.mapNumberToColor(color1),
+                  this.mapNumberToColor(color2)
+               );
             }
             break;
 

@@ -9,6 +9,7 @@ import Canvas from "@components/threejs/canvas";
 import Cube from "@lib/cubes/Cube";
 import Image from "next/image";
 import { Color } from "@lib/cubes/types";
+import Test from "@lib/cubes/Test";
 
 const AdminTests = () => {
    const [mounted, setMounted] = useState(false);
@@ -99,10 +100,18 @@ const AdminTests = () => {
       }
    };
 
+   const handleTestWhiteCross: MouseEventHandler = () => {
+      const test = new Test();
+      test.testWhiteCross();
+   };
    useEffect(() => {
       setMounted(true);
    }, [solver.cube.cubeArray]);
 
+   const handleTestF2L: MouseEventHandler = () => {
+      const test = new Test();
+      test.testF2L();
+   };
    return (
       <>
          <Head>
@@ -178,6 +187,20 @@ const AdminTests = () => {
                      onClick={handleLog}
                   >
                      Log cube array
+                  </button>
+                  <button
+                     className='flex justify-center items-center p-2 w-28 h-16 rounded text-gray-900 bg-pink-400 hover:bg-pink-500'
+                     data-log='cubeArray'
+                     onClick={handleTestWhiteCross}
+                  >
+                     Test White Cross
+                  </button>
+                  <button
+                     className='flex justify-center items-center p-2 w-28 h-16 rounded text-gray-900 bg-pink-400 hover:bg-pink-500'
+                     data-log='cubeArray'
+                     onClick={handleTestF2L}
+                  >
+                     Test F2L
                   </button>
                </div>
                <h2 className='text-2xl font-bold'>Moves and rotations</h2>
