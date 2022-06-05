@@ -440,9 +440,6 @@ export class Solver {
 
    public solveAllF2L(): void {
       console.log("Début de F2L");
-      this.cube.move("x2");
-      this.solution += "x2 ";
-
       this.solveF2L(Color.White, Color.Red, Color.Blue);
       this.cube.move("y");
       this.solution += "y ";
@@ -464,6 +461,8 @@ export class Solver {
 
    public solve(): void {
       this.solveWhiteCross();
+      this.cube.move("x2");
+      this.solution += "x2 ";
       this.solveAllF2L();
    }
 }
