@@ -96,7 +96,7 @@ const RubiksCube: FC<IProps> = ({ cube }) => {
                />
             );
          })}
-         <TransformControls ref={ref} />
+         {/* <TransformControls ref={ref} /> */}
       </group>
    );
 };

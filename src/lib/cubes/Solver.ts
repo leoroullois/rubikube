@@ -197,11 +197,7 @@ export class Solver {
       this.solution += "y ";
    }
 
-   public solveF2L(color1: Color, color2: Color, color3: Color): void {
-      let numberCorner = this.getCornerIndex(color1, color2, color3);
-      let numberEdge = this.getEdgeIndex(color2, color3);
-      console.log("numberCorner", numberCorner);
-      console.log("numberEdge", numberEdge);
+   public updateF2LCornerPosition(numberCorner: number) {
       switch (numberCorner) {
          case 8:
             this.cube.move("U'");
@@ -231,12 +227,101 @@ export class Solver {
          default:
             break;
       }
+   }
+
+   public mapNumberToColor(number: number): string {
+      switch (number) {
+         case 0:
+            return "White";
+         case 1:
+            return "Orange";
+         case 2:
+            return "Green";
+         case 3:
+            return "Red";
+         case 4:
+            return "Blue";
+         case 5:
+            return "Yellow";
+         default:
+            return "Not found";
+      }
+   }
+
+   public solveF2L(color1: Color, color2: Color, color3: Color): void {
+      console.log(
+         "✨ Solve F2L",
+         this.mapNumberToColor(color1),
+         this.mapNumberToColor(color2),
+         this.mapNumberToColor(color3)
+      );
+      let numberCorner = this.getCornerIndex(color1, color2, color3);
+      let numberEdge = this.getEdgeIndex(color2, color3);
+      console.log("❓ [BEFORE] numberCorner", numberCorner);
+      console.log("❓ [BEFORE] numberEdge", numberEdge);
+
+      this.updateF2LCornerPosition(numberCorner);
+
       numberCorner = this.getCornerIndex(color1, color2, color3);
       numberEdge = this.getEdgeIndex(color2, color3);
-      console.log("numberCorner apres", numberCorner);
-      console.log("numberEdge  apres", numberEdge);
-      switch ([numberCorner, numberEdge]) {
-         case [6, 15]:
+      console.log("❓ numberCorner", numberCorner);
+      console.log("❓ numberEdge", numberEdge);
+
+      // ? si le coin est sur la pièce 0, on ramène l'arrête à la position 3,7 ou 15 pour retrouver une position connue
+      if (numberCorner === 0) {
+         switch (numberEdge) {
+            case 5:
+               this.cube.move("F U F'");
+               this.solution += "F U F' ";
+               break;
+            case 17:
+               this.cube.move("U'");
+               this.solution += "U' ";
+               break;
+            case 21:
+               this.cube.move("R' U R");
+               this.solution += "R' U R ";
+               break;
+            case 23:
+               this.cube.move("L U' L'");
+               this.solution += "L U' L' ";
+               break;
+            case 25:
+               this.cube.move("U");
+               this.solution += "U ";
+               break;
+
+            default:
+               break;
+         }
+      } else if (numberCorner === 6) {
+         switch (numberEdge) {
+            case 5:
+               this.cube.move("L' U' L U");
+               this.solution += "L' U' L U ";
+               break;
+            case 21:
+               this.cube.move("R' U R");
+               this.solution += "R' U R ";
+               break;
+            case 23:
+               this.cube.move("B' U B U'");
+               this.solution += "B' U B U' ";
+               break;
+
+            default:
+               break;
+         }
+      }
+
+      numberCorner = this.getCornerIndex(color1, color2, color3);
+      numberEdge = this.getEdgeIndex(color2, color3);
+      console.log("❓ [AFTER] numberCorner", numberCorner);
+      console.log("❓ [AFTER] numberEdge", numberEdge);
+
+      // [numberCorner, numberEdge]
+      switch (true) {
+         case numberCorner === 6 && numberEdge === 15:
             if (this.getPiece(numberCorner)[0] == Color.White) {
                if (this.getPiece(numberEdge)[1] == color2) {
                   this.cube.move("U R U' R'"); //cas1
@@ -263,7 +348,8 @@ export class Solver {
                }
             }
             break;
-         case [6, 7]:
+         // case [6, 7]:
+         case numberCorner === 6 && numberEdge === 7:
             if (this.getPiece(numberCorner)[0] == Color.White) {
                if (this.getPiece(numberEdge)[0] == color2) {
                   this.cube.move("y L' U L U2 y R U R' y2"); //cas7
@@ -274,8 +360,8 @@ export class Solver {
                }
             } else if (this.getPiece(numberCorner)[1] == Color.White) {
                if (this.getPiece(numberEdge)[0] == color2) {
-                  this.cube.move("R' U2 R2 U R2' U R"); //cas14
-                  this.solution += "R' U2 R2 U R2' U R ";
+                  this.cube.move("R' U2 R2 U R2 U R"); //cas14
+                  this.solution += "R' U2 R2 U R2 U R ";
                } else if (this.getPiece(numberEdge)[0] == color3) {
                   this.cube.move("F R' F' R"); //cas2
                   this.solution += "F R' F' R ";
@@ -290,11 +376,12 @@ export class Solver {
                }
             }
             break;
-         case [6, 17]:
+         // case [6, 17]:
+         case numberCorner === 6 && numberEdge === 17:
             if (this.getPiece(numberCorner)[0] == Color.White) {
                if (this.getPiece(numberEdge)[4] == color2) {
-                  this.cube.move("U' R U2' R' U2 R U' R'"); //cas5
-                  this.solution += "U' R U2' R' U2 R U' R' ";
+                  this.cube.move("U' R U2 R' U2 R U' R'"); //cas5
+                  this.solution += "U' R U2 R' U2 R U' R' ";
                } else if (this.getPiece(numberEdge)[4] == color3) {
                   this.cube.move("y' R' U' R y"); //cas9
                   this.solution += "y' R' U' R y ";
@@ -309,15 +396,16 @@ export class Solver {
                }
             } else if (this.getPiece(numberCorner)[2] == Color.White) {
                if (this.getPiece(numberEdge)[4] == color2) {
-                  this.cube.move("R U' R' U2' R U R'"); //cas21
-                  this.solution += "R U' R' U2' R U R' ";
+                  this.cube.move("R U' R' U2 R U R'"); //cas21
+                  this.solution += "R U' R' U2 R U R' ";
                } else if (this.getPiece(numberEdge)[4] == color3) {
                   this.cube.move("y' U' R' U2 R U' R' U R y"); //cas20
                   this.solution += "y' U' R' U2 R U' R' U R y ";
                }
             }
             break;
-         case [6, 25]:
+         // case [6, 25]:
+         case numberCorner === 6 && numberEdge === 25:
             if (this.getPiece(numberCorner)[0] == Color.White) {
                if (this.getPiece(numberEdge)[3] == color2) {
                   this.cube.move("U' R U R' U2 R U' R'"); //cas3
@@ -344,7 +432,8 @@ export class Solver {
                }
             }
             break;
-         case [6, 3]:
+         // case [6, 3]:
+         case numberCorner === 6 && numberEdge === 3:
             if (this.getPiece(numberCorner)[0] == Color.White) {
                if (this.getPiece(numberEdge)[1] == color2) {
                   this.cube.move("U' R U' R' U2 R U' R'"); //cas31
@@ -371,7 +460,8 @@ export class Solver {
                }
             }
             break;
-         case [0, 3]:
+         // case [0, 3]:
+         case numberCorner === 0 && numberEdge === 3:
             if (this.getPiece(numberCorner)[0] == Color.White) {
                if (this.getPiece(numberEdge)[1] == color2) {
                   this.cube.move("R U' R' U' R U R' U2 R U' R'"); //cas37
@@ -395,7 +485,8 @@ export class Solver {
                }
             }
             break;
-         case [0, 7]:
+         // case [0, 7]:
+         case numberCorner === 0 && numberEdge === 7:
             if (this.getPiece(numberCorner)[0] == Color.White) {
                if (this.getPiece(numberEdge)[2] == color2) {
                   this.cube.move("y' R' U' R U R' U' R y"); //cas27
@@ -413,7 +504,8 @@ export class Solver {
                }
             }
             break;
-         case [0, 15]:
+         // case [0, 15]:
+         case numberCorner === 0 && numberEdge === 15:
             if (this.getPiece(numberCorner)[0] == Color.White) {
                if (this.getPiece(numberEdge)[1] == color2) {
                   this.cube.move("R U' R' U R U' R'"); //cas29
@@ -433,13 +525,17 @@ export class Solver {
             break;
 
          default:
-            console.error("Une erreur s'est produite dans le F2L");
+            console.error(
+               "Une erreur s'est produite dans les F2L : coin et/ou arrête non trouvée, il manque des cas."
+            );
             break;
       }
+
+      console.log("✨ Ending solve F2L");
    }
 
    public solveAllF2L(): void {
-      console.log("Début de F2L");
+      console.log("✨ Début des F2L");
       this.solveF2L(Color.White, Color.Red, Color.Blue);
       this.cube.move("y");
       this.solution += "y ";
@@ -456,7 +552,7 @@ export class Solver {
       this.cube.move("y");
       this.solution += "y ";
 
-      console.log("Fin de F2L");
+      console.log("✨ Fin des F2L");
    }
 
    public solve(): void {

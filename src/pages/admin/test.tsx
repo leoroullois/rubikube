@@ -7,6 +7,8 @@ import { Solver } from "@lib/cubes/Solver";
 import { Moves, Rotations } from "@lib/cubes/Moves";
 import Canvas from "@components/threejs/canvas";
 import Cube from "@lib/cubes/Cube";
+import Image from "next/image";
+import { Color } from "@lib/cubes/types";
 
 const AdminTests = () => {
    const [mounted, setMounted] = useState(false);
@@ -24,7 +26,6 @@ const AdminTests = () => {
    };
 
    const handleReset = () => {
-      
       solver.cube.resetCubeArray();
       setCubeArray(solver.cube.cubeArray);
       console.clear();
@@ -61,7 +62,8 @@ const AdminTests = () => {
    const handleSolveF2L = () => {
       console.log("⏰ Solving F2L...");
 
-      solver.solveAllF2L();
+      // solver.solveAllF2L();
+      solver.solveF2L(Color.White, Color.Red, Color.Blue);
 
       setCubeArray(solver.cube.cubeArray);
       console.log("❓ Scramble : ", solver.cube.scramble);
@@ -149,7 +151,7 @@ const AdminTests = () => {
                      className='flex justify-center items-center p-2 w-28 h-16 rounded text-gray-900 bg-blue-400 hover:bg-blue-500'
                      onClick={handleSolveF2L}
                   >
-                     Solve F2L
+                     Solve first F2L
                   </button>
                   <button
                      className='flex justify-center items-center p-2 w-28 h-16 rounded text-gray-900 bg-blue-400 hover:bg-blue-500'
@@ -208,6 +210,14 @@ const AdminTests = () => {
                         );
                      })}
                   </section>
+               </div>
+               <div>
+                  <Image
+                     src='/cube_modelisation.png'
+                     alt='Modélisation du cube'
+                     width={231 * 3}
+                     height={409 * 3}
+                  />
                </div>
             </Wrapper>
          </main>
