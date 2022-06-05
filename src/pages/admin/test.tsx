@@ -6,6 +6,7 @@ import Wrapper from "@components/wrapper";
 import { Solver } from "@lib/cubes/Solver";
 import { Moves, Rotations } from "@lib/cubes/Moves";
 import Canvas from "@components/threejs/canvas";
+import Cube from "@lib/cubes/Cube";
 
 const AdminTests = () => {
    const [mounted, setMounted] = useState(false);
@@ -23,11 +24,11 @@ const AdminTests = () => {
    };
 
    const handleReset = () => {
-      console.log("🔴 Reset cube");
-
+      
       solver.cube.resetCubeArray();
       setCubeArray(solver.cube.cubeArray);
-
+      console.clear();
+      console.log("🔴 Cube has been reset");
       solver.solution = "";
    };
 
@@ -83,6 +84,19 @@ const AdminTests = () => {
       setCubeArray(solver.cube.cubeArray);
    };
 
+   const handleLog: MouseEventHandler<HTMLButtonElement> = (e) => {
+      const elt = e.target as HTMLElement;
+      switch (elt.attributes.getNamedItem("data-log")?.value) {
+         case "rubik":
+            console.table(solver.cube.getMinimalColorRubik());
+            break;
+         case "cubeArray":
+            console.table(Cube.getColorArray(solver.cube.cubeArray));
+         default:
+            break;
+      }
+   };
+
    useEffect(() => {
       setMounted(true);
    }, [solver.cube.cubeArray]);
@@ -117,39 +131,54 @@ const AdminTests = () => {
                      )}
                   </>
                </div>
-               <div className='flex gap-x-5'>
+               <h2 className='text-2xl font-bold'>Solve cube</h2>
+               <div className='flex gap-x-5 gap-y-5 flex-wrap'>
                   <button
-                     className='flex justify-center items-center p-2 w-28 rounded text-gray-900 bg-green-400 hover:bg-green-500'
+                     className='flex justify-center items-center p-2 w-28 h-16 rounded text-gray-900 bg-green-400 hover:bg-green-500'
                      onClick={handleScramble}
                   >
                      Scramble
                   </button>
                   <button
-                     className='flex justify-center items-center p-2 w-28 rounded text-gray-900 bg-blue-400 hover:bg-blue-500'
+                     className='flex justify-center items-center p-2 w-28 h-16 rounded text-gray-900 bg-blue-400 hover:bg-blue-500'
                      onClick={handleSolveWhiteCross}
                   >
                      Solve white cross
                   </button>
                   <button
-                     className='flex justify-center items-center p-2 w-28 rounded text-gray-900 bg-blue-400 hover:bg-blue-500'
+                     className='flex justify-center items-center p-2 w-28 h-16 rounded text-gray-900 bg-blue-400 hover:bg-blue-500'
                      onClick={handleSolveF2L}
                   >
                      Solve F2L
                   </button>
                   <button
-                     className='flex justify-center items-center p-2 w-28 rounded text-gray-900 bg-blue-400 hover:bg-blue-500'
+                     className='flex justify-center items-center p-2 w-28 h-16 rounded text-gray-900 bg-blue-400 hover:bg-blue-500'
                      onClick={handleSolve}
                   >
                      Solve cube
                   </button>
                   <button
                      onClick={handleReset}
-                     className='flex justify-center items-center p-2 w-28 rounded text-gray-900 bg-red-400 hover:bg-red-500'
+                     className='flex justify-center items-center p-2 w-28 h-16 rounded text-gray-900 bg-red-400 hover:bg-red-500'
                   >
                      Reset
                   </button>
+                  <button
+                     className='flex justify-center items-center p-2 w-28 h-16 rounded text-gray-900 bg-pink-400 hover:bg-pink-500'
+                     data-log='rubik'
+                     onClick={handleLog}
+                  >
+                     Log Rubik pieces
+                  </button>
+                  <button
+                     className='flex justify-center items-center p-2 w-28 h-16 rounded text-gray-900 bg-pink-400 hover:bg-pink-500'
+                     data-log='cubeArray'
+                     onClick={handleLog}
+                  >
+                     Log cube array
+                  </button>
                </div>
-
+               <h2 className='text-2xl font-bold'>Moves and rotations</h2>
                <div className='flex gap-x-5'>
                   <section className='flex flex-col gap-y-2'>
                      {Object.values(Rotations).map((rotation, i) => {
