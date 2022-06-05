@@ -48,12 +48,16 @@ export class Solver {
       return -1;
    }
 
-   private getCornerIndex(color1:Color, color2:Color, color3:Color): number {
+   private getCornerIndex(color1: Color, color2: Color, color3: Color): number {
       const tab = [0, 2, 6, 8, 18, 20, 24, 26];
-      for (const number of tab){
+      for (const number of tab) {
          const piece = this.getPiece(number);
          const tabColor = Object.values(piece);
-         if(tabColor.includes(color1) && tabColor.includes(color2) && tabColor.includes(color3)){
+         if (
+            tabColor.includes(color1) &&
+            tabColor.includes(color2) &&
+            tabColor.includes(color3)
+         ) {
             return number;
          }
       }
@@ -193,11 +197,11 @@ export class Solver {
       this.solution += "y ";
    }
 
-   public solveF2L(color1: Color, color2: Color, color3:Color): void {
+   public solveF2L(color1: Color, color2: Color, color3: Color): void {
       let numberCorner = this.getCornerIndex(color1, color2, color3);
-      let numberEdge = this.getEdgeIndex(color2, color3)
-      console.log("numberCorner", numberCorner)
-      console.log("numberEdge", numberEdge)
+      let numberEdge = this.getEdgeIndex(color2, color3);
+      console.log("numberCorner", numberCorner);
+      console.log("numberEdge", numberEdge);
       switch (numberCorner) {
          case 8:
             this.cube.move("U'");
@@ -223,244 +227,211 @@ export class Solver {
             this.cube.move("B U B'");
             this.solution += "B U B' ";
             break;
-      
+
          default:
             break;
       }
-      numberCorner = this.getCornerIndex(color1, color2, color3)
-      numberEdge = this.getEdgeIndex(color2, color3)
-      console.log("numberCorner apres", numberCorner)
-      console.log("numberEdge  apres", numberEdge)
+      numberCorner = this.getCornerIndex(color1, color2, color3);
+      numberEdge = this.getEdgeIndex(color2, color3);
+      console.log("numberCorner apres", numberCorner);
+      console.log("numberEdge  apres", numberEdge);
       switch ([numberCorner, numberEdge]) {
          case [6, 15]:
-            if(this.getPiece(numberCorner)[0] == Color.White){
-               if(this.getPiece(numberEdge)[1] == color2){
+            if (this.getPiece(numberCorner)[0] == Color.White) {
+               if (this.getPiece(numberEdge)[1] == color2) {
                   this.cube.move("U R U' R'"); //cas1
                   this.solution += "U R U' R' ";
-               }
-               else if(this.getPiece(numberEdge)[1] == color3){
-                  this.cube.move("U' R U2 R' U F' U' F");   //cas13 fait à la main
+               } else if (this.getPiece(numberEdge)[1] == color3) {
+                  this.cube.move("U' R U2 R' U F' U' F"); //cas13 fait à la main
                   this.solution += "U' R U2 R' U F' U' F ";
                }
-            }
-            else if(this.getPiece(numberCorner)[1] == Color.White){
-               if(this.getPiece(numberEdge)[1] == color2){
+            } else if (this.getPiece(numberCorner)[1] == Color.White) {
+               if (this.getPiece(numberEdge)[1] == color2) {
                   this.cube.move("U' R U' R' U R U R'"); //cas16
                   this.solution += "U' R U' R' U R U R' ";
-               }
-               else if(this.getPiece(numberEdge)[1] == color3){
+               } else if (this.getPiece(numberEdge)[1] == color3) {
                   this.cube.move("R U' R' U2 F' U' F"); //cas8
                   this.solution += "R U' R' U2 F' U' F ";
                }
-            }
-            else if(this.getPiece(numberCorner)[2] == Color.White){
-               if(this.getPiece(numberEdge)[1] == color2){
+            } else if (this.getPiece(numberCorner)[2] == Color.White) {
+               if (this.getPiece(numberEdge)[1] == color2) {
                   this.cube.move("R U2 R' U' R U R'"); //cas17
                   this.solution += "R U2 R' U' R U R' ";
-               }
-               else if(this.getPiece(numberEdge)[1] == color3){
+               } else if (this.getPiece(numberEdge)[1] == color3) {
                   this.cube.move("y' U2 R2 U2 R U R' U R2 y"); //cas24
                   this.solution += "y' U2 R2 U2 R U R' U R2 y ";
                }
             }
             break;
-         case[6,7]:
-            if(this.getPiece(numberCorner)[0] == Color.White){
-               if(this.getPiece(numberEdge)[0] == color2){
+         case [6, 7]:
+            if (this.getPiece(numberCorner)[0] == Color.White) {
+               if (this.getPiece(numberEdge)[0] == color2) {
                   this.cube.move("y L' U L U2 y R U R' y2"); //cas7
                   this.solution += "y L' U L U2 y R U R' y2 ";
-               }
-               else if(this.getPiece(numberEdge)[0] == color3){
-                  this.cube.move("U F' U F U' F' U' F");   //cas15 fait à la main
+               } else if (this.getPiece(numberEdge)[0] == color3) {
+                  this.cube.move("U F' U F U' F' U' F"); //cas15 fait à la main
                   this.solution += "U F' U F U' F' U' F ";
                }
-            }
-            else if(this.getPiece(numberCorner)[1] == Color.White){
-               if(this.getPiece(numberEdge)[0] == color2){
+            } else if (this.getPiece(numberCorner)[1] == Color.White) {
+               if (this.getPiece(numberEdge)[0] == color2) {
                   this.cube.move("R' U2 R2 U R2' U R"); //cas14
                   this.solution += "R' U2 R2 U R2' U R ";
-               }
-               else if(this.getPiece(numberEdge)[0] == color3){
+               } else if (this.getPiece(numberEdge)[0] == color3) {
                   this.cube.move("F R' F' R"); //cas2
                   this.solution += "F R' F' R ";
                }
-            }
-            else if(this.getPiece(numberCorner)[2] == Color.White){
-               if(this.getPiece(numberEdge)[0] == color2){
+            } else if (this.getPiece(numberCorner)[2] == Color.White) {
+               if (this.getPiece(numberEdge)[0] == color2) {
                   this.cube.move("U2 R2 U2 R' U' R U' R2"); //cas23
                   this.solution += "U2 R2 U2 R' U' R U' R2 ";
-               }
-               else if(this.getPiece(numberEdge)[0] == color3){
+               } else if (this.getPiece(numberEdge)[0] == color3) {
                   this.cube.move("y L' U2 L U L' U' L y'"); //cas18
                   this.solution += "y L' U2 L U L' U' L y' ";
                }
             }
             break;
-         case[6,17]:
-            if(this.getPiece(numberCorner)[0] == Color.White){
-               if(this.getPiece(numberEdge)[4] == color2){
+         case [6, 17]:
+            if (this.getPiece(numberCorner)[0] == Color.White) {
+               if (this.getPiece(numberEdge)[4] == color2) {
                   this.cube.move("U' R U2' R' U2 R U' R'"); //cas5
                   this.solution += "U' R U2' R' U2 R U' R' ";
-               }
-               else if(this.getPiece(numberEdge)[4] == color3){
-                  this.cube.move("y' R' U' R y");   //cas9
+               } else if (this.getPiece(numberEdge)[4] == color3) {
+                  this.cube.move("y' R' U' R y"); //cas9
                   this.solution += "y' R' U' R y ";
                }
-            }
-            else if(this.getPiece(numberCorner)[1] == Color.White){
-               if(this.getPiece(numberEdge)[4] == color2){
+            } else if (this.getPiece(numberCorner)[1] == Color.White) {
+               if (this.getPiece(numberEdge)[4] == color2) {
                   this.cube.move("U' R U R' U R U R'"); //cas12
                   this.solution += "U' R U R' U R U R' ";
-               }
-               else if(this.getPiece(numberEdge)[4] == color3){
+               } else if (this.getPiece(numberEdge)[4] == color3) {
                   this.cube.move("y' U R' U' R U2 R' U R y"); //cas4
                   this.solution += "y' U R' U' R U2 R' U R y ";
                }
-            }
-            else if(this.getPiece(numberCorner)[2] == Color.White){
-               if(this.getPiece(numberEdge)[4] == color2){
+            } else if (this.getPiece(numberCorner)[2] == Color.White) {
+               if (this.getPiece(numberEdge)[4] == color2) {
                   this.cube.move("R U' R' U2' R U R'"); //cas21
                   this.solution += "R U' R' U2' R U R' ";
-               }
-               else if(this.getPiece(numberEdge)[4] == color3){
+               } else if (this.getPiece(numberEdge)[4] == color3) {
                   this.cube.move("y' U' R' U2 R U' R' U R y"); //cas20
                   this.solution += "y' U' R' U2 R U' R' U R y ";
                }
             }
             break;
-         case[6,25]:
-            if(this.getPiece(numberCorner)[0] == Color.White){
-               if(this.getPiece(numberEdge)[3] == color2){
+         case [6, 25]:
+            if (this.getPiece(numberCorner)[0] == Color.White) {
+               if (this.getPiece(numberEdge)[3] == color2) {
                   this.cube.move("U' R U R' U2 R U' R'"); //cas3
                   this.solution += "U' R U R' U2 R U' R' ";
-               }
-               else if(this.getPiece(numberEdge)[3] == color3){
-                  this.cube.move("U' R U' R' U y' R' U' R y");   //cas11
+               } else if (this.getPiece(numberEdge)[3] == color3) {
+                  this.cube.move("U' R U' R' U y' R' U' R y"); //cas11
                   this.solution += "U' R U' R' U y' R' U' R y ";
                }
-            }
-            else if(this.getPiece(numberCorner)[1] == Color.White){
-               if(this.getPiece(numberEdge)[3] == color2){
+            } else if (this.getPiece(numberCorner)[1] == Color.White) {
+               if (this.getPiece(numberEdge)[3] == color2) {
                   this.cube.move("R U R'"); //cas10
                   this.solution += "R U R' ";
-               }
-               else if(this.getPiece(numberEdge)[3] == color3){
+               } else if (this.getPiece(numberEdge)[3] == color3) {
                   this.cube.move("R' F R F'"); //cas6
                   this.solution += "R' F R F' ";
                }
-            }
-            else if(this.getPiece(numberCorner)[2] == Color.White){
-               if(this.getPiece(numberEdge)[3] == color2){
+            } else if (this.getPiece(numberCorner)[2] == Color.White) {
+               if (this.getPiece(numberEdge)[3] == color2) {
                   this.cube.move("U R U2 R2 F R F'"); //cas19
                   this.solution += "U R U2 R2 F R F' ";
-               }
-               else if(this.getPiece(numberEdge)[3] == color3){
+               } else if (this.getPiece(numberEdge)[3] == color3) {
                   this.cube.move("y' R' U R U2 R' U' R y"); //cas22
                   this.solution += "y' R' U R U2 R' U' R y ";
                }
             }
             break;
-         case[6, 3]:
-            if(this.getPiece(numberCorner)[0] == Color.White){
-               if(this.getPiece(numberEdge)[1] == color2){
+         case [6, 3]:
+            if (this.getPiece(numberCorner)[0] == Color.White) {
+               if (this.getPiece(numberEdge)[1] == color2) {
                   this.cube.move("U' R U' R' U2 R U' R'"); //cas31
                   this.solution += "U' R U' R' U2 R U' R' ";
-               }
-               else if(this.getPiece(numberEdge)[1] == color3){
-                  this.cube.move("U' R U R' U F' U' F");   //cas33
+               } else if (this.getPiece(numberEdge)[1] == color3) {
+                  this.cube.move("U' R U R' U F' U' F"); //cas33
                   this.solution += "U' R U R' U F' U' F ";
                }
-            }
-            else if(this.getPiece(numberCorner)[1] == Color.White){
-               if(this.getPiece(numberEdge)[1] == color2){
+            } else if (this.getPiece(numberCorner)[1] == Color.White) {
+               if (this.getPiece(numberEdge)[1] == color2) {
                   this.cube.move("U R U R' U2 R U R'"); //cas32
                   this.solution += "U R U R' U2 R U R' ";
-               }
-               else if(this.getPiece(numberEdge)[1] == color3){
+               } else if (this.getPiece(numberEdge)[1] == color3) {
                   this.cube.move("y U2 L' U L U y L U L' y2"); //cas34
                   this.solution += "y U2 L' U L U y L U L' y2 ";
                }
-            }
-            else if(this.getPiece(numberCorner)[2] == Color.White){
-               if(this.getPiece(numberEdge)[1] == color2){
+            } else if (this.getPiece(numberCorner)[2] == Color.White) {
+               if (this.getPiece(numberEdge)[1] == color2) {
                   this.cube.move("R U R' U' R U R' U' R U R'"); //cas36
                   this.solution += "R U R' U' R U R' U' R U R' ";
-               }
-               else if(this.getPiece(numberEdge)[1] == color3){
+               } else if (this.getPiece(numberEdge)[1] == color3) {
                   this.cube.move("R U' R' U F' U F"); //cas35
                   this.solution += "R U' R' U F' U F ";
                }
             }
             break;
-         case[0, 3]:
-            if(this.getPiece(numberCorner)[0] == Color.White){
-               if(this.getPiece(numberEdge)[1] == color2){
+         case [0, 3]:
+            if (this.getPiece(numberCorner)[0] == Color.White) {
+               if (this.getPiece(numberEdge)[1] == color2) {
                   this.cube.move("R U' R' U' R U R' U2 R U' R'"); //cas37
                   this.solution += "R U' R' U' R U R' U2 R U' R' ";
-               }
-               else if(this.getPiece(numberEdge)[1] == color3){
-                  this.cube.move("R U' R' U' R U' R' U F' U' F");   //cas39
+               } else if (this.getPiece(numberEdge)[1] == color3) {
+                  this.cube.move("R U' R' U' R U' R' U F' U' F"); //cas39
                   this.solution += "R U' R' U' R U' R' U F' U' F ";
                }
-            }
-            else if(this.getPiece(numberCorner)[1] == Color.White){
-               if(this.getPiece(numberEdge)[1] == color2){
+            } else if (this.getPiece(numberCorner)[1] == Color.White) {
+               if (this.getPiece(numberEdge)[1] == color2) {
                   this.cube.move("R U R' U2 R U' R' U R U R'"); //cas38
                   this.solution += "R U R' U2 R U' R' U R U R' ";
-               }
-               else if(this.getPiece(numberEdge)[1] == color3){
+               } else if (this.getPiece(numberEdge)[1] == color3) {
                   this.cube.move("R U R' U' R U' R' U2 y' R' U' R y"); //cas40
                   this.solution += "R U R' U' R U' R' U2 y' R' U' R y ";
                }
-            }
-            else if(this.getPiece(numberCorner)[5] == Color.White){
-               if(this.getPiece(numberEdge)[0] == color2){
+            } else if (this.getPiece(numberCorner)[5] == Color.White) {
+               if (this.getPiece(numberEdge)[0] == color2) {
                   this.cube.move("R U' R' U y' R' U2 R U2 R' U R y"); //cas41
                   this.solution += "R U' R' U y' R' U2 R U2 R' U R y ";
                }
             }
             break;
-         case[0, 7]:
-            if(this.getPiece(numberCorner)[0] == Color.White){
-               if(this.getPiece(numberEdge)[2] == color2){
+         case [0, 7]:
+            if (this.getPiece(numberCorner)[0] == Color.White) {
+               if (this.getPiece(numberEdge)[2] == color2) {
                   this.cube.move("y' R' U' R U R' U' R y"); //cas27
                   this.solution += "y' R' U' R U R' U' R y ";
                }
-            }
-            else if(this.getPiece(numberCorner)[1] == Color.White){
-               if(this.getPiece(numberEdge)[2] == color2){
+            } else if (this.getPiece(numberCorner)[1] == Color.White) {
+               if (this.getPiece(numberEdge)[2] == color2) {
                   this.cube.move("y' R' U R U' R' U R y"); //cas30
                   this.solution += "y' R' U R U' R' U R y ";
                }
-            }
-            else if(this.getPiece(numberCorner)[5] == Color.White){
-               if(this.getPiece(numberEdge)[2] == color2){
+            } else if (this.getPiece(numberCorner)[5] == Color.White) {
+               if (this.getPiece(numberEdge)[2] == color2) {
                   this.cube.move("U R U' R' U' y L' U L y'"); //cas25
                   this.solution += "U R U' R' U' y L' U L y' ";
                }
             }
             break;
-         case[0, 15]:
-            if(this.getPiece(numberCorner)[0] == Color.White){
-               if(this.getPiece(numberEdge)[1] == color2){
+         case [0, 15]:
+            if (this.getPiece(numberCorner)[0] == Color.White) {
+               if (this.getPiece(numberEdge)[1] == color2) {
                   this.cube.move("R U' R' U R U' R'"); //cas29
                   this.solution += "R U' R' U R U' R' ";
                }
-            }
-            else if(this.getPiece(numberCorner)[1] == Color.White){
-               if(this.getPiece(numberEdge)[1] == color2){
+            } else if (this.getPiece(numberCorner)[1] == Color.White) {
+               if (this.getPiece(numberEdge)[1] == color2) {
                   this.cube.move("R U R' U' R U R'"); //cas28
                   this.solution += "R U R' U' R U R' ";
                }
-            }
-            else if(this.getPiece(numberCorner)[5] == Color.White){
-               if(this.getPiece(numberEdge)[1] == color2){
+            } else if (this.getPiece(numberCorner)[5] == Color.White) {
+               if (this.getPiece(numberEdge)[1] == color2) {
                   this.cube.move("y U' L' U L y' U R U' R'"); //cas26
                   this.solution += "y U' L' U L y' U R U' R' ";
                }
             }
             break;
-      
+
          default:
             console.error("Une erreur s'est produite dans le F2L");
             break;
@@ -468,7 +439,10 @@ export class Solver {
    }
 
    public solveAllF2L(): void {
-      console.log("Début de F2L")
+      console.log("Début de F2L");
+      this.cube.move("x2");
+      this.solution += "x2 ";
+
       this.solveF2L(Color.White, Color.Red, Color.Blue);
       this.cube.move("y");
       this.solution += "y ";
@@ -485,14 +459,11 @@ export class Solver {
       this.cube.move("y");
       this.solution += "y ";
 
-      console.log("Fin de F2L")
-
+      console.log("Fin de F2L");
    }
 
    public solve(): void {
       this.solveWhiteCross();
-      this.cube.move("x2");
-      this.solution += "x2 "
       this.solveAllF2L();
    }
 }

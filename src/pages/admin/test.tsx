@@ -4,6 +4,8 @@ import { MouseEventHandler, useEffect, useState } from "react";
 import CubePattern from "@components/cube-pattern";
 import Wrapper from "@components/wrapper";
 import { Solver } from "@lib/cubes/Solver";
+import { Moves, Rotations } from "@lib/cubes/Moves";
+import Canvas from "@components/threejs/canvas";
 
 const AdminTests = () => {
    const [mounted, setMounted] = useState(false);
@@ -11,17 +13,17 @@ const AdminTests = () => {
    const [cubeArray, setCubeArray] = useState(solver.cube.cubeArray);
 
    const handleScramble: MouseEventHandler = (e) => {
-      console.log("Scramble Cube");
+      console.log("⏰ Scrambling cube...");
 
       solver.cube.randomlyScrambleCube();
       setCubeArray(solver.cube.cubeArray);
       solver.solution = "";
 
-      console.log("New scramble : ", solver.cube.scramble);
+      console.log("❓ New scramble : ", solver.cube.scramble);
    };
 
    const handleReset = () => {
-      console.log("Reset cube");
+      console.log("🔴 Reset cube");
 
       solver.cube.resetCubeArray();
       setCubeArray(solver.cube.cubeArray);
@@ -30,14 +32,55 @@ const AdminTests = () => {
    };
 
    const handleSolve = () => {
-      console.log("Solve cube");
+      console.log("⏰ Solving cube...");
 
       solver.solve();
 
       setCubeArray(solver.cube.cubeArray);
-      console.log("Scramble : ", solver.cube.scramble);
-      console.log("Solution : ", solver.solution);
-      console.log("Solution length : ", solver.solution.length);
+      console.log("❓ Scramble : ", solver.cube.scramble);
+      console.log("🚀 Solution : ", solver.solution);
+      console.log(
+         "💪 Solution length : ",
+         solver.solution.trim().split(" ").length
+      );
+   };
+   const handleSolveWhiteCross = () => {
+      console.log("⏰ Solving white cross...");
+
+      solver.solveWhiteCross();
+
+      setCubeArray(solver.cube.cubeArray);
+      console.log("❓ Scramble : ", solver.cube.scramble);
+      console.log("🚀 Solution : ", solver.solution);
+      console.log(
+         "💪 Solution length : ",
+         solver.solution.trim().split(" ").length
+      );
+   };
+   const handleSolveF2L = () => {
+      console.log("⏰ Solving F2L...");
+
+      solver.solveAllF2L();
+
+      setCubeArray(solver.cube.cubeArray);
+      console.log("❓ Scramble : ", solver.cube.scramble);
+      console.log("🚀 Solution : ", solver.solution);
+      console.log(
+         "💪 Solution length : ",
+         solver.solution.trim().split(" ").length
+      );
+   };
+
+   const handleRotate = (rotation: Rotations) => {
+      console.log("🚨 [ROTATION]", rotation);
+      solver.cube.move(rotation);
+      setCubeArray(solver.cube.cubeArray);
+   };
+
+   const handleMove = (move: string) => {
+      console.log("🚨 [MOVE]", move);
+      solver.cube.move(move);
+      setCubeArray(solver.cube.cubeArray);
    };
 
    useEffect(() => {
@@ -52,35 +95,91 @@ const AdminTests = () => {
          <main className='flex flex-col'>
             <Wrapper className='flex flex-col gap-y-5'>
                <h1 className='text-3xl text-center my-5 font-bold'>Timer</h1>
-               <>{mounted && <CubePattern cubeArray={cubeArray} />}</>
-               <>
-                  {mounted && (
-                     <p>
-                        Scramble :{" "}
-                        {solver.cube.scramble
-                           ? solver.cube.scramble
-                           : "No scramble"}
-                     </p>
-                  )}
-               </>
-               <button
-                  className='flex justify-center p-2 w-32 rounded text-gray-900 bg-green-400 hover:bg-green-500'
-                  onClick={handleScramble}
-               >
-                  Scramble
-               </button>
-               <button
-                  className='flex justify-center p-2 w-32 rounded text-gray-900 bg-blue-400 hover:bg-blue-500'
-                  onClick={handleSolve}
-               >
-                  Solve
-               </button>
-               <button
-                  onClick={handleReset}
-                  className='flex justify-center p-2 w-32 rounded text-gray-900 bg-red-400 hover:bg-red-500'
-               >
-                  Reset
-               </button>
+               <div>
+                  <>
+                     {mounted && (
+                        <div className='flex'>
+                           <CubePattern cubeArray={cubeArray} />
+                           <div className='flex flex-col h-96'>
+                              <Canvas cube={solver.cube} />
+                           </div>
+                        </div>
+                     )}
+                  </>
+                  <>
+                     {mounted && (
+                        <p>
+                           Scramble :{" "}
+                           {solver.cube.scramble
+                              ? solver.cube.scramble
+                              : "No scramble"}
+                        </p>
+                     )}
+                  </>
+               </div>
+               <div className='flex gap-x-5'>
+                  <button
+                     className='flex justify-center items-center p-2 w-28 rounded text-gray-900 bg-green-400 hover:bg-green-500'
+                     onClick={handleScramble}
+                  >
+                     Scramble
+                  </button>
+                  <button
+                     className='flex justify-center items-center p-2 w-28 rounded text-gray-900 bg-blue-400 hover:bg-blue-500'
+                     onClick={handleSolveWhiteCross}
+                  >
+                     Solve white cross
+                  </button>
+                  <button
+                     className='flex justify-center items-center p-2 w-28 rounded text-gray-900 bg-blue-400 hover:bg-blue-500'
+                     onClick={handleSolveF2L}
+                  >
+                     Solve F2L
+                  </button>
+                  <button
+                     className='flex justify-center items-center p-2 w-28 rounded text-gray-900 bg-blue-400 hover:bg-blue-500'
+                     onClick={handleSolve}
+                  >
+                     Solve cube
+                  </button>
+                  <button
+                     onClick={handleReset}
+                     className='flex justify-center items-center p-2 w-28 rounded text-gray-900 bg-red-400 hover:bg-red-500'
+                  >
+                     Reset
+                  </button>
+               </div>
+
+               <div className='flex gap-x-5'>
+                  <section className='flex flex-col gap-y-2'>
+                     {Object.values(Rotations).map((rotation, i) => {
+                        return (
+                           <button
+                              onClick={() => handleRotate(rotation)}
+                              key={i}
+                              className='flex justify-center p-2 w-28 rounded text-gray-900 bg-orange-400 hover:bg-orange-500'
+                           >
+                              Rotate {rotation}
+                           </button>
+                        );
+                     })}
+                  </section>
+                  <section className='flex flex-row w-96 flex-wrap gap-x-5'>
+                     {Object.values(Moves).map((move, i) => {
+                        return (
+                           <button
+                              onClick={() =>
+                                 handleMove(move.replace(/i/g, "'"))
+                              }
+                              key={i}
+                              className='flex justify-center p-2 w-28 h-10 rounded text-gray-900 bg-indigo-400 hover:bg-indigo-500'
+                           >
+                              Rotate {move}
+                           </button>
+                        );
+                     })}
+                  </section>
+               </div>
             </Wrapper>
          </main>
       </>

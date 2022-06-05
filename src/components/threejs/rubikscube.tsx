@@ -75,7 +75,7 @@ const RubiksCube: FC<IProps> = ({ cube }) => {
 
    const updateRefs = (pRefs: React.MutableRefObject<any>) => {
       const vRefs = [...refs.current];
-      vRefs[0].position.x = 5;
+      // ! vRefs[0].position.x = 5;
       // console.log(refs.current[0]);
       // console.log(vRefs[0]);
    };

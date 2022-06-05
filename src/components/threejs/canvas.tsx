@@ -14,11 +14,11 @@ import {
 import { selectCube } from "@store/selectors";
 import store from "@store/store";
 
-const Canvas: FC = () => {
-   const dispatch = useDispatch();
-   const currMove = useSelector(selectCube).currMove;
-
-   const [cube] = useState(new ThreeByThree());
+interface IProps {
+   cube?: ThreeByThree;
+}
+const Canvas: FC<IProps> = (props) => {
+   const [cube] = useState(props.cube ? props.cube : new ThreeByThree());
 
    return (
       <ReactReduxContext.Consumer>
