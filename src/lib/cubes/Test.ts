@@ -35,6 +35,7 @@ class Test {
       console.log("Testing scrambles");
       for (let i = 0; i < 1e6; i++) {
          let randomScramble = this.scramble.generateRandomScramble();
+
          if (
             this._cube.move(randomScramble) !==
             this._cube.move(this.scramble.inverseScramble(randomScramble))
@@ -47,11 +48,12 @@ class Test {
       return true;
    }
 
-   public testWhiteCross(): boolean {
+   public testWhiteCross(nbTests: number): boolean {
       console.log("Testing white cross");
-      const nbTests = 1e5;
       for (let i = 0; i < nbTests; i++) {
          const solver = new Solver();
+         solver.cube.resetCubeArray();
+         solver.cube.move(this.scramble.generateRandomScramble());
          solver.solveWhiteCross();
          const cubeArray = solver.cube.cubeArray;
          if (
@@ -63,6 +65,60 @@ class Test {
             cubeArray[2][1] !== Color.Green ||
             cubeArray[3][1] !== Color.Red ||
             cubeArray[4][1] !== Color.Blue
+         ) {
+            console.error("Test not passed.");
+            return false;
+         }
+      }
+      console.log("Test succesfully passed.");
+      return true;
+   }
+
+   public testF2L(nbTests: number): boolean {
+      console.log("Testing F2L");
+      for (let i = 0; i < nbTests; i++) {
+         const solver = new Solver();
+         solver.cube.resetCubeArray();
+         solver.cube.move(this.scramble.generateRandomScramble());
+
+         solver.solveWhiteCross();
+         solver.cube.move("x2");
+         solver.solveAllF2L();
+         solver.cube.move("x2");
+         const cubeArray = solver.cube.cubeArray;
+         if (
+            cubeArray[0][0] !== Color.White ||
+            cubeArray[0][1] !== Color.White ||
+            cubeArray[0][2] !== Color.White ||
+            cubeArray[0][3] !== Color.White ||
+            cubeArray[0][5] !== Color.White ||
+            cubeArray[0][6] !== Color.White ||
+            cubeArray[0][7] !== Color.White ||
+            cubeArray[0][8] !== Color.White ||
+            cubeArray[1][0] !== Color.Orange ||
+            cubeArray[1][1] !== Color.Orange ||
+            cubeArray[1][2] !== Color.Orange ||
+            cubeArray[1][3] !== Color.Orange ||
+            cubeArray[1][4] !== Color.Orange ||
+            cubeArray[1][5] !== Color.Orange ||
+            cubeArray[2][0] !== Color.Green ||
+            cubeArray[2][1] !== Color.Green ||
+            cubeArray[2][2] !== Color.Green ||
+            cubeArray[2][3] !== Color.Green ||
+            cubeArray[2][4] !== Color.Green ||
+            cubeArray[2][5] !== Color.Green ||
+            cubeArray[3][0] !== Color.Red ||
+            cubeArray[3][1] !== Color.Red ||
+            cubeArray[3][2] !== Color.Red ||
+            cubeArray[3][3] !== Color.Red ||
+            cubeArray[3][4] !== Color.Red ||
+            cubeArray[3][5] !== Color.Red ||
+            cubeArray[4][0] !== Color.Blue ||
+            cubeArray[4][1] !== Color.Blue ||
+            cubeArray[4][2] !== Color.Blue ||
+            cubeArray[4][3] !== Color.Blue ||
+            cubeArray[4][4] !== Color.Blue ||
+            cubeArray[4][5] !== Color.Blue
          ) {
             console.error("Test not passed.");
             return false;

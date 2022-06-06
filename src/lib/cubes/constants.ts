@@ -65,7 +65,7 @@ export const stateMapping: StateMapping = {
       5: null,
    },
    8: {
-      0: [2, 1],
+      0: [2,0],
       1: null,
       2: [0, 6],
       3: null,

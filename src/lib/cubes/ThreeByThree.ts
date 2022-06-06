@@ -72,6 +72,26 @@ export class ThreeByThree extends Cube {
       return rubik as Rubik;
    };
 
+   public getColorRubik() {
+      const rubik = this.getRubik();
+      return Object.values(rubik).map((piece) => {
+         return Object.values(piece).map((color) => {
+            return ThreeByThree.mapColor(color);
+         });
+      });
+   }
+
+   public getMinimalColorRubik() {
+      const rubik = this.getRubik();
+      return Object.values(rubik).map((piece) => {
+         return Object.values(piece)
+            .map((color) => {
+               return ThreeByThree.mapColor(color);
+            })
+            .filter((color) => color !== "");
+      });
+   }
+
    public getHexRubik = (): HexRubik => {
       const rubik: any = this.solvedHexRubik;
       for (const [stateMappingKey, cube] of Object.entries(this.stateMapping)) {

@@ -17,6 +17,7 @@ const Timer = () => {
    const dispatch = useDispatch();
    const { cubeArray } = useSelector(selectTimer);
    const [scramble, setScramble] = useState("");
+   
    const handleScramble: MouseEventHandler = (e) => {
       const cube = new ThreeByThree();
 
@@ -52,24 +53,6 @@ const Timer = () => {
    const handleSolve = () => {
       const genetic = new Genetic(scramble);
       genetic.solve();
-   };
-   const mapColor = (color: HexColor): string => {
-      switch (color) {
-         case HexColor.White:
-            return "White";
-         case HexColor.Orange:
-            return "Orange";
-         case HexColor.Yellow:
-            return "Yellow";
-         case HexColor.Blue:
-            return "Blue";
-         case HexColor.Green:
-            return "Green";
-         case HexColor.Red:
-            return "Red";
-         default:
-            return "";
-      }
    };
 
    useEffect(() => {
