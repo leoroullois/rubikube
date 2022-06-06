@@ -19,7 +19,7 @@ interface IProps {
 }
 const Canvas: FC<IProps> = (props) => {
    const [cube] = useState(props.cube ? props.cube : new ThreeByThree());
-
+   
    return (
       <ReactReduxContext.Consumer>
          {({ store }) => (

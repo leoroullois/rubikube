@@ -5,13 +5,14 @@ import {
    resetCurrRotate,
    setCurrMove,
 } from "@store/slices/cube";
-import React, { FC, MouseEventHandler, useState } from "react";
+import React, { FC, MouseEventHandler, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 interface IProps {
    kbd: Moves;
+   active: Moves | null;
 }
-const KbdBtn: FC<IProps> = ({ kbd }) => {
+const KbdBtn: FC<IProps> = ({ kbd, active }) => {
    const dispatch = useDispatch();
    const { currMove } = useSelector(selectCube);
 
@@ -32,7 +33,7 @@ const KbdBtn: FC<IProps> = ({ kbd }) => {
       return "";
    };
 
-   const handleClick: MouseEventHandler = (e) => {
+   const handleClick = () => {
       if (!currMove) {
          dispatch(resetCurrRotate());
          dispatch(setCurrMove(kbd));
@@ -40,11 +41,22 @@ const KbdBtn: FC<IProps> = ({ kbd }) => {
       }
    };
 
+   const isActive = (): boolean => {
+      return active === kbd;
+   };
+
+   useEffect(() => {
+      if (active === kbd) {
+         handleClick();
+      }
+   });
    return (
       <button
          type='button'
          role='button'
-         className='flex items-center h-8 dark:bg-slate-800 active:ring hover:bg-slate-900/10 dark:hover:bg-slate-900 gap-x-2 px-3 rounded-lg shadow-lg'
+         className={`flex items-center h-8 dark:bg-slate-800 active:ring ${
+            isActive() && "ring"
+         } hover:bg-slate-900/10 dark:hover:bg-slate-900 gap-x-2 px-3 rounded-lg shadow-lg`}
          onClick={handleClick}
       >
          <kbd className='flex justify-center items-center bg-slate-400/20 dark:bg-slate-400/20 rounded w-8 font-bold'>

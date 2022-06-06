@@ -29,8 +29,25 @@ const RubiksCube: FC<IProps> = ({ cube }) => {
    const [mainPieces, setMainPieces] = useState(new THREE.Group());
 
    const animate = () => {
-      const step = Math.PI / (2 * 35);
+      const step = Math.PI / (2 * 30);
       if (currRotate >= Math.PI / 2 - step / 2) {
+         if (currMove) {
+            const x = Math.PI / 2 - currRotate;
+            if ([Moves.F, Moves.Bi].includes(currMove)) {
+               sideToMove.rotation.z -= x;
+            } else if ([Moves.B, Moves.Fi].includes(currMove)) {
+               sideToMove.rotation.z += x;
+            } else if ([Moves.R, Moves.Li].includes(currMove)) {
+               sideToMove.rotation.x -= x;
+            } else if ([Moves.L, Moves.Ri].includes(currMove)) {
+               sideToMove.rotation.x += x;
+            } else if ([Moves.Ui, Moves.D].includes(currMove)) {
+               sideToMove.rotation.y += x;
+            } else if ([Moves.U, Moves.Di].includes(currMove)) {
+               sideToMove.rotation.y -= x;
+            }
+         }
+
          dispatch(disolveRotateGroup());
       } else if (currMove) {
          if ([Moves.F, Moves.Bi].includes(currMove)) {
