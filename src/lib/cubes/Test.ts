@@ -48,9 +48,8 @@ class Test {
       return true;
    }
 
-   public testWhiteCross(): boolean {
+   public testWhiteCross(nbTests: number): boolean {
       console.log("Testing white cross");
-      const nbTests = 1e1;
       for (let i = 0; i < nbTests; i++) {
          const solver = new Solver();
          solver.cube.resetCubeArray();
@@ -75,11 +74,13 @@ class Test {
       return true;
    }
 
-   public testF2L(): boolean {
+   public testF2L(nbTests: number): boolean {
       console.log("Testing F2L");
-      const nbTests = 1e1;
       for (let i = 0; i < nbTests; i++) {
          const solver = new Solver();
+         solver.cube.resetCubeArray();
+         solver.cube.move(this.scramble.generateRandomScramble());
+
          solver.solveWhiteCross();
          solver.cube.move("x2");
          solver.solveAllF2L();

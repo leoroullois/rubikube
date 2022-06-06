@@ -100,22 +100,24 @@ const AdminTests = () => {
       }
    };
 
+   // ? TESTS
    const handleTestWhiteCross: MouseEventHandler = () => {
       const test = new Test();
-      test.testWhiteCross();
+      test.testWhiteCross(1e4);
    };
+   const handleTestF2L: MouseEventHandler = () => {
+      const test = new Test();
+      test.testF2L(1e3);
+   };
+
    useEffect(() => {
       setMounted(true);
    }, [solver.cube.cubeArray]);
 
-   const handleTestF2L: MouseEventHandler = () => {
-      const test = new Test();
-      test.testF2L();
-   };
    return (
       <>
          <Head>
-            <title>Timer</title>
+            <title>Admin panel</title>
          </Head>
          <main className='flex flex-col'>
             <Wrapper className='flex flex-col gap-y-5'>
@@ -142,6 +144,7 @@ const AdminTests = () => {
                      )}
                   </>
                </div>
+
                <h2 className='text-2xl font-bold'>Solve cube</h2>
                <div className='flex gap-x-5 gap-y-5 flex-wrap'>
                   <button
@@ -174,6 +177,9 @@ const AdminTests = () => {
                   >
                      Reset
                   </button>
+               </div>
+               <h2 className='text-2xl font-bold'>Tests and Debug</h2>
+               <div className='flex gap-x-5 gap-y-5 flex-wrap'>
                   <button
                      className='flex justify-center items-center p-2 w-28 h-16 rounded text-gray-900 bg-pink-400 hover:bg-pink-500'
                      data-log='rubik'
