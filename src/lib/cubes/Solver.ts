@@ -6,6 +6,7 @@ export class Solver {
    private _cube: ThreeByThree;
    private _solution: string;
    private _verbose: boolean;
+   private _doOLL : boolean;
    public constructor() {
       const scramble = new Scramble().scramble;
       this._cube = new ThreeByThree();
@@ -14,6 +15,7 @@ export class Solver {
 
       this._solution = "";
       this._verbose = false;
+      this._doOLL = false;
    }
 
    public get verbose(): boolean {
@@ -561,10 +563,691 @@ export class Solver {
       this.verbose && console.log("✨ Fin des F2L");
    }
 
+
+   public EdgeYellow():boolean{
+      return this.getPiece(25)[2] == Color.Yellow &&
+             this.getPiece(17)[2] == Color.Yellow &&
+             this.getPiece(15)[2] == Color.Yellow &&
+             this.getPiece(7)[2] == Color.Yellow 
+   }
+
+   public solveOLLEdgesOriented(): void{
+      if(this.EdgeYellow() &&
+         this.getPiece(26)[4] == Color.Yellow &&
+         this.getPiece(24)[2] == Color.Yellow &&
+         this.getPiece(8)[0] == Color.Yellow &&
+         this.getPiece(6)[1] == Color.Yellow) {
+            this.update("R U2 R' U' R U' R'") //OCLL6
+            this._doOLL = true;
+         }
+
+      else if (this.EdgeYellow() &&
+               this.getPiece(26)[3] == Color.Yellow &&
+               this.getPiece(24)[3] == Color.Yellow &&
+               this.getPiece(8)[0] == Color.Yellow &&
+               this.getPiece(6)[0] == Color.Yellow){
+                  this.update("R U2 R' U' R U R' U' R U' R'") //OCLL1
+                  this._doOLL = true;
+            }
+
+      else if(this.EdgeYellow() &&
+            this.getPiece(26)[3] == Color.Yellow &&
+            this.getPiece(24)[2] == Color.Yellow &&
+            this.getPiece(8)[0] == Color.Yellow &&
+            this.getPiece(6)[2] == Color.Yellow){
+               this.update("y R U R D R' U' R D' R2 y'") //OCLL4
+               this._doOLL = true;
+            }
+      else if(this.EdgeYellow() &&
+            this.getPiece(26)[2] == Color.Yellow &&
+            this.getPiece(24)[2] == Color.Yellow &&
+            this.getPiece(8)[0] == Color.Yellow &&
+            this.getPiece(6)[0] == Color.Yellow){
+               this.update("R2 D R' U2 R D' R' U2 R'") //OCLL3
+               this._doOLL = true;
+            }
+      else if(this.EdgeYellow() &&
+            this.getPiece(26)[3] == Color.Yellow &&
+            this.getPiece(24)[1] == Color.Yellow &&
+            this.getPiece(8)[2] == Color.Yellow &&
+            this.getPiece(6)[0] == Color.Yellow){
+               this.update("R U R' U R U2 R'") //OCLL7
+               this._doOLL = true;
+            }
+      else if(this.EdgeYellow() &&
+            this.getPiece(26)[4] == Color.Yellow &&
+            this.getPiece(24)[3] == Color.Yellow &&
+            this.getPiece(8)[4] == Color.Yellow &&
+            this.getPiece(6)[0] == Color.Yellow){
+               this.update("R U2 R2 U' R2 U' R2 U2 R") //OCLL2
+               this._doOLL = true;
+            }
+      else if(this.EdgeYellow() &&
+            this.getPiece(26)[2] == Color.Yellow &&
+            this.getPiece(24)[1] == Color.Yellow &&
+            this.getPiece(8)[0] == Color.Yellow &&
+            this.getPiece(6)[2] == Color.Yellow){
+               this.update("x R' U R D' R' U' R D x'") //OCLL5
+               this._doOLL = true;
+            }
+            
+   }
+
+   public solveOLLTShape(){
+      if(this.getPiece(26)[3] == Color.Yellow &&
+         this.getPiece(25)[3] == Color.Yellow &&
+         this.getPiece(24)[2] == Color.Yellow &&
+         this.getPiece(17)[2] == Color.Yellow &&
+         this.getPiece(15)[2] == Color.Yellow &&
+         this.getPiece(8)[0] == Color.Yellow &&
+         this.getPiece(7)[0] == Color.Yellow &&
+         this.getPiece(6)[2] == Color.Yellow) {
+            this.update("R U R' U' R' F R F'") //T1
+            this._doOLL = true;
+         }
+      else if(this.getPiece(26)[4] == Color.Yellow &&
+            this.getPiece(25)[3] == Color.Yellow &&
+            this.getPiece(24)[2] == Color.Yellow &&
+            this.getPiece(17)[2] == Color.Yellow &&
+            this.getPiece(15)[2] == Color.Yellow &&
+            this.getPiece(8)[4] == Color.Yellow &&
+            this.getPiece(7)[0] == Color.Yellow &&
+            this.getPiece(6)[2] == Color.Yellow) {
+               this.update("F R U R' U' F'") //T2
+               this._doOLL = true;
+      }
+   }
+
+   public solveOLLSquare(){
+      if(this.getPiece(26)[3] == Color.Yellow &&
+         this.getPiece(25)[3] == Color.Yellow &&
+         this.getPiece(24)[1] == Color.Yellow &&
+         this.getPiece(17)[4] == Color.Yellow &&
+         this.getPiece(15)[2] == Color.Yellow &&
+         this.getPiece(8)[4] == Color.Yellow &&
+         this.getPiece(7)[2] == Color.Yellow &&
+         this.getPiece(6)[2] == Color.Yellow) {
+            this.update("") //S1 à compléter par Léo 
+            this._doOLL = true;
+         }
+      else if(this.getPiece(26)[4] == Color.Yellow &&
+            this.getPiece(25)[2] == Color.Yellow &&
+            this.getPiece(24)[2] == Color.Yellow &&
+            this.getPiece(17)[4] == Color.Yellow &&
+            this.getPiece(15)[2] == Color.Yellow &&
+            this.getPiece(8)[0] == Color.Yellow &&
+            this.getPiece(7)[0] == Color.Yellow &&
+            this.getPiece(6)[1] == Color.Yellow) {
+               this.update("") //S2 à compléter par Léo
+               this._doOLL = true;
+      } 
+   }
+
+   public solveOLLCShapes(){
+      if(this.getPiece(26)[4] == Color.Yellow &&
+         this.getPiece(25)[3] == Color.Yellow &&
+         this.getPiece(24)[1] == Color.Yellow &&
+         this.getPiece(17)[2] == Color.Yellow &&
+         this.getPiece(15)[2] == Color.Yellow &&
+         this.getPiece(8)[2] == Color.Yellow &&
+         this.getPiece(7)[0] == Color.Yellow &&
+         this.getPiece(6)[2] == Color.Yellow) {
+            this.update("R U R2 U' R' F R U R U' F'") //C1
+            this._doOLL = true;
+         }
+      else if(this.getPiece(26)[2] == Color.Yellow &&
+            this.getPiece(25)[2] == Color.Yellow &&
+            this.getPiece(24)[1] == Color.Yellow &&
+            this.getPiece(17)[4] == Color.Yellow &&
+            this.getPiece(15)[1] == Color.Yellow &&
+            this.getPiece(8)[2] == Color.Yellow &&
+            this.getPiece(7)[2] == Color.Yellow &&
+            this.getPiece(6)[1] == Color.Yellow) {
+               this.update("R' U' R' F R F' U R") //C2
+               this._doOLL = true;
+      } 
+   }
+
+   public solveOLLWShapes(){
+      if(this.getPiece(26)[2] == Color.Yellow &&
+         this.getPiece(25)[3] == Color.Yellow &&
+         this.getPiece(24)[1] == Color.Yellow &&
+         this.getPiece(17)[2] == Color.Yellow &&
+         this.getPiece(15)[1] == Color.Yellow &&
+         this.getPiece(8)[0] == Color.Yellow &&
+         this.getPiece(7)[2] == Color.Yellow &&
+         this.getPiece(6)[2] == Color.Yellow) {
+            this.update("y2 R U R' F' R U R' U' R' F R U' R' F R F' y2") //W1
+            this._doOLL = true;
+         }
+      else if(this.getPiece(26)[3] == Color.Yellow &&
+            this.getPiece(25)[2] == Color.Yellow &&
+            this.getPiece(24)[2] == Color.Yellow &&
+            this.getPiece(17)[2] == Color.Yellow &&
+            this.getPiece(15)[1] == Color.Yellow &&
+            this.getPiece(8)[2] == Color.Yellow &&
+            this.getPiece(7)[0] == Color.Yellow &&
+            this.getPiece(6)[1] == Color.Yellow) {
+               this.update("R U R' U R U' R' U' R' F R F'") //W2
+               this._doOLL = true;
+      } 
+   }
+
+   public solveOLLCorners(){
+      if(this.getPiece(26)[2] == Color.Yellow &&
+      this.getPiece(25)[2] == Color.Yellow &&
+      this.getPiece(24)[2] == Color.Yellow &&
+      this.getPiece(17)[2] == Color.Yellow &&
+      this.getPiece(15)[1] == Color.Yellow &&
+      this.getPiece(8)[2] == Color.Yellow &&
+      this.getPiece(7)[0] == Color.Yellow &&
+      this.getPiece(6)[2] == Color.Yellow) {
+         this.update("") //E1 à compléter par Léo
+         this._doOLL = true;
+      }
+   else if(this.getPiece(26)[2] == Color.Yellow &&
+         this.getPiece(25)[3] == Color.Yellow &&
+         this.getPiece(24)[2] == Color.Yellow &&
+         this.getPiece(17)[2] == Color.Yellow &&
+         this.getPiece(15)[2] == Color.Yellow &&
+         this.getPiece(8)[2] == Color.Yellow &&
+         this.getPiece(7)[0] == Color.Yellow &&
+         this.getPiece(6)[2] == Color.Yellow) {
+            this.update("") //E2 à compléter par Léo
+            this._doOLL = true;
+      } 
+   }
+
+   public solveOLLPShapes(){
+      if(this.getPiece(26)[3] == Color.Yellow &&
+      this.getPiece(25)[2] == Color.Yellow &&
+      this.getPiece(24)[2] == Color.Yellow &&
+      this.getPiece(17)[4] == Color.Yellow &&
+      this.getPiece(15)[2] == Color.Yellow &&
+      this.getPiece(8)[0] == Color.Yellow &&
+      this.getPiece(7)[0] == Color.Yellow &&
+      this.getPiece(6)[2] == Color.Yellow) {
+         this.update("R' U' F U R U' R' F' R") //P1
+         this._doOLL = true;
+      }
+   else if(this.getPiece(26)[2] == Color.Yellow &&
+         this.getPiece(25)[3] == Color.Yellow &&
+         this.getPiece(24)[1] == Color.Yellow &&
+         this.getPiece(17)[2] == Color.Yellow &&
+         this.getPiece(15)[1] == Color.Yellow &&
+         this.getPiece(8)[2] == Color.Yellow &&
+         this.getPiece(7)[2] == Color.Yellow &&
+         this.getPiece(6)[1] == Color.Yellow) {
+            this.update("y R' U' F' U F R y'") //P3
+            this._doOLL = true;
+      } 
+   else if(this.getPiece(26)[3] == Color.Yellow &&
+         this.getPiece(25)[3] == Color.Yellow &&
+         this.getPiece(24)[2] == Color.Yellow &&
+         this.getPiece(17)[4] == Color.Yellow &&
+         this.getPiece(15)[2] == Color.Yellow &&
+         this.getPiece(8)[0] == Color.Yellow &&
+         this.getPiece(7)[2] == Color.Yellow &&
+         this.getPiece(6)[2] == Color.Yellow) {
+            this.update("R U B' U' R' U R B R'") //P2
+            this._doOLL = true;
+      }
+   else if(this.getPiece(26)[4] == Color.Yellow &&
+         this.getPiece(25)[3] == Color.Yellow &&
+         this.getPiece(24)[2] == Color.Yellow &&
+         this.getPiece(17)[4] == Color.Yellow &&
+         this.getPiece(15)[2] == Color.Yellow &&
+         this.getPiece(8)[4] == Color.Yellow &&
+         this.getPiece(7)[2] == Color.Yellow &&
+         this.getPiece(6)[2] == Color.Yellow) {
+            this.update("y2 F U R U' R' F' y2") //P4
+            this._doOLL = true;
+      }
+   }
+
+   public solveOLLIShapes(){
+      if(this.getPiece(26)[4] == Color.Yellow &&
+      this.getPiece(25)[3] == Color.Yellow &&
+      this.getPiece(24)[3] == Color.Yellow &&
+      this.getPiece(17)[2] == Color.Yellow &&
+      this.getPiece(15)[2] == Color.Yellow &&
+      this.getPiece(8)[4] == Color.Yellow &&
+      this.getPiece(7)[3] == Color.Yellow &&
+      this.getPiece(6)[3] == Color.Yellow) {
+         this.update("y2 F U R U' R' U R U' R' F' y2") //I1
+         this._doOLL = true;
+      }
+   else if(this.getPiece(26)[3] == Color.Yellow &&
+         this.getPiece(25)[2] == Color.Yellow &&
+         this.getPiece(24)[1] == Color.Yellow &&
+         this.getPiece(17)[4] == Color.Yellow &&
+         this.getPiece(15)[1] == Color.Yellow &&
+         this.getPiece(8)[0] == Color.Yellow &&
+         this.getPiece(7)[2] == Color.Yellow &&
+         this.getPiece(6)[1] == Color.Yellow) {
+            this.update("R U R' U R U' y R U' R' F' y'") //I2
+            this._doOLL = true;
+      } 
+   else if(this.getPiece(26)[4] == Color.Yellow &&
+         this.getPiece(25)[3] == Color.Yellow &&
+         this.getPiece(24)[1] == Color.Yellow &&
+         this.getPiece(17)[2] == Color.Yellow &&
+         this.getPiece(15)[2] == Color.Yellow &&
+         this.getPiece(8)[4] == Color.Yellow &&
+         this.getPiece(7)[0] == Color.Yellow &&
+         this.getPiece(6)[1] == Color.Yellow) {
+            this.update("") //I4 à compléter par Léo
+            this._doOLL = true;
+      }
+   else if(this.getPiece(26)[4] == Color.Yellow &&
+         this.getPiece(25)[2] == Color.Yellow &&
+         this.getPiece(24)[1] == Color.Yellow &&
+         this.getPiece(17)[4] == Color.Yellow &&
+         this.getPiece(15)[1] == Color.Yellow &&
+         this.getPiece(8)[4] == Color.Yellow &&
+         this.getPiece(7)[2] == Color.Yellow &&
+         this.getPiece(6)[1] == Color.Yellow) {
+            this.update("y R' F R U R U' R2 F' R2 U' R' U R U R' y'") //I3
+            this._doOLL = true;
+      }
+   }
+
+   public solveOLLFishShapes(){
+      if(this.getPiece(26)[4] == Color.Yellow &&
+      this.getPiece(25)[2] == Color.Yellow &&
+      this.getPiece(24)[3] == Color.Yellow &&
+      this.getPiece(17)[2] == Color.Yellow &&
+      this.getPiece(15)[1] == Color.Yellow &&
+      this.getPiece(8)[0] == Color.Yellow &&
+      this.getPiece(7)[0] == Color.Yellow &&
+      this.getPiece(6)[2] == Color.Yellow) {
+         this.update("R U R' U' R' F R2 U R' U' F'") //F1
+         this._doOLL = true;
+      }
+   else if(this.getPiece(26)[2] == Color.Yellow &&
+         this.getPiece(25)[3] == Color.Yellow &&
+         this.getPiece(24)[1] == Color.Yellow &&
+         this.getPiece(17)[4] == Color.Yellow &&
+         this.getPiece(15)[2] == Color.Yellow &&
+         this.getPiece(8)[0] == Color.Yellow &&
+         this.getPiece(7)[2] == Color.Yellow &&
+         this.getPiece(6)[2] == Color.Yellow) {
+            this.update("R U2 R2 F R F' R U2 R'") //F3
+            this._doOLL = true;
+      } 
+   else if(this.getPiece(26)[3] == Color.Yellow &&
+         this.getPiece(25)[3] == Color.Yellow &&
+         this.getPiece(24)[2] == Color.Yellow &&
+         this.getPiece(17)[2] == Color.Yellow &&
+         this.getPiece(15)[1] == Color.Yellow &&
+         this.getPiece(8)[4] == Color.Yellow &&
+         this.getPiece(7)[2] == Color.Yellow &&
+         this.getPiece(6)[0] == Color.Yellow) {
+            this.update("R U R' y R' F R U' R' F' R y'") //F2
+            this._doOLL = true;
+      }
+   else if(this.getPiece(26)[2] == Color.Yellow &&
+         this.getPiece(25)[2] == Color.Yellow &&
+         this.getPiece(24)[1] == Color.Yellow &&
+         this.getPiece(17)[2] == Color.Yellow &&
+         this.getPiece(15)[1] == Color.Yellow &&
+         this.getPiece(8)[0] == Color.Yellow &&
+         this.getPiece(7)[0] == Color.Yellow &&
+         this.getPiece(6)[2] == Color.Yellow) {
+            this.update("F R U' R' U' R U R' F'") //F4
+            this._doOLL = true;
+      }
+   }
+
+   public solveOLLKnight(){
+      if(this.getPiece(26)[3] == Color.Yellow &&
+      this.getPiece(25)[3] == Color.Yellow &&
+      this.getPiece(24)[1] == Color.Yellow &&
+      this.getPiece(17)[2] == Color.Yellow &&
+      this.getPiece(15)[2] == Color.Yellow &&
+      this.getPiece(8)[2] == Color.Yellow &&
+      this.getPiece(7)[0] == Color.Yellow &&
+      this.getPiece(6)[0] == Color.Yellow) {
+         this.update("F U R U' R2 F' R U R U' R'") //K1
+         this._doOLL = true;
+      }
+   else if(this.getPiece(26)[4] == Color.Yellow &&
+         this.getPiece(25)[3] == Color.Yellow &&
+         this.getPiece(24)[2] == Color.Yellow &&
+         this.getPiece(17)[2] == Color.Yellow &&
+         this.getPiece(15)[2] == Color.Yellow &&
+         this.getPiece(8)[0] == Color.Yellow &&
+         this.getPiece(7)[0] == Color.Yellow &&
+         this.getPiece(6)[1] == Color.Yellow) {
+            this.update("") //K4 à compléter par Léo
+            this._doOLL = true;
+      } 
+   else if(this.getPiece(26)[4] == Color.Yellow &&
+         this.getPiece(25)[3] == Color.Yellow &&
+         this.getPiece(24)[3] == Color.Yellow &&
+         this.getPiece(17)[2] == Color.Yellow &&
+         this.getPiece(15)[2] == Color.Yellow &&
+         this.getPiece(8)[0] == Color.Yellow &&
+         this.getPiece(7)[0] == Color.Yellow &&
+         this.getPiece(6)[2] == Color.Yellow) {
+            this.update("R' F R U R' F' R F U' F'") //K2
+            this._doOLL = true;
+      }
+   else if(this.getPiece(26)[3] == Color.Yellow &&
+         this.getPiece(25)[3] == Color.Yellow &&
+         this.getPiece(24)[1] == Color.Yellow &&
+         this.getPiece(17)[2] == Color.Yellow &&
+         this.getPiece(15)[2] == Color.Yellow &&
+         this.getPiece(8)[4] == Color.Yellow &&
+         this.getPiece(7)[0] == Color.Yellow &&
+         this.getPiece(6)[2] == Color.Yellow) {
+            this.update("") //K3 à compléter par Léo
+            this._doOLL = true;
+      }
+   }
+
+   public solveOLLAwkward(){
+      if(this.getPiece(26)[2] == Color.Yellow &&
+      this.getPiece(25)[3] == Color.Yellow &&
+      this.getPiece(24)[2] == Color.Yellow &&
+      this.getPiece(17)[2] == Color.Yellow &&
+      this.getPiece(15)[1] == Color.Yellow &&
+      this.getPiece(8)[4] == Color.Yellow &&
+      this.getPiece(7)[2] == Color.Yellow &&
+      this.getPiece(6)[1] == Color.Yellow) {
+         this.update("y R U R' U' R U' R' F' U' F R U R' y'") //A1
+         this._doOLL = true;
+      }
+   else if(this.getPiece(26)[3] == Color.Yellow &&
+         this.getPiece(25)[2] == Color.Yellow &&
+         this.getPiece(24)[3] == Color.Yellow &&
+         this.getPiece(17)[2] == Color.Yellow &&
+         this.getPiece(15)[1] == Color.Yellow &&
+         this.getPiece(8)[2] == Color.Yellow &&
+         this.getPiece(7)[0] == Color.Yellow &&
+         this.getPiece(6)[2] == Color.Yellow) {
+            this.update("R U R' U R U2 R' F R U R' U' F'") //A3
+            this._doOLL = true;
+      } 
+   else if(this.getPiece(26)[2] == Color.Yellow &&
+         this.getPiece(25)[2] == Color.Yellow &&
+         this.getPiece(24)[3] == Color.Yellow &&
+         this.getPiece(17)[4] == Color.Yellow &&
+         this.getPiece(15)[2] == Color.Yellow &&
+         this.getPiece(8)[2] == Color.Yellow &&
+         this.getPiece(7)[0] == Color.Yellow &&
+         this.getPiece(6)[0] == Color.Yellow) {
+            this.update("y' F U R U2 R' U' R U2 R' U' F' y") //A2
+            this._doOLL = true;
+      }
+   else if(this.getPiece(26)[2] == Color.Yellow &&
+         this.getPiece(25)[3] == Color.Yellow &&
+         this.getPiece(24)[2] == Color.Yellow &&
+         this.getPiece(17)[2] == Color.Yellow &&
+         this.getPiece(15)[1] == Color.Yellow &&
+         this.getPiece(8)[0] == Color.Yellow &&
+         this.getPiece(7)[2] == Color.Yellow &&
+         this.getPiece(6)[0] == Color.Yellow) {
+            this.update("R' U' R U' R' U2 R F R U R' U' F'") //A4
+            this._doOLL = true;
+      }
+   }
+
+   public solveOLLLShapes(){
+      if(this.getPiece(26)[4] == Color.Yellow &&
+      this.getPiece(25)[2] == Color.Yellow &&
+      this.getPiece(24)[3] == Color.Yellow &&
+      this.getPiece(17)[2] == Color.Yellow &&
+      this.getPiece(15)[1] == Color.Yellow &&
+      this.getPiece(8)[4] == Color.Yellow &&
+      this.getPiece(7)[0] == Color.Yellow &&
+      this.getPiece(6)[0] == Color.Yellow) {
+         this.update("F R U R' U' R U R' U' F'") //L2
+         this._doOLL = true;
+      }
+   else if(this.getPiece(26)[4] == Color.Yellow &&
+         this.getPiece(25)[2] == Color.Yellow &&
+         this.getPiece(24)[3] == Color.Yellow &&
+         this.getPiece(17)[4] == Color.Yellow &&
+         this.getPiece(15)[2] == Color.Yellow &&
+         this.getPiece(8)[4] == Color.Yellow &&
+         this.getPiece(7)[0] == Color.Yellow &&
+         this.getPiece(6)[0] == Color.Yellow) {
+            this.update("") //L3 à compléter par Léo
+            this._doOLL = true;
+      } 
+   else if(this.getPiece(26)[4] == Color.Yellow &&
+         this.getPiece(25)[3] == Color.Yellow &&
+         this.getPiece(24)[1] == Color.Yellow &&
+         this.getPiece(17)[4] == Color.Yellow &&
+         this.getPiece(15)[2] == Color.Yellow &&
+         this.getPiece(8)[4] == Color.Yellow &&
+         this.getPiece(7)[2] == Color.Yellow &&
+         this.getPiece(6)[1] == Color.Yellow) {
+            this.update("") //L5 à compléter par Léo
+            this._doOLL = true;
+      }
+   else if(this.getPiece(26)[3] == Color.Yellow &&
+         this.getPiece(25)[2] == Color.Yellow &&
+         this.getPiece(24)[1] == Color.Yellow &&
+         this.getPiece(17)[4] == Color.Yellow &&
+         this.getPiece(15)[2] == Color.Yellow &&
+         this.getPiece(8)[0] == Color.Yellow &&
+         this.getPiece(7)[0] == Color.Yellow &&
+         this.getPiece(6)[1] == Color.Yellow) {
+            this.update("F' L' U' L U L' U' L U F") //L1
+            this._doOLL = true;
+      }
+   else if(this.getPiece(26)[4] == Color.Yellow &&
+         this.getPiece(25)[3] == Color.Yellow &&
+         this.getPiece(24)[3] == Color.Yellow &&
+         this.getPiece(17)[4] == Color.Yellow &&
+         this.getPiece(15)[2] == Color.Yellow &&
+         this.getPiece(8)[4] == Color.Yellow &&
+         this.getPiece(7)[2] == Color.Yellow &&
+         this.getPiece(6)[0] == Color.Yellow) {
+            this.update("y' R U2 R' U' R U' R' F R U R' U' F' y") //L4 
+            this._doOLL = true;
+      }
+   else if(this.getPiece(26)[4] == Color.Yellow &&
+         this.getPiece(25)[2] == Color.Yellow &&
+         this.getPiece(24)[1] == Color.Yellow &&
+         this.getPiece(17)[4] == Color.Yellow &&
+         this.getPiece(15)[2] == Color.Yellow &&
+         this.getPiece(8)[4] == Color.Yellow &&
+         this.getPiece(7)[0] == Color.Yellow &&
+         this.getPiece(6)[1] == Color.Yellow) {
+            this.update("") //L6 à compléter par Léo
+            this._doOLL = true;
+      }
+   }
+
+   public solveOLLLightning(){
+      if(this.getPiece(26)[3] == Color.Yellow &&
+      this.getPiece(25)[2] == Color.Yellow &&
+      this.getPiece(24)[1] == Color.Yellow &&
+      this.getPiece(17)[2] == Color.Yellow &&
+      this.getPiece(15)[1] == Color.Yellow &&
+      this.getPiece(8)[2] == Color.Yellow &&
+      this.getPiece(7)[0] == Color.Yellow &&
+      this.getPiece(6)[0] == Color.Yellow) {
+         this.update("") //B1 à compléter par Léo
+         this._doOLL = true;
+      }
+   else if(this.getPiece(26)[3] == Color.Yellow &&
+         this.getPiece(25)[3] == Color.Yellow &&
+         this.getPiece(24)[1] == Color.Yellow &&
+         this.getPiece(17)[4] == Color.Yellow &&
+         this.getPiece(15)[2] == Color.Yellow &&
+         this.getPiece(8)[2] == Color.Yellow &&
+         this.getPiece(7)[2] == Color.Yellow &&
+         this.getPiece(6)[0] == Color.Yellow) {
+            this.update("") //B3 à compléter par Léo
+            this._doOLL = true;
+      } 
+   else if(this.getPiece(26)[3] == Color.Yellow &&
+         this.getPiece(25)[3] == Color.Yellow &&
+         this.getPiece(24)[2] == Color.Yellow &&
+         this.getPiece(17)[2] == Color.Yellow &&
+         this.getPiece(15)[2] == Color.Yellow &&
+         this.getPiece(8)[2] == Color.Yellow &&
+         this.getPiece(7)[0] == Color.Yellow &&
+         this.getPiece(6)[1] == Color.Yellow) {
+            this.update("L F' L' U' L U F U' L'") //B5
+            this._doOLL = true;
+      }
+   else if(this.getPiece(26)[2] == Color.Yellow &&
+         this.getPiece(25)[3] == Color.Yellow &&
+         this.getPiece(24)[3] == Color.Yellow &&
+         this.getPiece(17)[2] == Color.Yellow &&
+         this.getPiece(15)[1] == Color.Yellow &&
+         this.getPiece(8)[0] == Color.Yellow &&
+         this.getPiece(7)[2] == Color.Yellow &&
+         this.getPiece(6)[1] == Color.Yellow) {
+            this.update("") //B2 à compléter par Léo
+            this._doOLL = true;
+      }
+   else if(this.getPiece(26)[2] == Color.Yellow &&
+         this.getPiece(25)[2] == Color.Yellow &&
+         this.getPiece(24)[3] == Color.Yellow &&
+         this.getPiece(17)[4] == Color.Yellow &&
+         this.getPiece(15)[2] == Color.Yellow &&
+         this.getPiece(8)[0] == Color.Yellow &&
+         this.getPiece(7)[0] == Color.Yellow &&
+         this.getPiece(6)[1] == Color.Yellow) {
+            this.update("y F R U R' U' F' U F R U R' U' F' y'") //B4 
+            this._doOLL = true;
+      }
+   else if(this.getPiece(26)[2] == Color.Yellow &&
+         this.getPiece(25)[3] == Color.Yellow &&
+         this.getPiece(24)[3] == Color.Yellow &&
+         this.getPiece(17)[2] == Color.Yellow &&
+         this.getPiece(15)[2] == Color.Yellow &&
+         this.getPiece(8)[4] == Color.Yellow &&
+         this.getPiece(7)[0] == Color.Yellow &&
+         this.getPiece(6)[2] == Color.Yellow) {
+            this.update("R' F R U R' U' F' U R") //B6
+            this._doOLL = true;
+      }
+   }
+
+   public solveOLLNoEdge(){
+      if(this.getPiece(26)[4] == Color.Yellow &&
+      this.getPiece(25)[3] == Color.Yellow &&
+      this.getPiece(24)[1] == Color.Yellow &&
+      this.getPiece(17)[4] == Color.Yellow &&
+      this.getPiece(15)[1] == Color.Yellow &&
+      this.getPiece(8)[4] == Color.Yellow &&
+      this.getPiece(7)[0] == Color.Yellow &&
+      this.getPiece(6)[1] == Color.Yellow) {
+         this.update("R U2 R2 F R F' U2 R' F R F'") //O1
+         this._doOLL = true;
+      }
+   else if(this.getPiece(26)[3] == Color.Yellow &&
+         this.getPiece(25)[3] == Color.Yellow &&
+         this.getPiece(24)[1] == Color.Yellow &&
+         this.getPiece(17)[4] == Color.Yellow &&
+         this.getPiece(15)[1] == Color.Yellow &&
+         this.getPiece(8)[4] == Color.Yellow &&
+         this.getPiece(7)[0] == Color.Yellow &&
+         this.getPiece(6)[2] == Color.Yellow) {
+            this.update("") //O3 à compléter par Léo
+            this._doOLL = true;
+      } 
+   else if(this.getPiece(26)[2] == Color.Yellow &&
+         this.getPiece(25)[3] == Color.Yellow &&
+         this.getPiece(24)[2] == Color.Yellow &&
+         this.getPiece(17)[4] == Color.Yellow &&
+         this.getPiece(15)[1] == Color.Yellow &&
+         this.getPiece(8)[0] == Color.Yellow &&
+         this.getPiece(7)[0] == Color.Yellow &&
+         this.getPiece(6)[0] == Color.Yellow) {
+            this.update("") //O6 à compléter par Léo
+            this._doOLL = true;
+      }
+   else if(this.getPiece(26)[2] == Color.Yellow &&
+         this.getPiece(25)[3] == Color.Yellow &&
+         this.getPiece(24)[3] == Color.Yellow &&
+         this.getPiece(17)[4] == Color.Yellow &&
+         this.getPiece(15)[1] == Color.Yellow &&
+         this.getPiece(8)[4] == Color.Yellow &&
+         this.getPiece(7)[0] == Color.Yellow &&
+         this.getPiece(6)[2] == Color.Yellow) {
+            this.update("R U R' U R' F R F' U2 R' F R F'") //O5
+            this._doOLL = true;
+      }
+   else if(this.getPiece(26)[4] == Color.Yellow &&
+         this.getPiece(25)[3] == Color.Yellow &&
+         this.getPiece(24)[3] == Color.Yellow &&
+         this.getPiece(17)[4] == Color.Yellow &&
+         this.getPiece(15)[1] == Color.Yellow &&
+         this.getPiece(8)[4] == Color.Yellow &&
+         this.getPiece(7)[0] == Color.Yellow &&
+         this.getPiece(6)[0] == Color.Yellow) {
+            this.update("") //O2 à compléter par Léo 
+            this._doOLL = true;
+      }
+   else if(this.getPiece(26)[4] == Color.Yellow &&
+         this.getPiece(25)[3] == Color.Yellow &&
+         this.getPiece(24)[2] == Color.Yellow &&
+         this.getPiece(17)[4] == Color.Yellow &&
+         this.getPiece(15)[1] == Color.Yellow &&
+         this.getPiece(8)[0] == Color.Yellow &&
+         this.getPiece(7)[0] == Color.Yellow &&
+         this.getPiece(6)[1] == Color.Yellow) {
+            this.update("") //O4 à compléter par Léo
+            this._doOLL = true;
+      }
+
+   else if(this.getPiece(26)[2] == Color.Yellow &&
+      this.getPiece(25)[3] == Color.Yellow &&
+      this.getPiece(24)[2] == Color.Yellow &&
+      this.getPiece(17)[4] == Color.Yellow &&
+      this.getPiece(15)[1] == Color.Yellow &&
+      this.getPiece(8)[4] == Color.Yellow &&
+      this.getPiece(7)[0] == Color.Yellow &&
+      this.getPiece(6)[1] == Color.Yellow) {
+         this.update("") //O7 à compléter par Léo 
+         this._doOLL = true;
+   }
+   else if(this.getPiece(26)[2] == Color.Yellow &&
+      this.getPiece(25)[3] == Color.Yellow &&
+      this.getPiece(24)[2] == Color.Yellow &&
+      this.getPiece(17)[4] == Color.Yellow &&
+      this.getPiece(15)[1] == Color.Yellow &&
+      this.getPiece(8)[2] == Color.Yellow &&
+      this.getPiece(7)[0] == Color.Yellow &&
+      this.getPiece(6)[2] == Color.Yellow) {
+         this.update("") //O8 à compléter par Léo
+         this._doOLL = true;
+   }
+   }
+
+   public solveOLL(): void {
+      while(!this._doOLL){
+         this.solveOLLEdgesOriented();
+         this.solveOLLTShape();
+         this.solveOLLSquare();
+         this.solveOLLCShapes();
+         this.solveOLLWShapes();
+         this.solveOLLCorners();
+         this.solveOLLPShapes();
+         this.solveOLLIShapes();
+         this.solveOLLFishShapes();
+         this.solveOLLKnight();
+         this.solveOLLAwkward();
+         this.solveOLLLShapes();
+         this.solveOLLLightning();
+         this.solveOLLNoEdge();
+         if (!this._doOLL){ this.update("U") }
+      }
+   }
+
    public solve(): void {
       this.solveWhiteCross();
       this.update("x2");
       this.solveAllF2L();
+      this.solveOLL();
    }
 }
 
