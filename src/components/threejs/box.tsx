@@ -2,7 +2,6 @@ import React, { forwardRef, MouseEventHandler, useState } from "react";
 
 import { HexColor, IPieceState } from "@lib/cubes/types";
 import { RoundedBox } from "@react-three/drei";
-import { ThreeEvent } from "@react-three/fiber";
 
 type Props = JSX.IntrinsicElements["mesh"] & {
   state: IPieceState<HexColor>;
@@ -23,7 +22,10 @@ const Box = ({ state, position, ...props }: Props, ref: any) => {
   const [pieceSize] = useState(0.95);
 
   const handleClick = (event: any) => {
+    event.stopPropagation();
     console.log("Name of the mesh (initial place) : ", event.eventObject.name);
+    console.log("Position :", event.eventObject.position);
+    console.log("Rotation :", event.eventObject.rotation);
   };
 
   return (

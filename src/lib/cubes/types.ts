@@ -1,5 +1,7 @@
 export type Position = [x: number, y: number, z: number];
 
+export type CubeArray = Color[][];
+
 export interface IPieceState<T> {
   0: T | null;
   1: T | null;

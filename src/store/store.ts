@@ -1,4 +1,4 @@
-import logger from "redux-logger";
+// import logger from "redux-logger";
 import thunk from "redux-thunk";
 
 import { configureStore } from "@reduxjs/toolkit";
@@ -14,8 +14,7 @@ const makeStore = () =>
       timer,
       auth,
     },
-    middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware().concat(thunk).concat(logger),
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(thunk),
   });
 
 const store = makeStore();

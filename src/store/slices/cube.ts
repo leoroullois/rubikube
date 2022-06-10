@@ -1,19 +1,24 @@
-import { ThreeByThree } from "@lib/cubes/ThreeByThree";
 import { Moves } from "@lib/cubes/Moves";
-import { createReducer, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import * as THREE from "three";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface IState {
   currMove: Moves | null;
   rotateGroup: number[];
+  mainGroup: number[];
   currRotate: number;
+  btnClicked: boolean;
 }
 
 const init = (): IState => {
   return {
     currMove: null,
     rotateGroup: [],
+    mainGroup: [
+      0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 14, 18, 19, 20,
+      21, 22, 23, 24, 25, 26,
+    ],
     currRotate: 0,
+    btnClicked: false,
   };
 };
 
@@ -23,6 +28,9 @@ const cube = createSlice({
   reducers: {
     setCurrMove: (state, action: PayloadAction<Moves | null>) => {
       state.currMove = action.payload;
+    },
+    setBtnClicked: (state, action: PayloadAction<boolean>) => {
+      state.btnClicked = action.payload;
     },
     makeRotateGroup: (state, action: PayloadAction<Moves>) => {
       const face = action.payload;
@@ -83,9 +91,12 @@ const cube = createSlice({
           (face === Moves.L || face === Moves.Li)
         ) {
           rotateGroup.push(index);
+        } else {
+          mainGroup.push(index);
         }
       }
       state.rotateGroup = rotateGroup;
+      state.mainGroup = mainGroup;
     },
     disolveRotateGroup: (state): void => {
       state.currRotate = 0;
@@ -104,6 +115,7 @@ const cube = createSlice({
 
 export const {
   setCurrMove,
+  setBtnClicked,
   makeRotateGroup,
   disolveRotateGroup,
   addToCurrRotate,

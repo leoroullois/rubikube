@@ -7,7 +7,11 @@ import { ThreeByThree } from "@lib/cubes/ThreeByThree";
 import { Position } from "@lib/cubes/types";
 import { useFrame, useThree } from "@react-three/fiber";
 import { selectCube } from "@store/selectors";
-import { addToCurrRotate, disolveRotateGroup } from "@store/slices/cube";
+import {
+  addToCurrRotate,
+  disolveRotateGroup,
+  setBtnClicked,
+} from "@store/slices/cube";
 
 import Box from "./box";
 
@@ -116,7 +120,8 @@ const refMapping: IRefMapping[] = [
 
 const RubiksCube: FC<IProps> = ({ cube }) => {
   const dispatch = useDispatch();
-  const { currMove, rotateGroup, currRotate } = useSelector(selectCube);
+  const { currMove, rotateGroup, mainGroup, currRotate, btnClicked } =
+    useSelector(selectCube);
   const [cubePositions] = useState<Position[]>(cube.getCubePositions());
 
   const scene = useThree((state) => state.scene);
@@ -143,20 +148,40 @@ const RubiksCube: FC<IProps> = ({ cube }) => {
     );
 
     const vRefs = [...aRefs];
+    interface IUpdate {
+      i: number;
+      newNbPiece: number;
+    }
+    let update: IUpdate[] = [];
     const map = refMapping.find((map) => map.move === move)?.map;
     if (map) {
-      for (const mapNbPiece of map) {
-        const index = vRefs.findIndex((ref) => ref.nbPiece === mapNbPiece.init);
+      for (const { init: initIndex, new: newIndex } of map) {
+        const index = vRefs.findIndex((ref) => ref.nbPiece === initIndex);
         if (index !== -1) {
-          vRefs[index].nbPiece = mapNbPiece.new;
+          // const newIndex = vRefs.findIndex(
+          //   (ref) => ref.nbPiece === mapNbPiece.new
+          // );
+
+          // vRefs[index].nbPiece = newIndex;
+          update.push({
+            i: index,
+            newNbPiece: newIndex,
+          });
+        } else {
+          console.error("Piece not found");
         }
       }
+      console.log(update);
+      for (const { i, newNbPiece } of update) {
+        vRefs[i].nbPiece = newNbPiece;
+      }
+      update = [];
     }
     setARefs(vRefs);
-    console.log(vRefs.map((r) => r.nbPiece));
 
     console.warn(
       "[END] update refs",
+      move,
       aRefs.map((r) => r.nbPiece)
     );
   };
@@ -180,13 +205,41 @@ const RubiksCube: FC<IProps> = ({ cube }) => {
           sideToMove.rotation.y -= x;
         }
         updateRefs(currMove);
+        mainPieces.clear();
+        sideToMove.clear();
+        aRefs.forEach(({ ref, nbPiece }) => {
+          mainPieces.add(ref);
+          const position = new ThreeByThree().getCubePositions()[nbPiece];
+          if (
+            currMove === Moves.F &&
+            (nbPiece === 0 ||
+              nbPiece === 1 ||
+              nbPiece === 2 ||
+              nbPiece === 3 ||
+              nbPiece === 4 ||
+              nbPiece === 5 ||
+              nbPiece === 6 ||
+              nbPiece === 7 ||
+              nbPiece === 8)
+          ) {
+            ref.position.setX(position[0]);
+            ref.position.setY(position[1]);
+            ref.position.setZ(position[2]);
+            ref.rotateZ(-Math.PI / 2);
+          }
+        });
       }
 
       dispatch(disolveRotateGroup());
 
       console.log(
         "refs end of animation",
-        aRefs.map((r) => r.nbPiece)
+        aRefs.map((r) => r.nbPiece),
+        aRefs.map((r) => r.ref.position)
+      );
+      console.log(
+        "refs end of animation",
+        refs.current.map((r) => r.position)
       );
     } else if (currMove) {
       if ([Moves.F, Moves.Bi].includes(currMove)) {
@@ -212,7 +265,11 @@ const RubiksCube: FC<IProps> = ({ cube }) => {
   };
 
   useEffect(() => {
-    setMounted(true);
+    if (!mounted) {
+      for (let i = 0; i < 27; i++) {
+        refs.current[i].name = Number(i).toString();
+      }
+    }
     setARefs(
       refs.current.map((ref, i) => {
         return {
@@ -221,27 +278,44 @@ const RubiksCube: FC<IProps> = ({ cube }) => {
         };
       })
     );
-  }, []);
+    setMounted(true);
+  }, [mounted]);
 
   useFrame(({ camera }) => {
     if (mounted) {
       camera.clear();
-      if (currRotate === 0) {
-        for (let i = 0; i < 27; i++) {
-          const nbPiece = aRefs[i].nbPiece;
-          const piece = getPieceByNumber(aRefs[i].nbPiece);
-
+      if (btnClicked) {
+        sideToMove.clear();
+        mainPieces.clear();
+        for (const nbPiece of rotateGroup) {
+          const piece = aRefs.find((ref) => ref.nbPiece === nbPiece);
+          // const piece = getPieceByNumber(nbPiece);
           if (piece) {
-            if (!rotateGroup.includes(nbPiece)) {
-              mainPieces.add(piece);
-            } else {
-              sideToMove.add(piece);
-            }
+            sideToMove.add(piece.ref);
+            console.info(
+              "[SIDE TO MOVE] Piece added : ",
+              piece.nbPiece,
+              piece.ref
+            );
           }
         }
-        scene.add(mainPieces);
-        scene.add(sideToMove);
+
+        for (const nbPiece of mainGroup) {
+          const piece = aRefs.find((ref) => ref.nbPiece === nbPiece);
+          if (piece) {
+            mainPieces.add(piece.ref);
+          }
+        }
+
+        console.log("Rotate group :", rotateGroup);
+        console.log("Main group :", mainGroup);
+
+        dispatch(setBtnClicked(false));
+        console.log("sideToMove", sideToMove);
       }
+      scene.add(mainPieces);
+      scene.add(sideToMove);
+      // sideToMove.position.x+=0.01;
       animate();
     }
   });
@@ -255,13 +329,13 @@ const RubiksCube: FC<IProps> = ({ cube }) => {
             state={state[i]}
             position={position}
             init={i}
+            name={Number(i).toString()}
             ref={(element: THREE.Mesh) => {
               refs.current[i] = element as THREE.Mesh;
             }}
           />
         );
       })}
-      {/* <TransformControls ref={ref} /> */}
     </group>
   );
 };

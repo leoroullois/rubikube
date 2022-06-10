@@ -3,6 +3,7 @@ import { selectCube } from "@store/selectors";
 import {
   makeRotateGroup,
   resetCurrRotate,
+  setBtnClicked,
   setCurrMove,
 } from "@store/slices/cube";
 import React, { FC, useEffect } from "react";
@@ -38,6 +39,7 @@ const KbdBtn: FC<IProps> = ({ kbd, active }) => {
       dispatch(resetCurrRotate());
       dispatch(setCurrMove(kbd));
       dispatch(makeRotateGroup(kbd));
+      dispatch(setBtnClicked(true));
     }
   };
 
