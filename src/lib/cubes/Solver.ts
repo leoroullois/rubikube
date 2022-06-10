@@ -7,6 +7,7 @@ export class Solver {
    private _solution: string;
    private _verbose: boolean;
    private _doOLL : boolean;
+   private _doPLL : boolean;
    public constructor() {
       const scramble = new Scramble().scramble;
       this._cube = new ThreeByThree();
@@ -16,6 +17,7 @@ export class Solver {
       this._solution = "";
       this._verbose = false;
       this._doOLL = false;
+      this._doPLL = false;
    }
 
    public get verbose(): boolean {
@@ -1243,11 +1245,269 @@ export class Solver {
       }
    }
 
+   public solvePLLPermutationEdge(): void{
+      if(this.getPiece(26)[3] == this.getPiece(25)[3] &&
+         this.getPiece(26)[3] == this.getPiece(24)[3] &&
+         this.getPiece(26)[4] == this.getPiece(8)[4] &&
+         this.getPiece(26)[4] == this.getPiece(7)[0] &&
+         this.getPiece(24)[1] == this.getPiece(17)[4] &&
+         this.getPiece(24)[1] == this.getPiece(6)[1] &&
+         this.getPiece(15)[1] == this.getPiece(8)[0] &&
+         this.getPiece(15)[1] == this.getPiece(6)[0]) {
+            this.update("R2 U R U R' U' R' U' R' U R'"); //Ub
+            this._doPLL = true;
+         }
+      else if(this.getPiece(26)[3] == this.getPiece(24)[3] &&
+         this.getPiece(26)[3] == this.getPiece(17)[4] &&
+         this.getPiece(26)[4] == this.getPiece(8)[4] &&
+         this.getPiece(26)[4] == this.getPiece(25)[3] &&
+         this.getPiece(24)[1] == this.getPiece(7)[0] &&
+         this.getPiece(24)[1] == this.getPiece(6)[1] &&
+         this.getPiece(15)[1] == this.getPiece(8)[0] &&
+         this.getPiece(15)[1] == this.getPiece(6)[0]) {
+            this.update(""); //Z à compléter par Léo
+            this._doPLL = true;
+         }
+      else if(this.getPiece(26)[3] == this.getPiece(25)[3] &&
+         this.getPiece(26)[3] == this.getPiece(24)[4] &&
+         this.getPiece(26)[4] == this.getPiece(15)[1] &&
+         this.getPiece(26)[4] == this.getPiece(8)[4] &&
+         this.getPiece(24)[1] == this.getPiece(7)[0] &&
+         this.getPiece(24)[1] == this.getPiece(6)[1] &&
+         this.getPiece(17)[4] == this.getPiece(8)[0] &&
+         this.getPiece(17)[4] == this.getPiece(6)[0]) {
+            this.update("R U' R U R U R U' R' U' R2"); //Ua
+            this._doPLL = true;
+         }
+      else if(this.getPiece(26)[4] == this.getPiece(15)[1] &&
+         this.getPiece(26)[4] == this.getPiece(8)[4] &&
+         this.getPiece(26)[3] == this.getPiece(7)[0] &&
+         this.getPiece(26)[3] == this.getPiece(24)[3] &&
+         this.getPiece(17)[4] == this.getPiece(24)[1] &&
+         this.getPiece(17)[4] == this.getPiece(6)[1] &&
+         this.getPiece(25)[3] == this.getPiece(8)[0] &&
+         this.getPiece(25)[3] == this.getPiece(6)[0]) {
+            this.update(""); //H à compléter par Léo
+            this._doPLL = true;
+         }
+   }
+
+   public solvePLLPermutationCorner(): void {
+      if(this.getPiece(26)[3] == this.getPiece(15)[1] &&
+         this.getPiece(26)[3] == this.getPiece(24)[3] &&
+         this.getPiece(26)[4] == this.getPiece(25)[3] &&
+         this.getPiece(26)[4] == this.getPiece(6)[0] &&
+         this.getPiece(24)[1] == this.getPiece(8)[0] &&
+         this.getPiece(24)[1] == this.getPiece(7)[0] &&
+         this.getPiece(17)[4] == this.getPiece(8)[3] &&
+         this.getPiece(17)[4] == this.getPiece(6)[1]) {
+            this.update("x R' U R' D2 R U' R' D2 R2 x'"); //Aa
+            this._doPLL = true;
+         }
+      else if(this.getPiece(26)[3] == this.getPiece(8)[0] &&
+         this.getPiece(26)[3] == this.getPiece(17)[4] &&
+         this.getPiece(26)[4] == this.getPiece(24)[1] &&
+         this.getPiece(26)[4] == this.getPiece(7)[0] &&
+         this.getPiece(25)[3] == this.getPiece(8)[4] &&
+         this.getPiece(25)[3] == this.getPiece(6)[1] &&
+         this.getPiece(24)[3] == this.getPiece(15)[1] &&
+         this.getPiece(24)[3] == this.getPiece(6)[0]) {
+            this.update("x' R U' R' D R U R' D' R U R' D R U' R' D' x"); //E 
+            this._doPLL = true;
+         }
+      else if(this.getPiece(26)[3] == this.getPiece(8)[0] &&
+         this.getPiece(26)[3] == this.getPiece(7)[0] &&
+         this.getPiece(26)[4] == this.getPiece(15)[1] &&
+         this.getPiece(26)[4] == this.getPiece(6)[0] &&
+         this.getPiece(24)[1] == this.getPiece(25)[3] &&
+         this.getPiece(24)[1] == this.getPiece(6)[1] &&
+         this.getPiece(24)[3] == this.getPiece(17)[4] &&
+         this.getPiece(24)[3] == this.getPiece(8)[4]) {
+            this.update("x R2 D2 R U R' D2 R U' R x'"); //Ab
+            this._doPLL = true;
+         }
+   }
+
+   public solvePLLSwapAdjacent(): void {
+      if(this.getPiece(26)[3] == this.getPiece(17)[4] &&
+         this.getPiece(26)[3] == this.getPiece(6)[1] &&
+         this.getPiece(26)[4] == this.getPiece(25)[3] &&
+         this.getPiece(26)[4] == this.getPiece(8)[4] &&
+         this.getPiece(24)[1] == this.getPiece(8)[0] &&
+         this.getPiece(24)[1] == this.getPiece(7)[0] &&
+         this.getPiece(15)[1] == this.getPiece(24)[3] &&
+         this.getPiece(15)[1] == this.getPiece(6)[0]) {
+            this.update("R U' R' U' R U R D R' U' R D' R' U2 R' U'"); //Ra
+            this._doPLL = true;
+         }
+      else if(this.getPiece(26)[3] == this.getPiece(15)[1] &&
+         this.getPiece(26)[3] == this.getPiece(6)[1] &&
+         this.getPiece(26)[4] == this.getPiece(24)[1] &&
+         this.getPiece(26)[4] == this.getPiece(17)[4] &&
+         this.getPiece(8)[4] == this.getPiece(25)[3] &&
+         this.getPiece(8)[4] == this.getPiece(24)[3] &&
+         this.getPiece(7)[0] == this.getPiece(8)[0] &&
+         this.getPiece(7)[0] == this.getPiece(6)[0]) {
+            this.update("R' U L' U2 R U' R' U2 R L U'"); //Ja
+            this._doPLL = true;
+         }
+      else if(this.getPiece(26)[3] == this.getPiece(25)[3] &&
+         this.getPiece(26)[3] == this.getPiece(6)[1] &&
+         this.getPiece(26)[4] == this.getPiece(15)[1] &&
+         this.getPiece(26)[4] == this.getPiece(8)[4] &&
+         this.getPiece(24)[1] == this.getPiece(7)[0] &&
+         this.getPiece(24)[1] == this.getPiece(8)[0] &&
+         this.getPiece(17)[4] == this.getPiece(24)[4] &&
+         this.getPiece(17)[4] == this.getPiece(6)[0]) {
+            this.update("R U R' U' R' F R2 U' R' U' R U R' F')"); //T
+            this._doPLL = true;
+         }
+      else if(this.getPiece(26)[4] == this.getPiece(25)[3] &&
+         this.getPiece(26)[4] == this.getPiece(24)[1] &&
+         this.getPiece(26)[3] == this.getPiece(7)[0] &&
+         this.getPiece(26)[3] == this.getPiece(6)[1] &&
+         this.getPiece(17)[4] == this.getPiece(8)[4] &&
+         this.getPiece(17)[4] == this.getPiece(24)[3] &&
+         this.getPiece(15)[1] == this.getPiece(8)[0] &&
+         this.getPiece(15)[1] == this.getPiece(6)[0]) {
+            this.update("R' U2 R U2 R' F R U R' U' R' F' R2 U'"); //Rb
+            this._doPLL = true;
+         }
+      else if(this.getPiece(26)[3] == this.getPiece(25)[3] &&
+         this.getPiece(26)[3] == this.getPiece(6)[1] &&
+         this.getPiece(26)[4] == this.getPiece(17)[4] &&
+         this.getPiece(26)[4] == this.getPiece(8)[4] &&
+         this.getPiece(24)[1] == this.getPiece(15)[1] &&
+         this.getPiece(24)[1] == this.getPiece(8)[0] &&
+         this.getPiece(24)[3] == this.getPiece(7)[0] &&
+         this.getPiece(24)[3] == this.getPiece(6)[0]) {
+            this.update("R U R' F' R U R' U' R' F R2 U' R' U'"); //Jb
+            this._doPLL = true;
+         }
+      else if(this.getPiece(26)[3] == this.getPiece(6)[1] &&
+         this.getPiece(26)[3] == this.getPiece(7)[0] &&
+         this.getPiece(26)[4] == this.getPiece(17)[4] &&
+         this.getPiece(26)[4] == this.getPiece(8)[4] &&
+         this.getPiece(24)[1] == this.getPiece(25)[3] &&
+         this.getPiece(24)[1] == this.getPiece(8)[0] &&
+         this.getPiece(24)[3] == this.getPiece(15)[1] &&
+         this.getPiece(24)[3] == this.getPiece(6)[0]) {
+            this.update("R' U' F' R U R' U' R' F R2 U' R' U' R U R' U R"); //F
+            this._doPLL = true;
+         }
+   }
+
+   public solvePLLSwapDiagonal(): void{
+      if(this.getPiece(26)[3] == this.getPiece(7)[0] &&
+         this.getPiece(26)[3] == this.getPiece(8)[0] &&
+         this.getPiece(26)[4] == this.getPiece(25)[3] &&
+         this.getPiece(26)[4] == this.getPiece(24)[1] &&
+         this.getPiece(24)[3] == this.getPiece(15)[1] &&
+         this.getPiece(24)[3] == this.getPiece(6)[0] &&
+         this.getPiece(17)[4] == this.getPiece(8)[4] &&
+         this.getPiece(17)[4] == this.getPiece(6)[1]) {
+            this.update("R' U R' U' y R' F' R2 U' R' U R' F R F y'"); //V
+            this._doPLL = true;
+         }
+      else if(this.getPiece(26)[3] == this.getPiece(25)[3] &&
+         this.getPiece(26)[3] == this.getPiece(8)[0] &&
+         this.getPiece(26)[4] == this.getPiece(24)[1] &&
+         this.getPiece(26)[4] == this.getPiece(15)[1] &&
+         this.getPiece(8)[4] == this.getPiece(17)[4] &&
+         this.getPiece(8)[4] == this.getPiece(6)[1] &&
+         this.getPiece(7)[0] == this.getPiece(24)[3] &&
+         this.getPiece(7)[0] == this.getPiece(6)[0]) {
+            this.update("R U R' U R U R' F' R U R' U' R' F R2 U' R' U2 R U' R'"); //Na
+            this._doPLL = true;
+         }
+      else if(this.getPiece(26)[3] == this.getPiece(8)[0] &&
+         this.getPiece(26)[3] == this.getPiece(7)[0] &&
+         this.getPiece(26)[4] == this.getPiece(24)[1] &&
+         this.getPiece(26)[4] == this.getPiece(15)[1] &&
+         this.getPiece(24)[3] == this.getPiece(17)[4] &&
+         this.getPiece(24)[3] == this.getPiece(6)[0] &&
+         this.getPiece(25)[3] == this.getPiece(8)[4] &&
+         this.getPiece(25)[3] == this.getPiece(6)[1]) {
+            this.update("F R U' R' U' R U R' F' R U R' U' R' F R F'"); //Y
+            this._doPLL = true;
+         }
+      else if(this.getPiece(26)[4] == this.getPiece(17)[4] &&
+         this.getPiece(26)[4] == this.getPiece(24)[1] &&
+         this.getPiece(26)[3] == this.getPiece(7)[0] &&
+         this.getPiece(26)[3] == this.getPiece(8)[0] &&
+         this.getPiece(8)[4] == this.getPiece(15)[1] &&
+         this.getPiece(8)[4] == this.getPiece(6)[1] &&
+         this.getPiece(25)[3] == this.getPiece(24)[3] &&
+         this.getPiece(25)[3] == this.getPiece(6)[0]) {
+            this.update("R' U R U' R' F' U' F R U R' F R' F' R U' R"); //Nb
+            this._doPLL = true;
+         }
+   }
+
+   public solvePLLGPermutation(): void{
+      if(this.getPiece(26)[3] == this.getPiece(17)[4] &&
+         this.getPiece(26)[3] == this.getPiece(6)[1] &&
+         this.getPiece(26)[4] == this.getPiece(8)[4] &&
+         this.getPiece(26)[4] == this.getPiece(15)[1] &&
+         this.getPiece(24)[3] == this.getPiece(7)[0] &&
+         this.getPiece(24)[3] == this.getPiece(6)[0] &&
+         this.getPiece(8)[0] == this.getPiece(25)[3] &&
+         this.getPiece(8)[0] == this.getPiece(24)[1]) {
+            this.update("R2 U R' U R' U' R U' R2 D U' R' U R D' U"); //Ga
+            this._doPLL = true;
+         }
+      else if(this.getPiece(26)[3] == this.getPiece(7)[0] &&
+         this.getPiece(26)[3] == this.getPiece(6)[1] &&
+         this.getPiece(26)[4] == this.getPiece(8)[4] &&
+         this.getPiece(26)[4] == this.getPiece(15)[1] &&
+         this.getPiece(25)[3] == this.getPiece(24)[3] &&
+         this.getPiece(25)[3] == this.getPiece(6)[0] &&
+         this.getPiece(17)[4] == this.getPiece(24)[1] &&
+         this.getPiece(17)[4] == this.getPiece(8)[0]) {
+            this.update("R2 U' R U' R U R' U R2 D' U R U' R' D U'"); //Gc
+            this._doPLL = true;
+         }
+      else if(this.getPiece(26)[3] == this.getPiece(24)[3] &&
+         this.getPiece(26)[3] == this.getPiece(15)[1] &&
+         this.getPiece(26)[4] == this.getPiece(7)[0] &&
+         this.getPiece(26)[4] == this.getPiece(6)[0] &&
+         this.getPiece(25)[3] == this.getPiece(8)[4] &&
+         this.getPiece(25)[3] == this.getPiece(6)[1] &&
+         this.getPiece(17)[4] == this.getPiece(8)[0] &&
+         this.getPiece(17)[4] == this.getPiece(24)[1]) {
+            this.update(""); //Gb à compléter par Léo
+            this._doPLL = true;
+         }
+      else if(this.getPiece(26)[3] == this.getPiece(15)[1] &&
+         this.getPiece(26)[3] == this.getPiece(6)[1] &&
+         this.getPiece(26)[4] == this.getPiece(7)[0] &&
+         this.getPiece(26)[4] == this.getPiece(8)[4] &&
+         this.getPiece(17)[4] == this.getPiece(24)[3] &&
+         this.getPiece(17)[4] == this.getPiece(6)[0] &&
+         this.getPiece(25)[3] == this.getPiece(24)[1] &&
+         this.getPiece(25)[3] == this.getPiece(8)[0]) {
+            this.update("D' R U R' U' D R2 U' R U' R' U R' U R2 U"); //Gd
+            this._doPLL = true;
+         }
+   }
+
+   public solvePLL(): void{
+      while(!this._doPLL){
+         this.solvePLLPermutationEdge();
+         this.solvePLLPermutationCorner();
+         this.solvePLLSwapAdjacent();
+         this.solvePLLSwapDiagonal();
+         this.solvePLLGPermutation();
+         if (!this._doPLL){ this.update("U") }
+   }
+}
+
    public solve(): void {
       this.solveWhiteCross();
       this.update("x2");
       this.solveAllF2L();
       this.solveOLL();
+      this.solvePLL();
    }
 }
 
