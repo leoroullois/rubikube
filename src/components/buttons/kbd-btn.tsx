@@ -6,7 +6,7 @@ import {
   setBtnClicked,
   setCurrMove,
 } from "@store/slices/cube";
-import React, { FC, useEffect } from "react";
+import React, { FC, MouseEventHandler, useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 interface IProps {
@@ -34,14 +34,14 @@ const KbdBtn: FC<IProps> = ({ kbd, active }) => {
     return "";
   };
 
-  const handleClick = () => {
+  const handleClick = useCallback(() => {
     if (!currMove) {
       dispatch(resetCurrRotate());
       dispatch(setCurrMove(kbd));
       dispatch(makeRotateGroup(kbd));
       dispatch(setBtnClicked(true));
     }
-  };
+  }, [currMove, dispatch, kbd]);
 
   const isActive = (): boolean => {
     return active === kbd;
@@ -51,7 +51,7 @@ const KbdBtn: FC<IProps> = ({ kbd, active }) => {
     if (active === kbd) {
       handleClick();
     }
-  });
+  }, [active, handleClick, kbd]);
   return (
     <button
       type="button"
