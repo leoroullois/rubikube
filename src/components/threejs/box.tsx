@@ -2,6 +2,7 @@ import React, { forwardRef, MouseEventHandler, useState } from "react";
 
 import { HexColor, IPieceState } from "@lib/cubes/types";
 import { RoundedBox } from "@react-three/drei";
+import * as THREE from "three";
 
 type Props = JSX.IntrinsicElements["mesh"] & {
   state: IPieceState<HexColor>;
@@ -24,8 +25,13 @@ const Box = ({ state, position, ...props }: Props, ref: any) => {
   const handleClick = (event: any) => {
     event.stopPropagation();
     console.log("Name of the mesh (initial place) : ", event.eventObject.name);
+    const tempQuaternion = new THREE.Quaternion();
+    event.eventObject.getWorldQuaternion(tempQuaternion);
+    console.log("Initial position : ", position);
+
     console.log("Position :", event.eventObject.position);
     console.log("Rotation :", event.eventObject.rotation);
+    console.log("World quaternion :", tempQuaternion);
   };
 
   return (

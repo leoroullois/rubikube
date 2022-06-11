@@ -14,6 +14,7 @@ import {
 } from "@store/slices/cube";
 
 import Box from "./box";
+import { MathUtils, Vector3 } from "three";
 
 interface IProps {
   cube: ThreeByThree;
@@ -158,11 +159,6 @@ const RubiksCube: FC<IProps> = ({ cube }) => {
       for (const { init: initIndex, new: newIndex } of map) {
         const index = vRefs.findIndex((ref) => ref.nbPiece === initIndex);
         if (index !== -1) {
-          // const newIndex = vRefs.findIndex(
-          //   (ref) => ref.nbPiece === mapNbPiece.new
-          // );
-
-          // vRefs[index].nbPiece = newIndex;
           update.push({
             i: index,
             newNbPiece: newIndex,
@@ -205,29 +201,44 @@ const RubiksCube: FC<IProps> = ({ cube }) => {
           sideToMove.rotation.y -= x;
         }
         updateRefs(currMove);
+
+        // for (const ref of refs.current) {
+        //   const vector = new THREE.Vector3();
+        //   vector.setFromMatrixPosition(ref.matrixWorld);
+        //   console.log(vector);
+
+        //   const tempPosition = new THREE.Vector3();
+        //   const tempQuaternion = new THREE.Quaternion();
+
+        //   ref.getWorldPosition(tempPosition);
+        //   ref.getWorldQuaternion(tempQuaternion);
+
+        //   scene.add(ref);
+        //   ref.position.copy(tempPosition);
+        //   // ref.quaternion.copy(tempQuaternion);
+        //   console.log(
+        //     `Piece updated :`,
+        //     "\nPosition : ",
+        //     ref.position,
+        //     "\nRotation : ",
+        //     ref.rotation
+        //   );
+        // }
+        console.warn("clear");
         mainPieces.clear();
         sideToMove.clear();
-        aRefs.forEach(({ ref, nbPiece }) => {
-          mainPieces.add(ref);
-          const position = new ThreeByThree().getCubePositions()[nbPiece];
-          if (
-            currMove === Moves.F &&
-            (nbPiece === 0 ||
-              nbPiece === 1 ||
-              nbPiece === 2 ||
-              nbPiece === 3 ||
-              nbPiece === 4 ||
-              nbPiece === 5 ||
-              nbPiece === 6 ||
-              nbPiece === 7 ||
-              nbPiece === 8)
-          ) {
-            ref.position.setX(position[0]);
-            ref.position.setY(position[1]);
-            ref.position.setZ(position[2]);
+        const tempCube = new ThreeByThree();
+        for (const { ref, nbPiece } of aRefs) {
+          ref.position.set(...tempCube.getCubePositions()[nbPiece]);
+          if (nbPiece < 9) {
             ref.rotateZ(-Math.PI / 2);
           }
-        });
+          scene.add(ref);
+        }
+
+        if (sideToMove.children.length !== 0) {
+          console.error("sideToMove is not empty", sideToMove.children);
+        }
       }
 
       dispatch(disolveRotateGroup());
@@ -236,10 +247,6 @@ const RubiksCube: FC<IProps> = ({ cube }) => {
         "refs end of animation",
         aRefs.map((r) => r.nbPiece),
         aRefs.map((r) => r.ref.position)
-      );
-      console.log(
-        "refs end of animation",
-        refs.current.map((r) => r.position)
       );
     } else if (currMove) {
       if ([Moves.F, Moves.Bi].includes(currMove)) {
@@ -285,8 +292,12 @@ const RubiksCube: FC<IProps> = ({ cube }) => {
     if (mounted) {
       camera.clear();
       if (btnClicked) {
-        sideToMove.clear();
-        mainPieces.clear();
+        console.clear();
+        const tempCube = new ThreeByThree();
+        for (const { ref, nbPiece } of aRefs) {
+          ref.position.set(...tempCube.getCubePositions()[nbPiece]);
+          scene.add(ref);
+        }
         for (const nbPiece of rotateGroup) {
           const piece = aRefs.find((ref) => ref.nbPiece === nbPiece);
           // const piece = getPieceByNumber(nbPiece);
@@ -315,7 +326,7 @@ const RubiksCube: FC<IProps> = ({ cube }) => {
       }
       scene.add(mainPieces);
       scene.add(sideToMove);
-      // sideToMove.position.x+=0.01;
+
       animate();
     }
   });
