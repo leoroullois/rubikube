@@ -1,4 +1,4 @@
-import logger from "redux-logger";
+// import logger from "redux-logger";
 import thunk from "redux-thunk";
 
 import { configureStore } from "@reduxjs/toolkit";
@@ -7,16 +7,15 @@ import cube from "@store/slices/cube";
 import timer from "@store/slices/timer";
 import auth from "@store/slices/auth";
 const makeStore = () =>
-   configureStore({
-      reducer: {
-         colorMode,
-         cube,
-         timer,
-         auth,
-      },
-      middleware: (getDefaultMiddleware) =>
-         getDefaultMiddleware().concat(thunk).concat(logger),
-   });
+  configureStore({
+    reducer: {
+      colorMode,
+      cube,
+      timer,
+      auth,
+    },
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(thunk),
+  });
 
 const store = makeStore();
 // Infer the `RootState` and `AppDispatch` types from the store itself
@@ -25,4 +24,3 @@ export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 
 export default store;
-
