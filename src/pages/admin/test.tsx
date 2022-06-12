@@ -27,11 +27,10 @@ const AdminTests = () => {
   };
 
   const handleReset = () => {
-    solver.cube.resetCubeArray();
+    solver.reset();
     setCubeArray(solver.cube.cubeArray);
     console.clear();
     console.log("🔴 Cube has been reset");
-    solver.solution = "";
   };
 
   const handleSolve = () => {
