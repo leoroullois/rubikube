@@ -3,11 +3,7 @@ import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import {
-  ChangeEventHandler,
-  FormEventHandler,
-  useState,
-} from "react";
+import { ChangeEventHandler, FormEventHandler, useState } from "react";
 import { useDispatch } from "react-redux";
 
 import AuthBtn from "@components/buttons/auth-btn";
@@ -70,7 +66,6 @@ const Login = () => {
     } finally {
       setIsLoading(false);
     }
-
   };
 
   return (
@@ -140,7 +135,7 @@ const Login = () => {
                 <a className="text-blue-500 hover:underline">Sign Up</a>
               </Link>
             </p>
-            
+
             {!!error && (
               <p
                 key={error}
