@@ -106,7 +106,7 @@ const Register = () => {
                 onChange={handleConfirmPassword}
               />
             </div>
-            <AuthBtn>Sign Up</AuthBtn>
+            <AuthBtn isLoading={false}>Sign Up</AuthBtn>
           </form>
         </Wrapper>
       </main>
