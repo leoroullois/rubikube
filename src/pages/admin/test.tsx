@@ -111,7 +111,7 @@ const AdminTests = () => {
 
   const handleTestOLL: MouseEventHandler = () => {
     const test = new Test();
-    test.testOLL(1e1);
+    test.testOLL(10);
   };
   useEffect(() => {
     setMounted(true);

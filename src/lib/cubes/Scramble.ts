@@ -31,14 +31,16 @@ class Scramble {
       while (
         movesArray[a][0] === lastLetter ||
         movesArray[a] === Moves.M ||
-        movesArray[a] === Moves.M2
+        movesArray[a] === Moves.M2 ||
+        movesArray[a] === "Mi" ||
+        movesArray[a] === "M'"
       ) {
         a = Math.floor(Math.random() * movesArray.length);
       }
       move = move.concat(movesArray[a], " ");
       lastLetter = movesArray[a][0];
     }
-    return move.replace(/,/g, " ");
+    return move.replace(/,/g, " ").replace(/i/g, "'");
   }
 
   public inverseScramble(pScramble: string) {

@@ -1,6 +1,6 @@
+import Scramble from "@lib/cubes/Scramble";
 import { Color } from "@lib/cubes/types";
 import Cube from "./Cube";
-import Scramble from "./Scramble";
 import { Solver } from "./Solver";
 import { ThreeByThree } from "./ThreeByThree";
 
@@ -134,13 +134,14 @@ class Test {
     for (let i = 0; i < nbTests; i++) {
       // solver.cube.resetCubeArray();
       solver.reset();
-      solver.cube.move(this.scramble.generateRandomScramble());
-
+      solver.cube.scramble = this.scramble.generateRandomScramble();
+      solver.cube.move(solver.cube.scramble);
       solver.solveWhiteCross();
       solver.cube.move("x2");
       solver.solveAllF2L();
       solver.solveOLL();
       solver.cube.move("x2");
+
       const cubeArray = solver.cube.cubeArray;
       if (
         cubeArray[0][0] !== Color.White ||
@@ -186,7 +187,10 @@ class Test {
         cubeArray[5][8] !== Color.Yellow
       ) {
         console.error("OLL tests not passed.");
-        console.log(solver.solution, Cube.getColorArray(solver.cube.cubeArray));
+        console.log("Scramble : ", solver.cube.scramble);
+        console.log("Solution : ", solver.solution);
+        console.log(Cube.getColorArray(solver.cube.cubeArray));
+
         return false;
       }
     }
