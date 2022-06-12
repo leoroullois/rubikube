@@ -137,10 +137,10 @@ class Test {
       solver.cube.scramble = this.scramble.generateRandomScramble();
       solver.cube.move(solver.cube.scramble);
       solver.solveWhiteCross();
-      solver.cube.move("x2");
+      solver.update("x2");
       solver.solveAllF2L();
-      solver.solveOLL();
-      solver.cube.move("x2");
+      solver.solveAllOll();
+      solver.update("x2");
 
       const cubeArray = solver.cube.cubeArray;
       if (

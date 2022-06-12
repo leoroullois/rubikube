@@ -1,15 +1,14 @@
-import Head from "next/head";
-import { MouseEventHandler, useEffect, useState } from "react";
+import Head from 'next/head';
+import Image from 'next/image';
+import { MouseEventHandler, useEffect, useState } from 'react';
 
-import CubePattern from "@components/cube-pattern";
-import Wrapper from "@components/wrapper";
-import { Solver } from "@lib/cubes/Solver";
-import { Moves, Rotations } from "@lib/cubes/Moves";
-import Canvas from "@components/threejs/canvas";
-import Cube from "@lib/cubes/Cube";
-import Image from "next/image";
-import { Color } from "@lib/cubes/types";
-import Test from "@lib/cubes/Test";
+import CubePattern from '@components/cube-pattern';
+import Canvas from '@components/threejs/canvas';
+import Wrapper from '@components/wrapper';
+import Cube from '@lib/cubes/Cube';
+import { Moves, Rotations } from '@lib/cubes/Moves';
+import { Solver } from '@lib/cubes/Solver';
+import Test from '@lib/cubes/Test';
 
 const AdminTests = () => {
   const [mounted, setMounted] = useState(false);
@@ -19,7 +18,11 @@ const AdminTests = () => {
   const handleScramble: MouseEventHandler = (e) => {
     console.log("⏰ Scrambling cube...");
     solver.reset();
+
     solver.cube.randomlyScrambleCube();
+
+    solver.cube.scramble = "D' L2 U R2 U2";
+
     setCubeArray(solver.cube.cubeArray);
     solver.solution = "";
 
@@ -62,11 +65,9 @@ const AdminTests = () => {
   const handleSolveF2L = () => {
     console.log("⏰ Solving F2L...");
 
-    // solver.solveAllF2L();
-    solver.solveF2L(Color.White, Color.Red, Color.Blue);
+    solver.solveAllF2L();
 
     setCubeArray(solver.cube.cubeArray);
-    console.log("❓ Scramble : ", solver.cube.scramble);
     console.log("🚀 Solution : ", solver.solution);
     console.log(
       "💪 Solution length : ",
@@ -74,6 +75,18 @@ const AdminTests = () => {
     );
   };
 
+  const handleSolveOLL = () => {
+    console.log("⏰ Solving OLL...");
+
+    solver.solveAllOll();
+
+    setCubeArray(solver.cube.cubeArray);
+    console.log("🚀 Solution : ", solver.solution);
+    console.log(
+      "💪 Solution length : ",
+      solver.solution.trim().split(" ").length
+    );
+  }
   const handleRotate = (rotation: Rotations) => {
     console.log("🚨 [ROTATION]", rotation);
     solver.cube.move(rotation);
@@ -111,7 +124,7 @@ const AdminTests = () => {
 
   const handleTestOLL: MouseEventHandler = () => {
     const test = new Test();
-    test.testOLL(10);
+    test.testOLL(5);
   };
   useEffect(() => {
     setMounted(true);
@@ -164,7 +177,13 @@ const AdminTests = () => {
               className="flex justify-center items-center p-2 w-28 h-16 rounded text-gray-900 bg-blue-400 hover:bg-blue-500"
               onClick={handleSolveF2L}
             >
-              Solve first F2L
+              Solve F2L
+            </button>
+            <button
+              className="flex justify-center items-center p-2 w-28 h-16 rounded text-gray-900 bg-blue-400 hover:bg-blue-500"
+              onClick={handleSolveOLL}
+            >
+              Solve OLL
             </button>
             <button
               className="flex justify-center items-center p-2 w-28 h-16 rounded text-gray-900 bg-blue-400 hover:bg-blue-500"

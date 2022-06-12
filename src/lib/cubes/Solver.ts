@@ -60,7 +60,7 @@ export class Solver {
     this._solution = v;
   }
 
-  private update(move: string) {
+  public update(move: string) {
     this.cube.move(move);
     this.solution += move + " ";
   }
@@ -1086,7 +1086,7 @@ export class Solver {
       this.getPiece(7)[0] === Color.Yellow &&
       this.getPiece(6)[0] === Color.Yellow
     ) {
-      this.update("R B' R2 F R2 B R2 F' R"); // ! L3 à compléter par Léo
+      this.update("U2 R B' R2 F R2 B R2 F' R"); // ! L3 à compléter par Léo
       this.isOllDone = true;
     } else if (
       this.getPiece(26)[4] === Color.Yellow &&
@@ -1186,7 +1186,7 @@ export class Solver {
       this.getPiece(7)[2] === Color.Yellow &&
       this.getPiece(6)[1] === Color.Yellow
     ) {
-      this.update("L' x' U' R U' R' U2 L x"); // !B2 à compléter par Léo
+      this.update("U2 L' x' U' R U' R' U2 L x"); // !B2 à compléter par Léo
       this.isOllDone = true;
     } else if (
       this.getPiece(26)[2] === Color.Yellow &&
@@ -1238,7 +1238,7 @@ export class Solver {
       this.getPiece(7)[0] === Color.Yellow &&
       this.getPiece(6)[2] === Color.Yellow
     ) {
-      this.update("y F U R U' R' F' U F R U R' U' F' y'"); //! O3 à compléter par Léo
+      this.update("U y F U R U' R' F' U F R U R' U' F' y'"); //? O3 à compléter par Léo
       this.isOllDone = true;
     } else if (
       this.getPiece(26)[2] === Color.Yellow &&
@@ -1286,7 +1286,7 @@ export class Solver {
       this.getPiece(7)[0] === Color.Yellow &&
       this.getPiece(6)[1] === Color.Yellow
     ) {
-      this.update("y F U R U' R' F' U' F R U R' U' F' y'"); // ! O4 à compléter par Léo
+      this.update("U y F U R U' R' F' U' F R U R' U' F' y'"); // ! O4 à compléter par Léo
       this.isOllDone = true;
     } else if (
       this.getPiece(26)[2] === Color.Yellow &&
@@ -1316,25 +1316,20 @@ export class Solver {
   }
 
   public solveOLL(): void {
-    while (!this.isOllDone) {
-      this.solveOLLEdgesOriented();
-      this.solveOLLTShape();
-      this.solveOLLSquare();
-      this.solveOLLCShapes();
-      this.solveOLLWShapes();
-      this.solveOLLCorners();
-      this.solveOLLPShapes();
-      this.solveOLLIShapes();
-      this.solveOLLFishShapes();
-      this.solveOLLKnight();
-      this.solveOLLAwkward();
-      this.solveOLLLShapes();
-      this.solveOLLLightning();
-      this.solveOLLNoEdge();
-      if (!this.isOllDone) {
-        this.update("U");
-      }
-    }
+    this.solveOLLEdgesOriented();
+    this.solveOLLTShape();
+    this.solveOLLSquare();
+    this.solveOLLCShapes();
+    this.solveOLLWShapes();
+    this.solveOLLCorners();
+    this.solveOLLPShapes();
+    this.solveOLLIShapes();
+    this.solveOLLFishShapes();
+    this.solveOLLKnight();
+    this.solveOLLAwkward();
+    this.solveOLLLShapes();
+    this.solveOLLLightning();
+    this.solveOLLNoEdge();
   }
 
   public solvePLLPermutationEdge(): void {
@@ -1622,11 +1617,24 @@ export class Solver {
     }
   }
 
+  public solveAllOll() {
+    if (this.cube.cubeArray[0].some((color) => color !== Color.Yellow)) {
+      for (let i = 0; i < 4; i++) {
+        this.solveOLL();
+        if (!this.isOllDone) {
+          this.update("U");
+        } else {
+          break;
+        }
+      }
+    }
+  }
+
   public solve(): void {
     this.solveWhiteCross();
     this.update("x2");
     this.solveAllF2L();
-    this.solveOLL();
+    this.solveAllOll();
     //  this.solvePLL();
   }
 }
