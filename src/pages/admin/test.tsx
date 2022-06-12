@@ -109,6 +109,10 @@ const AdminTests = () => {
     test.testF2L(1e3);
   };
 
+  const handleTestOLL: MouseEventHandler = () => {
+    const test = new Test();
+    test.testOLL(1e1);
+  };
   useEffect(() => {
     setMounted(true);
   }, [solver.cube.cubeArray]);
@@ -204,6 +208,13 @@ const AdminTests = () => {
               onClick={handleTestF2L}
             >
               Test F2L
+            </button>
+            <button
+              className="flex justify-center items-center p-2 w-28 h-16 rounded text-gray-900 bg-pink-400 hover:bg-pink-500"
+              data-log="cubeArray"
+              onClick={handleTestOLL}
+            >
+              Test OLL
             </button>
           </div>
           <h2 className="text-2xl font-bold">Moves and rotations</h2>

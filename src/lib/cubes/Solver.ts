@@ -702,7 +702,7 @@ export class Solver {
       this.getPiece(7)[2] === Color.Yellow &&
       this.getPiece(6)[2] === Color.Yellow
     ) {
-      this.update(""); //S1 à compléter par Léo
+      this.update("L' U' L2 F' L' F2 U' F'"); // ! S1 à compléter par Léo
       this.isOllDone = true;
     } else if (
       this.getPiece(26)[4] === Color.Yellow &&
@@ -714,7 +714,7 @@ export class Solver {
       this.getPiece(7)[0] === Color.Yellow &&
       this.getPiece(6)[1] === Color.Yellow
     ) {
-      this.update(""); //S2 à compléter par Léo
+      this.update("y2 R U R2 F R F2 U F y2"); // ! S2 à compléter par Léo
       this.isOllDone = true;
     }
   }
@@ -786,7 +786,7 @@ export class Solver {
       this.getPiece(7)[0] === Color.Yellow &&
       this.getPiece(6)[2] === Color.Yellow
     ) {
-      this.update(""); //E1 à compléter par Léo
+      this.update("M U M' U2 M U M'"); // ! E1 à compléter par Léo
       this.isOllDone = true;
     } else if (
       this.getPiece(26)[2] === Color.Yellow &&
@@ -798,7 +798,7 @@ export class Solver {
       this.getPiece(7)[0] === Color.Yellow &&
       this.getPiece(6)[2] === Color.Yellow
     ) {
-      this.update(""); //E2 à compléter par Léo
+      this.update("M' U M' U M' U2 M U M U M"); // ! E2 à compléter par Léo
       this.isOllDone = true;
     }
   }
@@ -890,7 +890,7 @@ export class Solver {
       this.getPiece(7)[0] === Color.Yellow &&
       this.getPiece(6)[1] === Color.Yellow
     ) {
-      this.update(""); //I4 à compléter par Léo
+      this.update("F R U R' U' R F' L x U R' U' L' x'"); // ! I4 à compléter par Léo
       this.isOllDone = true;
     } else if (
       this.getPiece(26)[4] === Color.Yellow &&
@@ -982,7 +982,7 @@ export class Solver {
       this.getPiece(7)[0] === Color.Yellow &&
       this.getPiece(6)[1] === Color.Yellow
     ) {
-      this.update(""); //K4 à compléter par Léo
+      this.update("y2 R' F R U R' U' F' R U' R' U2 R y2"); //K4 à compléter par Léo
       this.isOllDone = true;
     } else if (
       this.getPiece(26)[4] === Color.Yellow &&
@@ -1006,7 +1006,7 @@ export class Solver {
       this.getPiece(7)[0] === Color.Yellow &&
       this.getPiece(6)[2] === Color.Yellow
     ) {
-      this.update(""); //K3 à compléter par Léo
+      this.update("y' R' U2 R U R' F U R U' R' F' R"); // ! K3 à compléter par Léo
       this.isOllDone = true;
     }
   }
@@ -1086,7 +1086,7 @@ export class Solver {
       this.getPiece(7)[0] === Color.Yellow &&
       this.getPiece(6)[0] === Color.Yellow
     ) {
-      this.update(""); //L3 à compléter par Léo
+      this.update("R B' R2 F R2 B R2 F' R"); // ! L3 à compléter par Léo
       this.isOllDone = true;
     } else if (
       this.getPiece(26)[4] === Color.Yellow &&
@@ -1098,7 +1098,7 @@ export class Solver {
       this.getPiece(7)[2] === Color.Yellow &&
       this.getPiece(6)[1] === Color.Yellow
     ) {
-      this.update(""); //L5 à compléter par Léo
+      this.update("L' x' U' R U' R' U R U' R' U2 L x"); // ! L5 à compléter par Léo
       this.isOllDone = true;
     } else if (
       this.getPiece(26)[3] === Color.Yellow &&
@@ -1134,7 +1134,7 @@ export class Solver {
       this.getPiece(7)[0] === Color.Yellow &&
       this.getPiece(6)[1] === Color.Yellow
     ) {
-      this.update(""); //L6 à compléter par Léo
+      this.update("y2 F R' F' R U2 F2 L F L' F y2"); // ! L6 à compléter par Léo
       this.isOllDone = true;
     }
   }
@@ -1150,7 +1150,7 @@ export class Solver {
       this.getPiece(7)[0] === Color.Yellow &&
       this.getPiece(6)[0] === Color.Yellow
     ) {
-      this.update(""); //B1 à compléter par Léo
+      this.update("L x U R' U R U2 L' x'"); // ! B1 à compléter par Léo
       this.isOllDone = true;
     } else if (
       this.getPiece(26)[3] === Color.Yellow &&
@@ -1162,7 +1162,7 @@ export class Solver {
       this.getPiece(7)[2] === Color.Yellow &&
       this.getPiece(6)[0] === Color.Yellow
     ) {
-      this.update(""); //B3 à compléter par Léo
+      this.update("M R U R' U R U2 R' U M'"); // ! B3 à compléter par Léo
       this.isOllDone = true;
     } else if (
       this.getPiece(26)[3] === Color.Yellow &&
@@ -1186,7 +1186,7 @@ export class Solver {
       this.getPiece(7)[2] === Color.Yellow &&
       this.getPiece(6)[1] === Color.Yellow
     ) {
-      this.update(""); //B2 à compléter par Léo
+      this.update("L' x' U' R U' R' U2 L x"); // !B2 à compléter par Léo
       this.isOllDone = true;
     } else if (
       this.getPiece(26)[2] === Color.Yellow &&
@@ -1238,7 +1238,7 @@ export class Solver {
       this.getPiece(7)[0] === Color.Yellow &&
       this.getPiece(6)[2] === Color.Yellow
     ) {
-      this.update(""); //O3 à compléter par Léo
+      this.update("y F U R U' R' F' U F R U R' U' F' y'"); //! O3 à compléter par Léo
       this.isOllDone = true;
     } else if (
       this.getPiece(26)[2] === Color.Yellow &&
@@ -1250,7 +1250,7 @@ export class Solver {
       this.getPiece(7)[0] === Color.Yellow &&
       this.getPiece(6)[0] === Color.Yellow
     ) {
-      this.update(""); //O6 à compléter par Léo
+      this.update("y2 F R U R' U y' R' U2 R' F R F' y'"); // ! O6 à compléter par Léo
       this.isOllDone = true;
     } else if (
       this.getPiece(26)[2] === Color.Yellow &&
@@ -1274,7 +1274,7 @@ export class Solver {
       this.getPiece(7)[0] === Color.Yellow &&
       this.getPiece(6)[0] === Color.Yellow
     ) {
-      this.update(""); //O2 à compléter par Léo
+      this.update("y L x U L' x' U2 R U2 R' U2 L x U' L' x'"); // ! O2 à compléter par Léo
       this.isOllDone = true;
     } else if (
       this.getPiece(26)[4] === Color.Yellow &&
@@ -1286,7 +1286,7 @@ export class Solver {
       this.getPiece(7)[0] === Color.Yellow &&
       this.getPiece(6)[1] === Color.Yellow
     ) {
-      this.update(""); //O4 à compléter par Léo
+      this.update("y F U R U' R' F' U' F R U R' U' F' y'"); // ! O4 à compléter par Léo
       this.isOllDone = true;
     } else if (
       this.getPiece(26)[2] === Color.Yellow &&
@@ -1298,7 +1298,7 @@ export class Solver {
       this.getPiece(7)[0] === Color.Yellow &&
       this.getPiece(6)[1] === Color.Yellow
     ) {
-      this.update(""); //O7 à compléter par Léo
+      this.update("M U R U R' U' M' R' F R F'"); // ! O7 à compléter par Léo
       this.isOllDone = true;
     } else if (
       this.getPiece(26)[2] === Color.Yellow &&
@@ -1310,7 +1310,7 @@ export class Solver {
       this.getPiece(7)[0] === Color.Yellow &&
       this.getPiece(6)[2] === Color.Yellow
     ) {
-      this.update(""); //O8 à compléter par Léo
+      this.update("M U R U R' U' M2 U R U' L' x'"); // ! O8 à compléter par Léo
       this.isOllDone = true;
     }
   }
