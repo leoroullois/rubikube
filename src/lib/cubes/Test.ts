@@ -142,7 +142,12 @@ class Test {
       solver.solveAllOll();
       solver.update("x2");
 
-      const cubeArray = solver.cube.cubeArray;
+      let cubeArray = solver.cube.cubeArray;
+      while (cubeArray[1][4] !== Color.Orange) {
+        solver.update("y");
+        cubeArray = solver.cube.cubeArray;
+      }
+
       if (
         cubeArray[0][0] !== Color.White ||
         cubeArray[0][1] !== Color.White ||

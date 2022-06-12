@@ -1,14 +1,14 @@
-import Head from 'next/head';
-import Image from 'next/image';
-import { MouseEventHandler, useEffect, useState } from 'react';
+import Head from "next/head";
+import Image from "next/image";
+import { MouseEventHandler, useEffect, useState } from "react";
 
-import CubePattern from '@components/cube-pattern';
-import Canvas from '@components/threejs/canvas';
-import Wrapper from '@components/wrapper';
-import Cube from '@lib/cubes/Cube';
-import { Moves, Rotations } from '@lib/cubes/Moves';
-import { Solver } from '@lib/cubes/Solver';
-import Test from '@lib/cubes/Test';
+import CubePattern from "@components/cube-pattern";
+import Canvas from "@components/threejs/canvas";
+import Wrapper from "@components/wrapper";
+import Cube from "@lib/cubes/Cube";
+import { Moves, Rotations } from "@lib/cubes/Moves";
+import { Solver } from "@lib/cubes/Solver";
+import Test from "@lib/cubes/Test";
 
 const AdminTests = () => {
   const [mounted, setMounted] = useState(false);
@@ -20,8 +20,6 @@ const AdminTests = () => {
     solver.reset();
 
     solver.cube.randomlyScrambleCube();
-
-    solver.cube.scramble = "D' L2 U R2 U2";
 
     setCubeArray(solver.cube.cubeArray);
     solver.solution = "";
@@ -86,7 +84,7 @@ const AdminTests = () => {
       "💪 Solution length : ",
       solver.solution.trim().split(" ").length
     );
-  }
+  };
   const handleRotate = (rotation: Rotations) => {
     console.log("🚨 [ROTATION]", rotation);
     solver.cube.move(rotation);
@@ -124,7 +122,7 @@ const AdminTests = () => {
 
   const handleTestOLL: MouseEventHandler = () => {
     const test = new Test();
-    test.testOLL(5);
+    test.testOLL(1e5);
   };
   useEffect(() => {
     setMounted(true);

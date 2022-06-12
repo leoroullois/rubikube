@@ -863,8 +863,8 @@ export class Solver {
       this.getPiece(17)[2] === Color.Yellow &&
       this.getPiece(15)[2] === Color.Yellow &&
       this.getPiece(8)[4] === Color.Yellow &&
-      this.getPiece(7)[3] === Color.Yellow &&
-      this.getPiece(6)[3] === Color.Yellow
+      this.getPiece(7)[0] === Color.Yellow &&
+      this.getPiece(6)[0] === Color.Yellow
     ) {
       this.update("y2 F U R U' R' U R U' R' F' y2"); //I1
       this.isOllDone = true;
@@ -1186,7 +1186,7 @@ export class Solver {
       this.getPiece(7)[2] === Color.Yellow &&
       this.getPiece(6)[1] === Color.Yellow
     ) {
-      this.update("U2 L' x' U' R U' R' U2 L x"); // !B2 à compléter par Léo
+      this.update("U2 F' L F L' U2 L' U2 L"); // ! B2 à compléter par Léo
       this.isOllDone = true;
     } else if (
       this.getPiece(26)[2] === Color.Yellow &&
