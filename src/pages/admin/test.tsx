@@ -18,7 +18,7 @@ const AdminTests = () => {
 
   const handleScramble: MouseEventHandler = (e) => {
     console.log("⏰ Scrambling cube...");
-
+    solver.reset();
     solver.cube.randomlyScrambleCube();
     setCubeArray(solver.cube.cubeArray);
     solver.solution = "";
