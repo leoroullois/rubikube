@@ -17,6 +17,7 @@ import Canvas from "@components/threejs/canvas";
 import Wrapper from "@components/wrapper";
 import { Moves } from "@lib/cubes/Moves";
 import { Solver } from "@lib/cubes/Solver";
+import Test from "@lib/cubes/Test";
 
 const Explore = () => {
   const [mounted, setMounted] = useState(false);

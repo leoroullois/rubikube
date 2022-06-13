@@ -1359,7 +1359,7 @@ export class Solver {
       this.isPllDone = true;
     } else if (
       this.getPiece(26)[3] === this.getPiece(25)[3] &&
-      this.getPiece(26)[3] === this.getPiece(24)[4] &&
+      this.getPiece(26)[3] === this.getPiece(24)[3] &&
       this.getPiece(26)[4] === this.getPiece(15)[1] &&
       this.getPiece(26)[4] === this.getPiece(8)[4] &&
       this.getPiece(24)[1] === this.getPiece(7)[0] &&
@@ -1379,7 +1379,7 @@ export class Solver {
       this.getPiece(25)[3] === this.getPiece(8)[0] &&
       this.getPiece(25)[3] === this.getPiece(6)[0]
     ) {
-      this.update("M2' U M2' U2 M2 U M2"); //H à compléter par Léo
+      this.update("M2 U M2 U2 M2 U M2"); // ! H à compléter par Léo
       this.isPllDone = true;
     }
   }
@@ -1392,7 +1392,7 @@ export class Solver {
       this.getPiece(26)[4] === this.getPiece(6)[0] &&
       this.getPiece(24)[1] === this.getPiece(8)[0] &&
       this.getPiece(24)[1] === this.getPiece(7)[0] &&
-      this.getPiece(17)[4] === this.getPiece(8)[3] &&
+      this.getPiece(17)[4] === this.getPiece(8)[4] &&
       this.getPiece(17)[4] === this.getPiece(6)[1]
     ) {
       this.update("x R' U R' D2 R U' R' D2 R2 x'"); //Aa
@@ -1456,10 +1456,10 @@ export class Solver {
       this.getPiece(26)[4] === this.getPiece(8)[4] &&
       this.getPiece(24)[1] === this.getPiece(7)[0] &&
       this.getPiece(24)[1] === this.getPiece(8)[0] &&
-      this.getPiece(17)[4] === this.getPiece(24)[4] &&
+      this.getPiece(17)[4] === this.getPiece(24)[3] &&
       this.getPiece(17)[4] === this.getPiece(6)[0]
     ) {
-      this.update("R U R' U' R' F R2 U' R' U' R U R' F')"); //T
+      this.update("R U R' U' R' F R2 U' R' U' R U R' F'"); //T
       this.isPllDone = true;
     } else if (
       this.getPiece(26)[4] === this.getPiece(25)[3] &&
@@ -1587,7 +1587,7 @@ export class Solver {
       this.getPiece(17)[4] === this.getPiece(8)[0] &&
       this.getPiece(17)[4] === this.getPiece(24)[1]
     ) {
-      this.update(""); //Gb à compléter par Léo
+      this.update("U' R' U' R U D' R2 U R' U R U' R U' R2 D"); //Gb à compléter par Léo
       this.isPllDone = true;
     } else if (
       this.getPiece(26)[3] === this.getPiece(15)[1] &&
@@ -1605,33 +1605,29 @@ export class Solver {
   }
 
   public solvePLL(): void {
-    while (!this.isPllDone) {
-      this.solvePLLPermutationEdge();
-      this.solvePLLPermutationCorner();
-      this.solvePLLSwapAdjacent();
-      this.solvePLLSwapDiagonal();
-      this.solvePLLGPermutation();
-      if (!this.isPllDone) {
-        this.update("U");
-      }
-    }
+    this.solvePLLPermutationEdge();
+    this.solvePLLPermutationCorner();
+    this.solvePLLSwapAdjacent();
+    this.solvePLLSwapDiagonal();
+    this.solvePLLGPermutation();
   }
 
   public solveAllPll(): void {
-    const sideOne = this.cube.cubeArray[1].every(
-      (elt) => elt === this.cube.cubeArray[1][0]
-    );
-    const sideTwo = this.cube.cubeArray[2].every(
-      (elt) => elt === this.cube.cubeArray[2][0]
-    );
-    const sideThree = this.cube.cubeArray[3].every(
-      (elt) => elt === this.cube.cubeArray[3][0]
-    );
-    const sideFour = this.cube.cubeArray[4].every(
-      (elt) => elt === this.cube.cubeArray[4][0]
-    );
+    const sideOne = this.cube.cubeArray[1]
+      .slice(0, 3)
+      .some((elt) => elt !== this.cube.cubeArray[1][0]);
 
-    if (sideOne || sideTwo || sideTwo || sideThree || sideFour) {
+    const sideTwo = this.cube.cubeArray[2]
+      .slice(0, 3)
+      .some((elt) => elt !== this.cube.cubeArray[2][0]);
+    const sideThree = this.cube.cubeArray[3]
+      .slice(0, 3)
+      .some((elt) => elt !== this.cube.cubeArray[3][0]);
+    const sideFour = this.cube.cubeArray[4]
+      .slice(0, 3)
+      .some((elt) => elt !== this.cube.cubeArray[4][0]);
+
+    if (sideOne || sideTwo || sideThree || sideFour) {
       for (let i = 0; i < 4; i++) {
         this.solvePLL();
         if (!this.isPllDone) {
