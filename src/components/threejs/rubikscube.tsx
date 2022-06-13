@@ -20,72 +20,12 @@ interface IProps {
 }
 
 const RubiksCube: FC<IProps> = ({ cube }) => {
-  const dispatch = useDispatch();
-  const { currMove, rotateGroup, currRotate, btnClicked } =
-    useSelector(selectCube);
-  const [cubePositions] = useState<Position[]>(cube.getCubePositions());
-
-  const scene = useThree((state) => state.scene);
+  useSelector(selectCube);
 
   const [state] = useState<any>(cube.getHexRubik());
   const refs = useRef<THREE.Mesh[]>(new Array(26).fill(null));
 
   const [mounted, setMounted] = useState(false);
-
-  const [sideToMove] = useState(new THREE.Object3D());
-  const [mainPieces] = useState(new THREE.Object3D());
-
-  const animate = async () => {
-    const step = Math.PI / (2 * 20);
-    if (currRotate >= Math.PI / 2) {
-      if (currMove) {
-        cube.move(currMove);
-        if ([Moves.F, Moves.Bi].includes(currMove)) {
-          sideToMove.rotateZ(currRotate);
-        } else if ([Moves.B, Moves.Fi].includes(currMove)) {
-          sideToMove.rotateZ(-currRotate);
-        } else if ([Moves.R, Moves.Li].includes(currMove)) {
-          sideToMove.rotateX(currRotate);
-        } else if ([Moves.L, Moves.Ri].includes(currMove)) {
-          sideToMove.rotateX(-currRotate);
-        } else if ([Moves.Ui, Moves.D].includes(currMove)) {
-          sideToMove.rotateY(-currRotate);
-        } else if ([Moves.U, Moves.Di].includes(currMove)) {
-          sideToMove.rotateY(currRotate);
-        }
-
-        // for (let i = 0; i < 27; i++) {
-        //   const ref = refs.current[i];
-        //   mainPieces.add(ref);
-        // }
-      }
-      dispatch(disolveRotateGroup());
-      console.log(
-        "refs end of animation",
-        refs.current.map((r) => r.position)
-      );
-    } else if (currMove) {
-      if ([Moves.F, Moves.Bi].includes(currMove)) {
-        sideToMove.rotation.z -= step;
-        dispatch(addToCurrRotate(step));
-      } else if ([Moves.B, Moves.Fi].includes(currMove)) {
-        sideToMove.rotation.z += step;
-        dispatch(addToCurrRotate(step));
-      } else if ([Moves.R, Moves.Li].includes(currMove)) {
-        sideToMove.rotation.x -= step;
-        dispatch(addToCurrRotate(step));
-      } else if ([Moves.L, Moves.Ri].includes(currMove)) {
-        sideToMove.rotation.x += step;
-        dispatch(addToCurrRotate(step));
-      } else if ([Moves.Ui, Moves.D].includes(currMove)) {
-        sideToMove.rotation.y += step;
-        dispatch(addToCurrRotate(step));
-      } else if ([Moves.U, Moves.Di].includes(currMove)) {
-        sideToMove.rotation.y -= step;
-        dispatch(addToCurrRotate(step));
-      }
-    }
-  };
 
   useEffect(() => {
     if (!mounted) {
@@ -96,29 +36,9 @@ const RubiksCube: FC<IProps> = ({ cube }) => {
     setMounted(true);
   }, [mounted]);
 
-  useFrame(({ camera }) => {
-    if (mounted) {
-      camera.clear();
-      if (btnClicked) {
-        for (let i = 0; i < 27; i++) {
-          if (rotateGroup.includes(i)) {
-            sideToMove.add(refs.current[i]);
-          } else {
-            mainPieces.add(refs.current[i]);
-          }
-        }
-        dispatch(setBtnClicked(false));
-      }
-      scene.add(mainPieces);
-      scene.add(sideToMove);
-
-      animate();
-    }
-  });
-
   return (
-    <group scale={0.75}>
-      {cubePositions.map((position, i) => {
+    <group scale={1.2}>
+      {cube.getCubePositions().map((position, i) => {
         return (
           <Box
             key={position.join("-")}

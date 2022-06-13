@@ -13,7 +13,7 @@ const MainLinks = () => {
       <Link href="/timer">
         <a className={style}>Timer</a>
       </Link>
-      <Link href="/play">
+      <Link href="/explore">
         <a className={style}>Explore</a>
       </Link>
     </div>

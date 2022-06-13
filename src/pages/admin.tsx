@@ -10,7 +10,7 @@ import { Moves, Rotations } from "@lib/cubes/Moves";
 import { Solver } from "@lib/cubes/Solver";
 import Test from "@lib/cubes/Test";
 
-const AdminTests = () => {
+const Admin = () => {
   const [mounted, setMounted] = useState(false);
   const [solver] = useState(new Solver());
   const [cubeArray, setCubeArray] = useState(solver.cube.cubeArray);
@@ -277,4 +277,4 @@ const AdminTests = () => {
   );
 };
 
-export default AdminTests;
+export default Admin;
