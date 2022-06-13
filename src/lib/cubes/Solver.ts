@@ -1355,7 +1355,7 @@ export class Solver {
       this.getPiece(15)[1] === this.getPiece(8)[0] &&
       this.getPiece(15)[1] === this.getPiece(6)[0]
     ) {
-      this.update(""); //Z à compléter par Léo
+      this.update("M2 U M2 U M' U2 M2 U2 M'"); //! Z à compléter par Léo
       this.isPllDone = true;
     } else if (
       this.getPiece(26)[3] === this.getPiece(25)[3] &&
@@ -1379,7 +1379,7 @@ export class Solver {
       this.getPiece(25)[3] === this.getPiece(8)[0] &&
       this.getPiece(25)[3] === this.getPiece(6)[0]
     ) {
-      this.update(""); //H à compléter par Léo
+      this.update("M2' U M2' U2 M2 U M2"); //H à compléter par Léo
       this.isPllDone = true;
     }
   }
@@ -1617,6 +1617,32 @@ export class Solver {
     }
   }
 
+  public solveAllPll(): void {
+    const sideOne = this.cube.cubeArray[1].every(
+      (elt) => elt === this.cube.cubeArray[1][0]
+    );
+    const sideTwo = this.cube.cubeArray[2].every(
+      (elt) => elt === this.cube.cubeArray[2][0]
+    );
+    const sideThree = this.cube.cubeArray[3].every(
+      (elt) => elt === this.cube.cubeArray[3][0]
+    );
+    const sideFour = this.cube.cubeArray[4].every(
+      (elt) => elt === this.cube.cubeArray[4][0]
+    );
+
+    if (sideOne || sideTwo || sideTwo || sideThree || sideFour) {
+      for (let i = 0; i < 4; i++) {
+        this.solvePLL();
+        if (!this.isPllDone) {
+          this.update("U");
+        } else {
+          break;
+        }
+      }
+    }
+  }
+
   public solveAllOll() {
     if (this.cube.cubeArray[0].some((color) => color !== Color.Yellow)) {
       for (let i = 0; i < 4; i++) {
@@ -1635,6 +1661,6 @@ export class Solver {
     this.update("x2");
     this.solveAllF2L();
     this.solveAllOll();
-    //  this.solvePLL();
+    this.solvePLL();
   }
 }

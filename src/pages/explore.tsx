@@ -50,7 +50,6 @@ const Explore = () => {
 
   const handleMove = useCallback(
     (e: KeyboardEvent) => {
-      console.log(e);
       const elt = e.target as HTMLElement;
       if (elt.id == "sequence-movements") {
         return;
