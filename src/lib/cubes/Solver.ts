@@ -1630,11 +1630,18 @@ export class Solver {
     }
   }
 
+  public finishcube(): void{
+    while (this.cube.cubeArray[1][4] !== this.cube.cubeArray[1][1] ){
+      this.update("U");
+    }
+  }
+
   public solve(): void {
     this.solveWhiteCross();
     this.update("x2");
     this.solveAllF2L();
     this.solveAllOll();
     //  this.solvePLL();
+    // this.finishcube();
   }
 }
