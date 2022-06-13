@@ -72,21 +72,19 @@ const KbdBtn: FC<IProps> = ({ kbd, active, handleClick, cubeArray }) => {
       className={`flex items-center h-8 ${mapMoveToTailwindColor(
         kbd,
         cubeArray
-      )} text-gray-900 active:ring ${
-        isActive() && "ring"
-      } gap-x-2 px-3 rounded-lg shadow-sm hover:shadow-xl duration-150 border border-gray-500/30 hover:border-gray-400/30`}
+      )} text-gray-900 active:ring-4 ${
+        isActive() && "ring-4"
+      } ring-gray-900/20 dark:ring-indigo-400 gap-x-2 px-3 rounded-lg shadow-sm hover:shadow-xl duration-150 border border-gray-500/20 hover:border-gray-400/30`}
       onClick={handleClick}
     >
-      <kbd
-        className={`flex justify-center items-center bg-slate-900/30 rounded w-6 h-6 font-bold`}
-      >
+      <kbd className={`flex justify-center items-center w-6 h-6 font-bold`}>
         {kbd.includes("'") ? (
-          <BsArrowCounterclockwise className="text-slate-200 w-4 h-4" />
+          <BsArrowCounterclockwise className="text-slate-900 text-2xl" />
         ) : (
-          <BsArrowClockwise className="text-slate-200 w-4 h-4" />
+          <BsArrowClockwise className="text-slate-900 text-2xl" />
         )}
       </kbd>
-      <div className="flex h-full w-px bg-slate-400/20"></div>
+      <div className="flex h-full w-px bg-slate-900/40"></div>
       <span className="font-bold">{mapMoves(kbd)}</span>
     </button>
   );

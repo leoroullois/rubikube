@@ -1,14 +1,22 @@
 import Head from "next/head";
-import { MouseEventHandler, useCallback, useEffect, useState } from "react";
+import {
+  ChangeEventHandler,
+  MouseEventHandler,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
+import { FcInfo } from "react-icons/fc";
+import { IoArrowForward } from "react-icons/io5";
 
+import KbdBtn from "@components/buttons/kbd-btn";
 import CubePattern from "@components/cube-pattern";
+import BlueText from "@components/texts/blue-text";
+import RedText from "@components/texts/red-text";
 import Canvas from "@components/threejs/canvas";
 import Wrapper from "@components/wrapper";
 import { Moves } from "@lib/cubes/Moves";
 import { Solver } from "@lib/cubes/Solver";
-import KbdBtn from "@components/buttons/kbd-btn";
-import RedText from "@components/texts/red-text";
-import BlueText from "@components/texts/blue-text";
 
 const Explore = () => {
   const [mounted, setMounted] = useState(false);
@@ -42,6 +50,11 @@ const Explore = () => {
 
   const handleMove = useCallback(
     (e: KeyboardEvent) => {
+      console.log(e);
+      const elt = e.target as HTMLElement;
+      if (elt.id == "sequence-movements") {
+        return;
+      }
       const { key } = e;
       if (!active) {
         switch (key) {
@@ -124,6 +137,8 @@ const Explore = () => {
   const handleReset: MouseEventHandler = () => {
     solver.reset();
     setCubeArray(solver.cube.cubeArray);
+    setLastSequenceOfMovements("");
+    setSequenceOfMovements("");
     console.clear();
     console.log("🔴 Cube has been reset");
   };
@@ -140,6 +155,25 @@ const Explore = () => {
       "💪 Solution length : ",
       solver.solution.trim().split(" ").length
     );
+  };
+
+  const [sequenceOfMovements, setSequenceOfMovements] = useState("");
+  const [lastSequenceOfMovements, setLastSequenceOfMovements] = useState("");
+  const handleChangeSequenceMovements: ChangeEventHandler<HTMLInputElement> = (
+    e
+  ) => {
+    console.log("change");
+    e.preventDefault();
+    e.stopPropagation();
+    setSequenceOfMovements(e.target.value);
+  };
+  const handleClickSequenceMovements: MouseEventHandler = () => {
+    console.log("click");
+    solver.cube.scramble += " " + sequenceOfMovements;
+    solver.cube.move(sequenceOfMovements);
+    setLastSequenceOfMovements(sequenceOfMovements);
+    setSequenceOfMovements("");
+    setCubeArray(solver.cube.cubeArray);
   };
 
   useEffect(() => {
@@ -163,28 +197,42 @@ const Explore = () => {
             solve it or ask our <BlueText>algorithm</BlueText> to solve it for
             you...
           </p>
-          <div className="flex flex-row flex-wrap max-w-full h-auto gap-y-3 gap-x-3 justify-evenly items-start p-5 bg-gray-900/5 dark:bg-gray-200/5 rounded-xl shadow-sm border border-gray-500/10 hover:shadow-md duration-150">
-            {btnGroups.map((group) => (
-              <div key={group[0]} className="flex w-28 flex-col gap-y-2">
-                {group.map((btn) => (
-                  <KbdBtn
-                    key={btn}
-                    kbd={btn}
-                    active={active}
-                    handleClick={() => handleBtn(btn)}
-                    cubeArray={cubeArray}
-                  />
-                ))}
-              </div>
-            ))}
-          </div>
-          <section className="flex flex-col h-96">
+          <section className="flex flex-col max-w-full gap-y-5 p-5 bg-gray-900/5 dark:bg-gray-200/5 rounded-xl shadow-sm border border-gray-500/10 hover:shadow-md duration-150">
+            <h2 className="w-full text-center text-xl font-semibold">
+              🎮 Moves
+            </h2>
+            <div className="flex flex-row flex-wrap w-full h-auto gap-y-3 gap-x-3 justify-evenly items-start">
+              {btnGroups.map((group) => (
+                <div key={group[0]} className="flex w-28 flex-col gap-y-2">
+                  {group.map((btn) => (
+                    <KbdBtn
+                      key={btn}
+                      kbd={btn}
+                      active={active}
+                      handleClick={() => handleBtn(btn)}
+                      cubeArray={cubeArray}
+                    />
+                  ))}
+                </div>
+              ))}
+            </div>
+          </section>
+          <section className="flex flex-col h-[500px] max-w-full gap-x-5 gap-y-5 justify-evenly items-center p-5 bg-gray-900/5 dark:bg-gray-200/5 rounded-xl shadow-lg">
+            <h2 className="text-lg font-semibold">3D Cube</h2>
+            <div className="flex flex-row justify-center gap-x-3 w-full">
+              <div className="w-4 h-1 bg-gray-900/80 dark:bg-gray-200/60 rounded-full shadow-sm"></div>
+              <div className="w-9 h-1 bg-gray-900/80 dark:bg-gray-200/60 rounded-full shadow-sm"></div>
+            </div>
             {!!mounted && <Canvas cube={solver.cube} />}
           </section>
-          <section className="flex flex-col justify-center items-center max-w-full gap-y-5 gap-x-5 sm:flex-row">
-            <div className="flex flex-col justify-between h-full w-full sm:w-6/12  gap-y-5">
-              <article className="flex flex-col max-w-full h-full gap-y-2 justify-evenly items-start p-5 bg-gray-900/5 dark:bg-gray-200/5 rounded-xl shadow-sm border border-gray-500/10 hover:shadow-md duration-150">
-                <h3 className="text-lg font-semibold">Actions</h3>
+          <section className="flex flex-col justify-center items-center max-w-full gap-y-5 gap-x-5 lg:flex-row">
+            <div className="flex flex-col md:flex-row lg:flex-col justify-between h-full w-full lg:w-6/12  gap-5">
+              <article className="flex flex-col w-full md:w-1/2 lg:w-full max-w-full h-full gap-y-2 justify-evenly items-start p-5 bg-gray-900/5 dark:bg-gray-200/5 rounded-xl shadow-sm border border-gray-500/10 hover:shadow-md duration-150">
+                <h2 className="text-lg font-semibold">💯 Actions</h2>
+                <div className="flex flex-row gap-x-3 w-full justify-start">
+                  <div className="w-4 h-1 bg-gray-900/80 dark:bg-gray-200/60 rounded-full shadow-sm"></div>
+                  <div className="w-9 h-1 bg-gray-900/80 dark:bg-gray-200/60 rounded-full shadow-sm"></div>
+                </div>
                 <p className="text-gray-700 dark:text-gray-400/80">
                   Do what you want with the cube !
                 </p>
@@ -209,13 +257,40 @@ const Explore = () => {
                     Reset
                   </button>
                 </div>
-                <div>
-                  <label htmlFor="algo">Enter an algorithm</label>
-                  <input type="text" placeholder="R U R' U'" />
-                  <button>Move</button>
+                <div className="flex flex-col gap-y-3 w-full">
+                  <label htmlFor="algo">Enter a sequence of movements : </label>
+                  <div className="flex flex-col lg:flex-row justify-between gap-3 w-full">
+                    <input
+                      id="sequence-movements"
+                      type="text"
+                      placeholder="R U R' U'"
+                      value={sequenceOfMovements}
+                      onChange={handleChangeSequenceMovements}
+                      className="w-full px-4 py-2 rounded-lg shadow-sm focus:ring border border-neutral-900/20 outline-none duration-150"
+                    />
+                    <button
+                      onClick={handleClickSequenceMovements}
+                      className="px-4 py-2 w-full lg:w-5/12 text-gray-900 bg-indigo-400 hover:bg-indigo-500 active:ring rounded shadow-sm duration-150 text-md font-semibold"
+                    >
+                      Execute
+                      <IoArrowForward className="h-full float-right" />
+                    </button>
+                  </div>
+                  <p>
+                    Last sequence :{" "}
+                    {lastSequenceOfMovements ? lastSequenceOfMovements : "--"}
+                  </p>
                 </div>
               </article>
-              <article className="flex flex-col max-w-full gap-y-5 justify-evenly items-start p-5 bg-gray-900/5 dark:bg-gray-200/5 rounded-xl shadow-sm border border-gray-500/10 hover:shadow-md duration-150">
+              <article className="flex flex-col w-full md:w-1/2 lg:w-full max-w-full gap-y-5 justify-evenly items-start p-5 bg-gray-900/5 dark:bg-gray-200/5 rounded-xl shadow-sm border border-gray-500/10 hover:shadow-md duration-150">
+                <h2 className="flex flew-row items-center gap-x-3 text-lg font-semibold">
+                  <FcInfo />
+                  <span>Informations</span>
+                </h2>
+                <div className="flex flex-row gap-x-3 w-full justify-start">
+                  <div className="w-4 h-1 bg-gray-900/80 dark:bg-gray-200/60 rounded-full shadow-sm"></div>
+                  <div className="w-9 h-1 bg-gray-900/80 dark:bg-gray-200/60 rounded-full shadow-sm"></div>
+                </div>
                 {mounted && (
                   <>
                     <p>
@@ -236,12 +311,12 @@ const Explore = () => {
               </article>
             </div>
             <div className="flex flex-col gap-y-3 py-5 px-5 justify-center items-center w-full lg:w-6/12 h-full bg-gray-900/5 dark:bg-gray-200/5 rounded-xl shadow-sm border border-gray-500/10 hover:shadow-md duration-150">
-              <h3 className="text-lg font-semibold w-full text-left">
-                Cube pattern
-              </h3>
+              <h2 className="text-lg font-semibold w-full text-left">
+                🔎 Cube pattern
+              </h2>
               <div className="flex flex-row gap-x-3 w-full justify-start">
-                <div className="w-4 h-1 bg-gray-900/80 rounded-full shadow-sm"></div>
-                <div className="w-9 h-1 bg-gray-900/80 rounded-full shadow-sm"></div>
+                <div className="w-4 h-1 bg-gray-900/80 dark:bg-gray-200/60 rounded-full shadow-sm"></div>
+                <div className="w-9 h-1 bg-gray-900/80 dark:bg-gray-200/60 rounded-full shadow-sm"></div>
               </div>
               <div className="scale-75 lg:scale-100">
                 {mounted && <CubePattern cubeArray={cubeArray} />}
