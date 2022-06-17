@@ -107,11 +107,11 @@ const MoveBtns: FC<IProps> = ({ solver, setCubeArray, cubeArray }) => {
   }, [handleMove]);
 
   return (
-    <section className="flex flex-col max-w-full gap-y-5 p-5 bg-gray-900/5 dark:bg-gray-200/5 rounded-xl shadow-sm border border-gray-500/10 hover:shadow-md duration-150">
+    <section className="flex flex-col lg:w-2/3 max-w-full gap-y-5 p-5 bg-gray-900/5 dark:bg-gray-200/5 rounded-xl shadow-sm border border-gray-500/10 hover:shadow-md duration-150">
       <h2 className="w-full text-center text-xl font-semibold">🎮 Moves</h2>
       <div className="flex flex-row flex-wrap w-full h-auto gap-y-3 gap-x-3 justify-evenly items-start">
         {btnGroups.map((group) => (
-          <div key={group[0]} className="flex w-28 flex-col gap-y-2">
+          <div key={group[0]} className="flex w-32 flex-col gap-y-2">
             {group.map((btn) => (
               <KbdBtn
                 key={btn}

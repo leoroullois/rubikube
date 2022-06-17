@@ -1,9 +1,11 @@
+import CubePattern from "@components/cube-pattern";
 import { Solver } from "@lib/cubes/Solver";
 import { CubeArray } from "@lib/cubes/types";
 import React, {
   ChangeEventHandler,
   FC,
   MouseEventHandler,
+  useEffect,
   useState,
 } from "react";
 import { IoArrowForward } from "react-icons/io5";
@@ -29,6 +31,12 @@ const Actions: FC<IProps> = ({
   sequenceOfMovements,
   lastSequenceOfMovements,
 }) => {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const handleChangeSequenceMovements: ChangeEventHandler<HTMLInputElement> = (
     e
   ) => {
@@ -46,7 +54,7 @@ const Actions: FC<IProps> = ({
     setCubeArray(solver.cube.cubeArray);
   };
   return (
-    <article className="flex flex-col w-full md:w-1/2 lg:w-full max-w-full h-full gap-y-2 justify-evenly items-start p-5 bg-gray-900/5 dark:bg-gray-200/5 rounded-xl shadow-sm border border-gray-500/10 hover:shadow-md duration-150">
+    <article className="flex flex-col lg:w-1/2 max-w-full h-full gap-y-2 justify-evenly items-start p-5 bg-gray-900/5 dark:bg-gray-200/5 rounded-xl shadow-sm border border-gray-500/10 hover:shadow-md duration-150">
       <h2 className="text-lg font-semibold">💯 Actions</h2>
       <div className="flex flex-row gap-x-3 w-full justify-start">
         <div className="w-4 h-1 bg-gray-900/80 dark:bg-gray-200/60 rounded-full shadow-sm"></div>
@@ -99,6 +107,9 @@ const Actions: FC<IProps> = ({
           Last sequence :{" "}
           {lastSequenceOfMovements ? lastSequenceOfMovements : "--"}
         </p>
+      </div>
+      <div className="flex w-full justify-center scale-75 lg:scale-100">
+        {mounted && <CubePattern cubeArray={solver.cube.cubeArray} />}
       </div>
     </article>
   );

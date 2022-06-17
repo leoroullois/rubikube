@@ -10,17 +10,17 @@ import { FcInfo } from "react-icons/fc";
 import { IoArrowForward } from "react-icons/io5";
 
 import CubePattern from "@components/cube-pattern";
+import Actions from "@components/explore/actions";
+import Informations from "@components/explore/informations";
+import MoveBtns from "@components/explore/move-btns";
+import ThreeDCube from "@components/explore/three-d-cube";
 import BlueText from "@components/texts/blue-text";
 import RedText from "@components/texts/red-text";
 import Canvas from "@components/threejs/canvas";
 import Wrapper from "@components/wrapper";
 import { Moves } from "@lib/cubes/Moves";
 import { Solver } from "@lib/cubes/Solver";
-import MoveBtns from "@components/explore/move-btns";
-import ThreeDCube from "@components/explore/three-d-cube";
-import Actions from "@components/explore/actions";
-import Informations from "@components/explore/informations";
-import Pattern from "@components/explore/pattern";
+
 const Explore = () => {
   const [solver] = useState(new Solver());
   const [cubeArray, setCubeArray] = useState(solver.cube.cubeArray);
@@ -74,36 +74,27 @@ const Explore = () => {
       </Head>
       <main className="flex flex-col">
         <Wrapper className="flex flex-col gap-y-5 py-5">
-          <h1 className="w-full text-left text-3xl text font-bold">
-            🚀 Exploring
-          </h1>
-          <p className="text-xl font-semibold w-full text-left text-gray-900/80 dark:text-gray-100/90">
-            Scramble your cube and watch it in <RedText>3D</RedText>. Then,
-            solve it or ask our <BlueText>algorithm</BlueText> to solve it for
-            you...
-          </p>
-          <MoveBtns
-            solver={solver}
-            setCubeArray={setCubeArray}
-            cubeArray={cubeArray}
-          />
-          <ThreeDCube solver={solver} />
-          <section className="flex flex-col justify-center items-center max-w-full gap-y-5 gap-x-5 lg:flex-row">
-            <div className="flex flex-col md:flex-row lg:flex-col justify-between h-full w-full lg:w-6/12  gap-5">
-              <Actions
-                handleReset={handleReset}
-                handleScramble={handleScramble}
-                handleSolve={handleSolve}
-                solver={solver}
-                setCubeArray={setCubeArray}
-                setLastSequenceOfMovements={setLastSequenceOfMovements}
-                setSequenceOfMovements={setSequenceOfMovements}
-                sequenceOfMovements={sequenceOfMovements}
-                lastSequenceOfMovements={lastSequenceOfMovements}
-              />
-              <Informations solver={solver} />
-            </div>
-            <Pattern cubeArray={cubeArray} />
+          <section className="flex flex-col lg:flex-row w-full gap-x-3 gap-y-5">
+            <MoveBtns
+              solver={solver}
+              setCubeArray={setCubeArray}
+              cubeArray={cubeArray}
+            />
+            <Informations solver={solver} />
+          </section>
+          <section className="flex flex-col lg:flex-row w-full gap-x-3 gap-y-3">
+            <ThreeDCube solver={solver} />
+            <Actions
+              handleReset={handleReset}
+              handleScramble={handleScramble}
+              handleSolve={handleSolve}
+              solver={solver}
+              setCubeArray={setCubeArray}
+              setLastSequenceOfMovements={setLastSequenceOfMovements}
+              setSequenceOfMovements={setSequenceOfMovements}
+              sequenceOfMovements={sequenceOfMovements}
+              lastSequenceOfMovements={lastSequenceOfMovements}
+            />
           </section>
         </Wrapper>
       </main>

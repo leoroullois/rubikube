@@ -10,7 +10,7 @@ const Informations: FC<IProps> = ({ solver }) => {
     setMounted(true);
   }, []);
   return (
-    <article className="flex flex-col w-full md:w-1/2 lg:w-full max-w-full gap-y-5 justify-evenly items-start p-5 bg-gray-900/5 dark:bg-gray-200/5 rounded-xl shadow-sm border border-gray-500/10 hover:shadow-md duration-150">
+    <article className="flex flex-col lg:w-1/2 max-w-full gap-y-5 justify-evenly items-start p-5 bg-gray-900/5 dark:bg-gray-200/5 rounded-xl shadow-sm border border-gray-500/10 hover:shadow-md duration-150">
       <h2 className="flex flew-row items-center gap-x-3 text-lg font-semibold">
         <FcInfo />
         <span>Informations</span>
