@@ -206,7 +206,10 @@ const Timer = () => {
           <section className="flex flex-col h-auto xl:flex-row items-center max-w-full gap-5 p-5 bg-gray-900/5 dark:bg-gray-200/5 rounded-xl shadow-sm border border-gray-900/10 dark:border-gray-50/10 hover:shadow-md duration-150 overflow-hidden">
             <StatsUl title="Basic statistics">
               <StatsLi name="Total" data={times.length.toString()} />
-              <StatsLi name="Ecart-type" data={formatTime(getMean(times))} />
+              <StatsLi
+                name="Standard deviation"
+                data={formatTime(getMean(times))}
+              />
               <StatsLi name="Mean" data={formatTime(getMean(times))} />
               <StatsLi name="Best" data={formatTime(getMean(times))} />
               <StatsLi name="Worst" data={formatTime(getMean(times))} />
