@@ -20,21 +20,28 @@ import { useTimes } from "@hooks/use-time";
 import BasicStatsUl from "@components/basic-stats-list/basic-stats-ul";
 import BasicStatsLi from "@components/basic-stats-list/basic-stats-li";
 import Link from "next/link";
+import { useDispatch, useSelector } from "react-redux";
+import { selectSolves } from "@store/selectors";
+import { addSolve } from "@store/slices/solves";
+import { useMath } from "@hooks/use-math";
 
 const Timer = () => {
+  const dispatch = useDispatch();
+
   const [mounted, setMounted] = useState(false);
 
   const [ms, setMs] = useState(0);
   const [isActive, setIsActive] = useState(false);
-  const [times, setTimes] = useState<number[]>([]);
+  const { times } = useSelector(selectSolves);
 
   const [cube] = useState(new ThreeByThree());
   const [cubeArray, setCubeArray] = useState(cube.cubeArray);
   const [scramble, setScramble] = useState(cube.scramble);
   const [isScrambleDisabled, setIsScrambleDisabled] = useState(true);
 
-  const { getDecimals, getSeconds, getMinutes, getAo, getMean, formatTime } =
-    useTimes();
+  const { formatTime } = useTimes();
+  const { getAo, getMean, getStandardDeviation, getMinimum, getMaximum } =
+    useMath();
 
   const startTimer = () => {
     setIsActive(true);
@@ -75,14 +82,23 @@ const Timer = () => {
             cube.randomlyScrambleCube();
             setCubeArray(cube.cubeArray);
             setScramble(cube.scramble);
-            times.push(ms);
+            dispatch(
+              addSolve({
+                id: 1000,
+                time: ms,
+                scramble: cube.scramble,
+                date: new Date().toISOString(),
+                penalty: false,
+                dnf: false,
+              })
+            );
             stopTimer();
           }
           setLastIsKeyDown(true);
         }
       }
     },
-    [isActive, lastIsKeyDown, ms, start, times, cube, isScrambleDisabled]
+    [dispatch, isActive, lastIsKeyDown, ms, start, cube, isScrambleDisabled]
   );
 
   const handleKeyUp = useCallback(
@@ -151,6 +167,9 @@ const Timer = () => {
     setScramble(input.value);
   };
   const handleBlur = () => {
+    cube.resetCubeArray();
+    cube.move(scramble);
+    setCubeArray(cube.cubeArray);
     setIsScrambleDisabled(true);
   };
 
@@ -168,7 +187,7 @@ const Timer = () => {
                   <div className="flex flex-col gap-y-3 w-full sm:w-auto">
                     <li className="text-lg font-semibold">Last</li>
                     <TimesLi
-                      time={formatTime(times[0])}
+                      time={formatTime(times[0]?.time ?? 0)}
                       ao5={formatTime(12)}
                       ao12={formatTime(14)}
                     />
@@ -176,7 +195,7 @@ const Timer = () => {
                   <div className="flex flex-col gap-y-3 w-full sm:w-auto">
                     <li className="text-lg font-semibold">Second to last</li>
                     <TimesLi
-                      time={formatTime(times[0])}
+                      time={formatTime(times[0]?.time ?? 0)}
                       ao5={formatTime(12)}
                       ao12={formatTime(14)}
                     />
@@ -214,21 +233,62 @@ const Timer = () => {
               </article>
             </div>
             <StatsUl title="AOs">
-              <StatsLi name="AO5" data={formatTime(getAo(5, times))} />
-              <StatsLi name="AO12" data={formatTime(getAo(12, times))} />
-              <StatsLi name="AO50" data={formatTime(getAo(50, times))} />
-              <StatsLi name="AO100" data={formatTime(getAo(100, times))} />
+              <StatsLi
+                name="AO5"
+                data={formatTime(
+                  getAo(
+                    5,
+                    times.map((t) => t.time)
+                  )
+                )}
+              />
+              <StatsLi
+                name="AO12"
+                data={formatTime(
+                  getAo(
+                    12,
+                    times.map((t) => t.time)
+                  )
+                )}
+              />
+              <StatsLi
+                name="AO50"
+                data={formatTime(
+                  getAo(
+                    50,
+                    times.map((t) => t.time)
+                  )
+                )}
+              />
+              <StatsLi
+                name="AO100"
+                data={formatTime(
+                  getAo(
+                    100,
+                    times.map((t) => t.time)
+                  )
+                )}
+              />
             </StatsUl>
           </div>
           <BasicStatsUl title="Basic statistics">
             <BasicStatsLi name="Total" data={times.length.toString()} />
             <BasicStatsLi
               name="Standard deviation"
-              data={formatTime(getMean(times))}
+              data={formatTime(getStandardDeviation(times.map((t) => t.time)))}
             />
-            <BasicStatsLi name="Mean" data={formatTime(getMean(times))} />
-            <BasicStatsLi name="Best" data={formatTime(getMean(times))} />
-            <BasicStatsLi name="Worst" data={formatTime(getMean(times))} />
+            <BasicStatsLi
+              name="Mean"
+              data={formatTime(getMean(times.map((t) => t.time)))}
+            />
+            <BasicStatsLi
+              name="Best"
+              data={formatTime(getMaximum(times.map((t) => t.time)))}
+            />
+            <BasicStatsLi
+              name="Worst"
+              data={formatTime(getMinimum(times.map((t) => t.time)))}
+            />
           </BasicStatsUl>
         </Wrapper>
       </main>
