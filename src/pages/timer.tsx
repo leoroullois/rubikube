@@ -1,4 +1,5 @@
 import Head from "next/head";
+import Link from "next/link";
 import {
   ChangeEventHandler,
   MouseEventHandler,
@@ -8,22 +9,23 @@ import {
 } from "react";
 import { AiFillEdit } from "react-icons/ai";
 import { IoAdd, IoCopy, IoReload } from "react-icons/io5";
+import { useDispatch, useSelector } from "react-redux";
 
+import BasicStatsLi from "@components/basic-stats-list/basic-stats-li";
+import BasicStatsUl from "@components/basic-stats-list/basic-stats-ul";
 import CubePattern from "@components/cube-pattern";
 import StatsLi from "@components/stats-list/stats-li";
 import StatsUl from "@components/stats-list/stats-ul";
 import TimesLi from "@components/times-list/times-li";
 import TimesUl from "@components/times-list/times-ul";
 import Wrapper from "@components/wrapper";
-import { ThreeByThree } from "@lib/cubes/ThreeByThree";
+import { useMath } from "@hooks/use-math";
 import { useTimes } from "@hooks/use-time";
-import BasicStatsUl from "@components/basic-stats-list/basic-stats-ul";
-import BasicStatsLi from "@components/basic-stats-list/basic-stats-li";
-import Link from "next/link";
-import { useDispatch, useSelector } from "react-redux";
+import { ThreeByThree } from "@lib/cubes/ThreeByThree";
 import { selectSolves } from "@store/selectors";
 import { addSolve } from "@store/slices/solves";
-import { useMath } from "@hooks/use-math";
+
+import { v4 as uuidv4 } from "uuid";
 
 const Timer = () => {
   const dispatch = useDispatch();
@@ -84,7 +86,7 @@ const Timer = () => {
             setScramble(cube.scramble);
             dispatch(
               addSolve({
-                id: 1000,
+                id: uuidv4(),
                 time: ms,
                 scramble: cube.scramble,
                 date: new Date().toISOString(),
@@ -187,7 +189,7 @@ const Timer = () => {
                   <div className="flex flex-col gap-y-3 w-full sm:w-auto">
                     <li className="text-lg font-semibold">Last</li>
                     <TimesLi
-                      time={formatTime(times[0]?.time ?? 0)}
+                      time={times.slice(-1)[0] ?? null}
                       ao5={formatTime(12)}
                       ao12={formatTime(14)}
                     />
@@ -195,7 +197,7 @@ const Timer = () => {
                   <div className="flex flex-col gap-y-3 w-full sm:w-auto">
                     <li className="text-lg font-semibold">Second to last</li>
                     <TimesLi
-                      time={formatTime(times[0]?.time ?? 0)}
+                      time={times.slice(-2, -1)[0] ?? null}
                       ao5={formatTime(12)}
                       ao12={formatTime(14)}
                     />
@@ -283,11 +285,15 @@ const Timer = () => {
             />
             <BasicStatsLi
               name="Best"
-              data={formatTime(getMaximum(times.map((t) => t.time)))}
+              data={formatTime(
+                times.length ? getMinimum(times.map((t) => t.time)) : 0
+              )}
             />
             <BasicStatsLi
               name="Worst"
-              data={formatTime(getMinimum(times.map((t) => t.time)))}
+              data={formatTime(
+                times.length ? getMinimum(times.map((t) => t.time)) : 0
+              )}
             />
           </BasicStatsUl>
         </Wrapper>

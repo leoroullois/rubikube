@@ -3,10 +3,12 @@ import { useSelector } from "react-redux";
 
 import { useTimes } from "@hooks/use-time";
 import { selectSolves } from "@store/selectors";
+import { useMath } from "@hooks/use-math";
 
 const Averages: FC = () => {
   const { times } = useSelector(selectSolves);
-  const { formatTime, getAo } = useTimes();
+  const { formatTime } = useTimes();
+  const { getAo } = useMath();
 
   const averages = [
     {

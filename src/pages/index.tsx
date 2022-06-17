@@ -59,7 +59,7 @@ const Home: NextPage = () => {
                 </div>
                 <div className="flex max-w-full">
                   <Image
-                    src="https://via.placeholder.com/300x400.png?text=Screen+of+the+timer"
+                    src="/timer.png"
                     alt="Timer page"
                     height={300}
                     width={400}
@@ -96,7 +96,7 @@ const Home: NextPage = () => {
                 </div>
                 <div className="flex max-w-full">
                   <Image
-                    src="https://via.placeholder.com/300x400.png?text=Screen+of+the+analytics"
+                    src="/analytics.png"
                     alt="Timer page"
                     height={300}
                     width={400}

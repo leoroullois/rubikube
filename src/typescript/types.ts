@@ -4,7 +4,7 @@ export interface IAverage {
 }
 
 export interface ITime {
-  id: number;
+  id: string;
   time: number;
   date: string;
   scramble: string;
