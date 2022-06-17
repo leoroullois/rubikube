@@ -29,7 +29,7 @@ const NavBar = () => {
                 <LogoutBtn />
                 <Link href="/dashboard">
                   <a className="flex items-center">
-                    <IoPersonCircle className="text-gray-800 text-5xl" />
+                    <IoPersonCircle className="text-gray-800 dark:text-gray-100 text-4xl" />
                   </a>
                 </Link>
               </>

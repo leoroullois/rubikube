@@ -6,6 +6,8 @@ import colorMode from "@store/slices/color-mode";
 import cube from "@store/slices/cube";
 import timer from "@store/slices/timer";
 import auth from "@store/slices/auth";
+import solves from "@store/slices/solves";
+
 const makeStore = () =>
   configureStore({
     reducer: {
@@ -13,6 +15,7 @@ const makeStore = () =>
       cube,
       timer,
       auth,
+      solves,
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(thunk),
   });

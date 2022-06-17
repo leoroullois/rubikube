@@ -5,3 +5,5 @@ export const selectTimer = (state: RootState) => state.timer;
 
 export const selectAuth = (state: RootState) => state.auth;
 export const selectUser = (state: RootState) => state.auth.user;
+
+export const selectSolves = (state: RootState) => state.solves;

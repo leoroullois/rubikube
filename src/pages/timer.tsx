@@ -16,6 +16,7 @@ import TimesLi from "@components/times-list/times-li";
 import TimesUl from "@components/times-list/times-ul";
 import Wrapper from "@components/wrapper";
 import { ThreeByThree } from "@lib/cubes/ThreeByThree";
+import { useTimes } from "@hooks/use-time";
 
 const Timer = () => {
   const [mounted, setMounted] = useState(false);
@@ -29,35 +30,14 @@ const Timer = () => {
   const [scramble, setScramble] = useState(cube.scramble);
   const [isScrambleDisabled, setIsScrambleDisabled] = useState(true);
 
-  const resetTimer = () => {
-    setMs(0);
-    setIsActive(false);
-  };
+  const { getDecimals, getSeconds, getMinutes, getAo, getMean, formatTime } =
+    useTimes();
+
   const startTimer = () => {
     setIsActive(true);
   };
   const stopTimer = () => {
     setIsActive(false);
-  };
-
-  const getDecimals = (ms: number) => {
-    return Math.floor(ms / 10) % 100;
-  };
-  const getSeconds = (ms: number) => Math.floor(ms / 1000);
-  const getMinutes = (ms: number) => Math.floor(getSeconds(ms) / 60);
-
-  const getAo = (nb: number, times: number[]): string => {
-    if (times.length < nb) return "--";
-    const aoTimes = [...times].slice(-1 * nb).sort((a, b) => a - b);
-    aoTimes.pop();
-    aoTimes.shift();
-    const sum = aoTimes.reduce((acc, curr) => acc + curr, 0);
-    return String(Math.round(sum / aoTimes.length));
-  };
-
-  const getMean = (times: number[]) => {
-    const sum = times.reduce((acc, curr) => acc + curr, 0);
-    return Math.round(sum / times.length);
   };
 
   useEffect(() => {
@@ -141,16 +121,6 @@ const Timer = () => {
     updateCubeState(cube);
     setMounted(true);
   }, [cube, updateCubeState]);
-
-  const formatTime = (ms: number | string) => {
-    const nb = Number(ms);
-    if (Number.isNaN(nb)) {
-      return "--:--";
-    }
-    return `${getSeconds(nb).toString().padStart(2, "0")}:${getDecimals(nb)
-      .toString()
-      .padEnd(2, "0")}`;
-  };
 
   const handleReload: MouseEventHandler = (e) => {
     console.log(e);
