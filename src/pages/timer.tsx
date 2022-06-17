@@ -7,7 +7,7 @@ import {
   useState,
 } from "react";
 import { AiFillEdit } from "react-icons/ai";
-import { IoCopy, IoReload } from "react-icons/io5";
+import { IoAdd, IoCopy, IoReload } from "react-icons/io5";
 
 import CubePattern from "@components/cube-pattern";
 import StatsLi from "@components/stats-list/stats-li";
@@ -17,6 +17,9 @@ import TimesUl from "@components/times-list/times-ul";
 import Wrapper from "@components/wrapper";
 import { ThreeByThree } from "@lib/cubes/ThreeByThree";
 import { useTimes } from "@hooks/use-time";
+import BasicStatsUl from "@components/basic-stats-list/basic-stats-ul";
+import BasicStatsLi from "@components/basic-stats-list/basic-stats-li";
+import Link from "next/link";
 
 const Timer = () => {
   const [mounted, setMounted] = useState(false);
@@ -157,73 +160,76 @@ const Timer = () => {
         <title>Timer</title>
       </Head>
       <main className="flex flex-col">
-        <Wrapper className="flex flex-col gap-y-5 py-5 h-full">
-          <aside>
-            {!!times && (
-              <TimesUl title="Your latest times">
-                <TimesLi
-                  time={formatTime(times[0])}
-                  ao5={formatTime(12)}
-                  ao12={formatTime(14)}
+        <Wrapper className="flex flex-col md:flex-row flex-wrap  justify-between items-center gap-y-5 py-5">
+          <div className="flex flex-col lg:flex-row justify-between w-full h-9/12">
+            <aside className="flex flex-col sm:flex-col items-center md:justify-center sm:w-auto bg-gray-900/5 dark:bg-gray-50/5 border-4 border-gray-900/10 dark:border-gray-50/10 rounded-lg py-3">
+              {!!times && (
+                <TimesUl title="Your latest times">
+                  <div className="flex flex-col gap-y-3 w-full sm:w-auto">
+                    <li className="text-lg font-semibold">Last</li>
+                    <TimesLi
+                      time={formatTime(times[0])}
+                      ao5={formatTime(12)}
+                      ao12={formatTime(14)}
+                    />
+                  </div>
+                  <div className="flex flex-col gap-y-3 w-full sm:w-auto">
+                    <li className="text-lg font-semibold">Second to last</li>
+                    <TimesLi
+                      time={formatTime(times[0])}
+                      ao5={formatTime(12)}
+                      ao12={formatTime(14)}
+                    />
+                  </div>
+                </TimesUl>
+              )}
+              <Link href="/dashboard">
+                <a className="flex flex-row items-center justify-cente p-2 bg-blue-500 rounded hover:bg-blue-600 duration-150">
+                  <IoAdd className="text-2xl font-bold" />
+                </a>
+              </Link>
+            </aside>
+            <div>
+              <section className="flex flex-col max-w-full justify-center py-20 gap-y-10 min-h-max">
+                <input
+                  type="text"
+                  id="scramble-input"
+                  className="py-1 px-4 bg-transparent outline-none focus:ring text-2xl text-center font-bold rounded"
+                  value={scramble}
+                  onChange={handleChangeScramble}
+                  onBlur={handleBlur}
+                  disabled={isScrambleDisabled}
                 />
-                <TimesLi
-                  time={formatTime(times[0])}
-                  ao5={formatTime(12)}
-                  ao12={formatTime(14)}
-                />
-                <TimesLi
-                  time={formatTime(times[0])}
-                  ao5={formatTime(12)}
-                  ao12={formatTime(14)}
-                />
-                <TimesLi
-                  time={formatTime(times[0])}
-                  ao5={formatTime(12)}
-                  ao12={formatTime(14)}
-                />
-              </TimesUl>
-            )}
-          </aside>
-          <section className="flex flex-col justify-center py-20 gap-y-10 min-h-max">
-            <input
-              type="text"
-              id="scramble-input"
-              className="py-1 px-4 bg-transparent outline-none focus:ring text-2xl text-center font-bold rounded"
-              value={scramble}
-              onChange={handleChangeScramble}
-              onBlur={handleBlur}
-              disabled={isScrambleDisabled}
-            />
-            <p className="flex flex-row justify-center w-full gap-x-10 text-lg">
-              <AiFillEdit className="cursor-pointer" onClick={handleEdit} />
-              <IoReload className="cursor-pointer" onClick={handleReload} />
-              <IoCopy className="cursor-pointer" onClick={handleCopy} />
-            </p>
-            <h1 className="text-6xl text-center font-mono font-medium">
-              {formatTime(ms)}
-            </h1>
-          </section>
-          <section className="flex flex-col h-auto xl:flex-row items-center max-w-full gap-5 p-5 bg-gray-900/5 dark:bg-gray-200/5 rounded-xl shadow-sm border border-gray-900/10 dark:border-gray-50/10 hover:shadow-md duration-150 overflow-hidden">
-            <StatsUl title="Basic statistics">
-              <StatsLi name="Total" data={times.length.toString()} />
-              <StatsLi
-                name="Standard deviation"
-                data={formatTime(getMean(times))}
-              />
-              <StatsLi name="Mean" data={formatTime(getMean(times))} />
-              <StatsLi name="Best" data={formatTime(getMean(times))} />
-              <StatsLi name="Worst" data={formatTime(getMean(times))} />
-            </StatsUl>
-            <article className="scale-75 sm:scale-100">
-              {!!mounted && <CubePattern cubeArray={cubeArray} />}
-            </article>
+                <p className="flex flex-row justify-center w-full gap-x-10 text-lg">
+                  <AiFillEdit className="cursor-pointer" onClick={handleEdit} />
+                  <IoReload className="cursor-pointer" onClick={handleReload} />
+                  <IoCopy className="cursor-pointer" onClick={handleCopy} />
+                </p>
+                <h1 className="text-6xl text-center font-mono font-medium">
+                  {formatTime(ms)}
+                </h1>
+              </section>
+              <article className="flex flex-row sm:justify-center scale-75 sm:scale-75 md:scale-100 max-w-full overflow-x-scroll sm:overflow-x-auto">
+                {!!mounted && <CubePattern cubeArray={cubeArray} />}
+              </article>
+            </div>
             <StatsUl title="AOs">
               <StatsLi name="AO5" data={formatTime(getAo(5, times))} />
               <StatsLi name="AO12" data={formatTime(getAo(12, times))} />
               <StatsLi name="AO50" data={formatTime(getAo(50, times))} />
               <StatsLi name="AO100" data={formatTime(getAo(100, times))} />
             </StatsUl>
-          </section>
+          </div>
+          <BasicStatsUl title="Basic statistics">
+            <BasicStatsLi name="Total" data={times.length.toString()} />
+            <BasicStatsLi
+              name="Standard deviation"
+              data={formatTime(getMean(times))}
+            />
+            <BasicStatsLi name="Mean" data={formatTime(getMean(times))} />
+            <BasicStatsLi name="Best" data={formatTime(getMean(times))} />
+            <BasicStatsLi name="Worst" data={formatTime(getMean(times))} />
+          </BasicStatsUl>
         </Wrapper>
       </main>
     </>
