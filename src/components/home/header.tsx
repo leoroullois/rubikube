@@ -20,7 +20,7 @@ const Header = () => {
         </h2>
         <div className="flex flex-col gap-y-5 sm:flex-row w-full gap-x-6">
           <MainBtn href="/timer">Start cubing</MainBtn>
-          <SecondaryBtn href="/play" emoji="🚀" icon={<IoArrowForward />}>
+          <SecondaryBtn href="/explore" emoji="🚀" icon={<IoArrowForward />}>
             Start exploring
           </SecondaryBtn>
         </div>

@@ -86,7 +86,7 @@ const Home: NextPage = () => {
                   </ul>
                   <p className="text-left text-lg">
                     Cool !{" "}
-                    <Link href="/timer">
+                    <Link href="/login">
                       <a className="underline hover:text-red-700">
                         Create an account
                       </a>
